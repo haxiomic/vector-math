@@ -19,7 +19,11 @@ Haxe vector math library that enables GLSL vector and matrix operations to compi
 
 
 ### Usage
-Simply import the VectorMath class: `import VectorMath;`. Add `--dce full` and `-D analyzer-optimize` to your hxml for clean output
+Install with `haxelib install vector-math` (or simply copy [VectorMath.hx](VectorMath.hx) into your project as this is a single-file library)
+
+Add `--library vector-math` to your hxml commands
+
+Then simply import the VectorMath class: `import VectorMath;`. Add `--dce full` and `-D analyzer-optimize` to your hxml for clean output
 
 ```haxe
 import VectorMath;
@@ -30,8 +34,6 @@ function main() {
 	var transformedTangent = mat2(2) * tangent;
 }
 ```
-
-Everything is included in a single file: [VectorMath.hx](VectorMath.hx) so it's easy to drop into a project
 
 ### Q/A
 - **Why does it require haxe 4.2 – this isn't yet released**
