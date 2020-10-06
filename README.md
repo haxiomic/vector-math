@@ -43,7 +43,7 @@ function main() {
 - **What are the differences to GLSL?**
 
 	- Direct vector assignment is **reference** rather than **copy**, that is in the following statement: `var ref = original`, 'ref' represents the same underlying vector as 'original', whereas in GLSL it would be a copy. To copy a vector you can do any of `var copy = original.clone()`, `var copy = vec3(original)` or `var copy = original.xyz`. When accessing sub vectors, the accessed vector **is** copied. For example `var column0Copy = matrix[0]`
-	- Aliases for rgba and stpq have been [turned off](https://github.com/haxiomic/quark/blob/6a2bed951b2af79c78baf175a5f6fef46bc79a4a/Vec.hx#L222) for compile-time performance
+	- Aliases for rgba and stpq have been [turned off](https://github.com/haxiomic/vector-math/blob/50e6460cb5b05d8f264c393ecb6e6cba416d71b3/VectorMath.hx#L2702) for compile-time performance
 	- You can call methods via dot syntax in addition to regular calls, for example: `vec3(1).length()` and `length(vec(1))` are equivalent
 	- Boolean and integer vector types are not yet included (`bvec` and `ivec`). These may come in the future if there's a desire for them
 
