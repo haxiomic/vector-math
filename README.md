@@ -38,7 +38,7 @@ function main() {
 ### Q/A
 - **Why does it require haxe 4.2 – this isn't yet released**
 
-	This library uses module-level functions which are introduced in 4.2, it can be written without them and so can be modified to work on haxe 4.0, however I don't plan on doing this myself but I'm happy to accept PRs for this
+	This library uses module-level functions which are introduced in 4.2, it can be written without them and so can be modified to work on haxe 4.0. I don't plan on doing this myself but I'm happy to accept PRs for this
 
 - **What are the differences to GLSL?**
 
