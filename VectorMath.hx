@@ -2520,9 +2520,9 @@ final floatType = Context.getType('Float');
 final vec2Type = Context.getType('VectorMath.Vec2');
 final vec3Type = Context.getType('VectorMath.Vec3');
 final vec4Type = Context.getType('VectorMath.Vec4');
-final mat2Type = Context.getType('Mat2');
-final mat3Type = Context.getType('Mat3');
-final mat4Type = Context.getType('Mat4');
+final mat2Type = Context.getType('VectorMath.Mat2');
+final mat3Type = Context.getType('VectorMath.Mat3');
+final mat4Type = Context.getType('VectorMath.Mat4');
 
 function mapVecType(e: Expr): Int {
 	return switch Context.typeof(e) {
