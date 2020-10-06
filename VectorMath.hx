@@ -7,6 +7,7 @@
 
 	@license MIT
 	@author haxiomic (George Corney)
+	@version 1.0.0
 **/
 
 #if macro
