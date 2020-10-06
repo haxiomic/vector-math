@@ -36,7 +36,7 @@ function main() {
 ```
 
 ### Q/A
-- **Why does it require haxe 4.2 – this isn't yet released**
+- **Why does it require haxe 4.2? – this isn't yet released**
 
 	This library uses module-level functions which are introduced in 4.2, it can be written without them and so can be modified to work on haxe 4.0. I don't plan on doing this myself but I'm happy to accept PRs for this
 
@@ -51,7 +51,7 @@ function main() {
 
 	All haxe targets are supported :)
 
-- **Can this be used to generate shader code**
+- **Can this be used to generate shader code?**
 
 	Not _yet_, heaps has [hxsl](https://heaps.io/documentation/hxsl.html) which is similar in that it's a GLSL vector math implementation in haxe, but I believe it's only at the syntax-level and so can't be executed as regular haxe code or support autocomplete. I hope to combine these two approaches eventually to allow shader code to be generated from VectorMath operations
 
