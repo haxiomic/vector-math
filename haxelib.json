@@ -5,6 +5,6 @@
 	"tags": ["vector", "math", "linear-algebra", "linear", "algebra", "matrix", "opengl", "glsl", "shader"],
 	"contributors": ["haxiomic"],
 	"url": "https://github.com/haxiomic/vector-math",
-	"version": "1.0.1",
-	"releasenote": "Correct type reference"
+	"version": "1.1.0",
+	"releasenote": "Add assign+op overloads"
 }

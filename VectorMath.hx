@@ -7,7 +7,7 @@
 
 	@license MIT
 	@author haxiomic (George Corney)
-	@version 1.0.1
+	@version 1.1.0
 **/
 
 #if macro
@@ -594,6 +594,7 @@ abstract Vec2(Vec2Data) to Vec2Data from Vec2Data {
 	public inline function copyFrom(v: Vec2) {
 		x = v.x;
 		y = v.y;
+		return this;
 	}
 
 	public inline function clone() {
@@ -864,6 +865,43 @@ abstract Vec2(Vec2Data) to Vec2Data from Vec2Data {
 		return ret;
 	}
 
+	// assignment overload should come before other binary ops to ensure they have priority
+	@:op(a *= b)
+	static inline function mulEq(a: Vec2, b: Vec2): Vec2
+		return a.copyFrom(a * b);
+
+	@:op(a *= b)
+	static inline function mulEqMat(a: Vec2, b: Mat2): Vec2
+		return a.copyFrom(a * b);
+
+	@:op(a *= b)
+	static inline function mulEqScalar(a: Vec2, f: Float): Vec2
+		return a.copyFrom(a * f);
+
+	@:op(a /= b)
+	static inline function divEq(a: Vec2, b: Vec2): Vec2
+		return a.copyFrom(a / b);
+
+	@:op(a /= b)
+	static inline function divEqScalar(a: Vec2, f: Float): Vec2
+		return a.copyFrom(a / f);
+
+	@:op(a += b)
+	static inline function addEq(a: Vec2, b: Vec2): Vec2
+		return a.copyFrom(a + b);
+
+	@:op(a += b)
+	static inline function addEqScalar(a: Vec2, f: Float): Vec2
+		return a.copyFrom(a + f);
+
+	@:op(a -= b)
+	static inline function subEq(a: Vec2, b: Vec2): Vec2
+		return a.copyFrom(a - b);
+
+	@:op(a -= b)
+	static inline function subEqScalar(a: Vec2, f: Float): Vec2
+		return a.copyFrom(a - f);
+
 	@:op(a * b)
 	static inline function mul(a: Vec2, b: Vec2): Vec2
 		return new Vec2(a.x * b.x, a.y * b.y);
@@ -950,6 +988,7 @@ abstract Vec3(Vec3Data) to Vec3Data from Vec3Data {
 		x = v.x;
 		y = v.y;
 		z = v.z;
+		return this;
 	}
 
 	public inline function clone() {
@@ -1252,6 +1291,43 @@ abstract Vec3(Vec3Data) to Vec3Data from Vec3Data {
 		return ret;
 	}
 
+	// assignment overload should come before other binary ops to ensure they have priority
+	@:op(a *= b)
+	static inline function mulEq(a: Vec3, b: Vec3): Vec3
+		return a.copyFrom(a * b);
+
+	@:op(a *= b)
+	static inline function mulEqMat(a: Vec3, b: Mat3): Vec3
+		return a.copyFrom(a * b);
+
+	@:op(a *= b)
+	static inline function mulEqScalar(a: Vec3, f: Float): Vec3
+		return a.copyFrom(a * f);
+
+	@:op(a /= b)
+	static inline function divEq(a: Vec3, b: Vec3): Vec3
+		return a.copyFrom(a / b);
+
+	@:op(a /= b)
+	static inline function divEqScalar(a: Vec3, f: Float): Vec3
+		return a.copyFrom(a / f);
+
+	@:op(a += b)
+	static inline function addEq(a: Vec3, b: Vec3): Vec3
+		return a.copyFrom(a + b);
+
+	@:op(a += b)
+	static inline function addEqScalar(a: Vec3, f: Float): Vec3
+		return a.copyFrom(a + f);
+
+	@:op(a -= b)
+	static inline function subEq(a: Vec3, b: Vec3): Vec3
+		return a.copyFrom(a - b);
+
+	@:op(a -= b)
+	static inline function subEqScalar(a: Vec3, f: Float): Vec3
+		return a.copyFrom(a - f);
+
 	@:op(a * b)
 	static inline function mul(a: Vec3, b: Vec3): Vec3
 		return new Vec3(a.x * b.x, a.y * b.y, a.z * b.z);
@@ -1344,6 +1420,7 @@ abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 		y = v.y;
 		z = v.z;
 		w = v.w;
+		return this;
 	}
 
 	public inline function clone() {
@@ -1662,6 +1739,43 @@ abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 		return ret;
 	}
 
+	// assignment overload should come before other binary ops to ensure they have priority
+	@:op(a *= b)
+	static inline function mulEq(a: Vec4, b: Vec4): Vec4
+		return a.copyFrom(a * b);
+
+	@:op(a *= b)
+	static inline function mulEqMat(a: Vec4, b: Mat4): Vec4
+		return a.copyFrom(a * b);
+
+	@:op(a *= b)
+	static inline function mulEqScalar(a: Vec4, f: Float): Vec4
+		return a.copyFrom(a * f);
+
+	@:op(a /= b)
+	static inline function divEq(a: Vec4, b: Vec4): Vec4
+		return a.copyFrom(a / b);
+
+	@:op(a /= b)
+	static inline function divEqScalar(a: Vec4, f: Float): Vec4
+		return a.copyFrom(a / f);
+
+	@:op(a += b)
+	static inline function addEq(a: Vec4, b: Vec4): Vec4
+		return a.copyFrom(a + b);
+
+	@:op(a += b)
+	static inline function addEqScalar(a: Vec4, f: Float): Vec4
+		return a.copyFrom(a + f);
+
+	@:op(a -= b)
+	static inline function subEq(a: Vec4, b: Vec4): Vec4
+		return a.copyFrom(a - b);
+
+	@:op(a -= b)
+	static inline function subEqScalar(a: Vec4, f: Float): Vec4
+		return a.copyFrom(a - f);
+
 	@:op(a * b)
 	static inline function mul(a: Vec4, b: Vec4): Vec4
 		return new Vec4(a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w);
@@ -1746,6 +1860,7 @@ abstract Mat2(Mat2Data) from Mat2Data to Mat2Data {
 		var v: Mat2Data = v;
 		this.c0.copyFrom(v.c0);
 		this.c1.copyFrom(v.c1);
+		return this;
 	}
 
 	public inline function clone(): Mat2 {
@@ -1828,6 +1943,39 @@ abstract Mat2(Mat2Data) from Mat2Data to Mat2Data {
 		--m.c1.x; --m.c1.y;
 		return ret;
 	}
+
+	// assignment overload should come before other binary ops to ensure they have priority
+	@:op(a *= b)
+	static inline function mulEq(a: Mat2, b: Mat2): Mat2
+		return a.copyFrom(a * b);
+
+	@:op(a *= b)
+	static inline function mulEqScalar(a: Mat2, f: Float): Mat2
+		return a.copyFrom(a * f);
+
+	@:op(a /= b)
+	static inline function divEq(a: Mat2, b: Mat2): Mat2
+		return a.copyFrom(a / b);
+
+	@:op(a /= b)
+	static inline function divEqScalar(a: Mat2, f: Float): Mat2
+		return a.copyFrom(a / f);
+
+	@:op(a += b)
+	static inline function addEq(a: Mat2, b: Mat2): Mat2
+		return a.copyFrom(a + b);
+
+	@:op(a += b)
+	static inline function addEqScalar(a: Mat2, f: Float): Mat2
+		return a.copyFrom(a + f);
+
+	@:op(a -= b)
+	static inline function subEq(a: Mat2, b: Mat2): Mat2
+		return a.copyFrom(a - b);
+
+	@:op(a -= b)
+	static inline function subEqScalar(a: Mat2, f: Float): Mat2
+		return a.copyFrom(a - f);
 
 	@:op(a + b)
 	static inline function add(m: Mat2, n: Mat2): Mat2 {
@@ -1916,6 +2064,11 @@ abstract Mat2(Mat2Data) from Mat2Data to Mat2Data {
 	}
 
 	@:op(a / b)
+	static inline function div(m: Mat2, n: Mat2): Mat2 {
+		return m.matrixCompMult(1.0 / n);
+	}
+
+	@:op(a / b)
 	static inline function divScalar(m: Mat2, f: Float): Mat2 {
 		var m: Mat2Data = m;
 		return new Mat2(
@@ -1983,6 +2136,7 @@ abstract Mat3(Mat3Data) from Mat3Data to Mat3Data {
 		this.c0.copyFrom(v.c0);
 		this.c1.copyFrom(v.c1);
 		this.c2.copyFrom(v.c2);
+		return this;
 	}
 
 	public inline function clone(): Mat3 {
@@ -2067,6 +2221,39 @@ abstract Mat3(Mat3Data) from Mat3Data to Mat3Data {
 		--m.c0; --m.c1; --m.c2; 
 		return ret;
 	}
+
+	// assignment overload should come before other binary ops to ensure they have priority
+	@:op(a *= b)
+	static inline function mulEq(a: Mat3, b: Mat3): Mat3
+		return a.copyFrom(a * b);
+
+	@:op(a *= b)
+	static inline function mulEqScalar(a: Mat3, f: Float): Mat3
+		return a.copyFrom(a * f);
+
+	@:op(a /= b)
+	static inline function divEq(a: Mat3, b: Mat3): Mat3
+		return a.copyFrom(a / b);
+
+	@:op(a /= b)
+	static inline function divEqScalar(a: Mat3, f: Float): Mat3
+		return a.copyFrom(a / f);
+
+	@:op(a += b)
+	static inline function addEq(a: Mat3, b: Mat3): Mat3
+		return a.copyFrom(a + b);
+
+	@:op(a += b)
+	static inline function addEqScalar(a: Mat3, f: Float): Mat3
+		return a.copyFrom(a + f);
+
+	@:op(a -= b)
+	static inline function subEq(a: Mat3, b: Mat3): Mat3
+		return a.copyFrom(a - b);
+
+	@:op(a -= b)
+	static inline function subEqScalar(a: Mat3, f: Float): Mat3
+		return a.copyFrom(a - f);
 
 	@:op(a + b)
 	static inline function add(m: Mat3, n: Mat3): Mat3 {
@@ -2168,6 +2355,10 @@ abstract Mat3(Mat3Data) from Mat3Data to Mat3Data {
 	}
 
 	@:op(a / b)
+	static inline function div(m: Mat3, n: Mat3): Mat3
+		return m.matrixCompMult(1.0 / n);
+
+	@:op(a / b)
 	static inline function divScalar(m: Mat3, f: Float): Mat3 {
 		var m: Mat3Data = m;
 		return new Mat3(
@@ -2244,6 +2435,7 @@ abstract Mat4(Mat4Data) from Mat4Data to Mat4Data {
 		this.c1.copyFrom(v.c1);
 		this.c2.copyFrom(v.c2);
 		this.c3.copyFrom(v.c3);
+		return this;
 	}
 
 	public inline function clone(): Mat4 {
@@ -2334,6 +2526,39 @@ abstract Mat4(Mat4Data) from Mat4Data to Mat4Data {
 		--m.c0; --m.c1; --m.c2; --m.c3;
 		return ret;
 	}
+
+	// assignment overload should come before other binary ops to ensure they have priority
+	@:op(a *= b)
+	static inline function mulEq(a: Mat4, b: Mat4): Mat4
+		return a.copyFrom(a * b);
+
+	@:op(a *= b)
+	static inline function mulEqScalar(a: Mat4, f: Float): Mat4
+		return a.copyFrom(a * f);
+
+	@:op(a /= b)
+	static inline function divEq(a: Mat4, b: Mat4): Mat4
+		return a.copyFrom(a / b);
+
+	@:op(a /= b)
+	static inline function divEqScalar(a: Mat4, f: Float): Mat4
+		return a.copyFrom(a / f);
+
+	@:op(a += b)
+	static inline function addEq(a: Mat4, b: Mat4): Mat4
+		return a.copyFrom(a + b);
+
+	@:op(a += b)
+	static inline function addEqScalar(a: Mat4, f: Float): Mat4
+		return a.copyFrom(a + f);
+
+	@:op(a -= b)
+	static inline function subEq(a: Mat4, b: Mat4): Mat4
+		return a.copyFrom(a - b);
+
+	@:op(a -= b)
+	static inline function subEqScalar(a: Mat4, f: Float): Mat4
+		return a.copyFrom(a - f);
 
 	@:op(a + b)
 	static inline function add(m: Mat4, n: Mat4): Mat4 {
@@ -2450,6 +2675,10 @@ abstract Mat4(Mat4Data) from Mat4Data to Mat4Data {
 			m.c3.x * f, m.c3.y * f, m.c3.z * f, m.c3.w * f
 		);
 	}
+
+	@:op(a / b)
+	static inline function div(m: Mat4, n: Mat4): Mat4
+		return m.matrixCompMult(1.0 / n);
 
 	@:op(a / b)
 	static inline function divScalar(m: Mat4, f: Float): Mat4 {
