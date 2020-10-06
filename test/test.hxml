@@ -1,0 +1,21 @@
+--class-path ../
+--main Main
+
+--each
+
+# Eval
+--interp
+
+--next
+
+# JavaScript
+--js dist/main.js
+--dce full
+# -D analyzer-optimize
+--cmd node dist/main.js
+
+# C++
+--next
+--cpp test/dist/cpp
+--dce full
+--cmd test/dist/cpp/Main

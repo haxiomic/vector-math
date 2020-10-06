@@ -1,0 +1,9 @@
+{
+	"name": "vector-math",
+	"description": "GLSL vector math implementation that enables GLSL vector and matrix operations to compile in haxe. Usage: `import VectorMath;`",
+	"license": "MIT",
+	"tags": ["vector", "math", "linear-algebra", "linear", "algebra", "matrix", "opengl", "glsl", "shader"],
+	"contributors": ["haxiomic"],
+	"url": "https://github.com/haxiomic/vector-math",
+	"version": "1.0.0"
+}
