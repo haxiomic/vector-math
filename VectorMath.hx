@@ -5,6 +5,11 @@
 
 	Reference Spec GLSL ES 1.0: https://www.khronos.org/files/opengles_shading_language.pdf
 
+	**Usage**:
+	Add `import VectorMath;` to be able to use GLSL functions and constructors.
+
+	Pass `-D vector_math_f32` to use 32-bit floats on platforms that support it (by default haxe's Float type corresponds to a 64-bit float)
+
 	@license MIT
 	@author haxiomic (George Corney)
 	@version 1.1.0
@@ -13,6 +18,11 @@
 #if macro
 import haxe.macro.Context;
 import haxe.macro.Expr;
+#end
+
+#if (vector_math_f32 && (cpp || hl || cs || java))
+// override Float (usually f64) type with f32
+@:eager private typedef Float = Single;
 #end
 
 // # Built-in Functions
