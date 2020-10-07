@@ -1,6 +1,8 @@
 --class-path ../
 --main Main
 
+-D vector_math_f32
+
 --each
 
 # Eval
