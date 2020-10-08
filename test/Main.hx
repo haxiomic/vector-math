@@ -8,10 +8,11 @@ import haxe.macro.ComplexTypeTools;
 #end
 
 function main() {
+	testsStart();
 
 	// ------------
 	// -- Mat3
-	// ------------
+	// ------------	
 
 	// constructor
 	test(mat3(2) == mat3(
@@ -449,22 +450,29 @@ function incrementingNumber() {
 
 var testsPassed = 0;
 var testsFailed = 0;
+var tStart_s = 0.0;
 function testPassed() {
 	testsPassed++;
 }
 function testFailed() {
 	testsFailed++;
 }
+function testsStart() {
+	tStart_s = haxe.Timer.stamp();
+}
 function testsComplete() {
+	var dt_ms = (haxe.Timer.stamp() - tStart_s) * 1000;
+	dt_ms = Math.round(dt_ms * 10000) / 10000;
+
 	var testsTotal = testsPassed + testsFailed;
 	if (testsTotal == 0) {
 		println('[${getTargetName()}] No tests were run');
 		return;
 	}
 	if (testsFailed == 0) {
-		println('[${getTargetName()}] All tests passed ($testsPassed/$testsTotal)');
+		println('[${getTargetName()}] All tests passed ($testsPassed/$testsTotal) [$dt_ms ms]');
 	} else {
-		println('[${getTargetName()}] $testsFailed tests failed ($testsPassed/$testsTotal passed)');
+		println('[${getTargetName()}] $testsFailed tests failed ($testsPassed/$testsTotal passed) [$dt_ms ms]');
 	}
 }
 
