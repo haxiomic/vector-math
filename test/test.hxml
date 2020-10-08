@@ -20,7 +20,9 @@
 --cpp dist/cpp
 --cmd dist/cpp/Main
 
-# HashLink (requires hl jit installed on system)
+# HashLink (requires hl jit installed on system to run)
 # --next
 # --hl dist/main.hl
 # --cmd hl dist/main.hl
+# --next
+# --hl dist/hlc/main.c
