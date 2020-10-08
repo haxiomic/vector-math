@@ -428,6 +428,11 @@ function main() {
 	test(vec4(vec3(1, 2, 3), 4) == vec4(1, 2, 3, 4));
 	test(length(vec2(2, 3) + 1) == 5);
 
+	test(normalize(0.1) == 1.0);
+	test(normalize(vec2(3, 4)) == vec2(3/5, 4/5));
+	test(normalize(0.0) == 0.0, "technically the spec doesn't define what happens when you normalize a 0-length vector but returning 0.0 seems to be common in implementations");
+	test(normalize(vec4(0.0)) == vec4(0.0), "technically the spec doesn't define what happens when you normalize a 0-length vector but returning 0.0 seems to be common in implementations");
+
 	testsComplete();
 }
 

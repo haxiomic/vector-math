@@ -2,22 +2,25 @@
 --main Main
 
 -D vector_math_f32
+--dce full
+# -D analyzer-optimize
 
 --each
 
 # Eval
 --interp
 
---next
-
 # JavaScript
+--next
 --js dist/main.js
---dce full
-# -D analyzer-optimize
 --cmd node dist/main.js
 
 # C++
 --next
---cpp test/dist/cpp
---dce full
---cmd test/dist/cpp/Main
+--cpp dist/cpp
+--cmd dist/cpp/Main
+
+# HashLink (requires hl jit installed on system)
+# --next
+# --hl dist/main.hl
+# --cmd hl dist/main.hl
