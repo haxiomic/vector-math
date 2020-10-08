@@ -805,7 +805,7 @@ abstract Vec2(Vec2Data) to Vec2Data from Vec2Data {
 	}
 	public inline function normalize(): Vec2 {
 		var lenSq = (this: Vec2).dot(this);
-		return lenSq == 0.0 ? vec2(0.0) : (this: Vec2) / Math.sqrt(lenSq);
+		return lenSq == 0.0 ? new Vec2(0.0, 0.0) : (this: Vec2) / Math.sqrt(lenSq);
 	}
 
 	public inline function faceforward(I: Vec2, Nref: Vec2): Vec2 {
@@ -1230,7 +1230,7 @@ abstract Vec3(Vec3Data) to Vec3Data from Vec3Data {
 	}
 	public inline function normalize(): Vec3 {
 		var lenSq = (this: Vec3).dot(this);
-		return lenSq == 0.0 ? vec3(0.0) : (this: Vec3) / Math.sqrt(lenSq);
+		return lenSq == 0.0 ? new Vec3(0.0, 0.0, 0.0) : (this: Vec3) / Math.sqrt(lenSq);
 	}
 
 	public inline function faceforward(I: Vec3, Nref: Vec3): Vec3 {
@@ -1677,7 +1677,7 @@ abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 	}
 	public inline function normalize(): Vec4 {
 		var lenSq = (this: Vec4).dot(this);
-		return lenSq == 0.0 ? vec4(0.0) : (this: Vec4) / Math.sqrt(lenSq);
+		return lenSq == 0.0 ? new Vec4(0.0, 0.0, 0.0, 0.0) : (this: Vec4) / Math.sqrt(lenSq);
 	}
 
 	public inline function faceforward(I: Vec4, Nref: Vec4): Vec4 {
