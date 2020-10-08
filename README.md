@@ -17,13 +17,15 @@ Haxe vector math library that enables GLSL vector and matrix operations to compi
 	```
 	(Cool right?)
 
+	Furthermore, because vector components are just stack variables on compiled targets like cpp these operations are easily auto-vectorized (SIMD)
+
 
 ### Usage
 Install with `haxelib install vector-math` (or simply copy [VectorMath.hx](VectorMath.hx) into your project as this is a single-file library)
 
 Add `--library vector-math` to your hxml commands
 
-Then simply import the VectorMath class: `import VectorMath;`. Add `--dce full` and `-D analyzer-optimize` to your hxml for clean output
+Then simply import the VectorMath class: `import VectorMath;`
 
 ```haxe
 import VectorMath;
@@ -35,6 +37,8 @@ function main() {
 }
 ```
 
+Add `--dce full` and `-D analyzer-optimize` to your hxml for clean output!
+
 ### Q/A
 - **Why does it require haxe 4.2? – this isn't yet released**
 
@@ -42,7 +46,7 @@ function main() {
 
 - **What are the differences to GLSL?**
 
-	- Direct vector assignment is **reference** rather than **copy**, that is in the following statement: `var ref = original`, 'ref' represents the same underlying vector as 'original', whereas in GLSL it would be a copy. To copy a vector you can do any of `var copy = original.clone()`, `var copy = vec3(original)` or `var copy = original.xyz`. When accessing sub vectors, the accessed vector **is** copied. For example `var column0Copy = matrix[0]`
+	- Direct vector assignment is **reference** rather than **copy**, that is: in the following statement: `var ref = original`, 'ref' represents the same underlying vector as 'original', whereas in GLSL it would be a copy. To copy a vector you can do any of `var copy = original.clone()`, `var copy = vec3(original)` or `var copy = original.xyz`. When accessing sub vectors, the accessed vector **is** copied. For example `var column0Copy = matrix[0]`
 	- Aliases for rgba and stpq have been [turned off](https://github.com/haxiomic/vector-math/blob/50e6460cb5b05d8f264c393ecb6e6cba416d71b3/VectorMath.hx#L2702) for compile-time performance
 	- You can call methods via dot syntax in addition to regular calls, for example: `vec3(1).length()` and `length(vec(1))` are equivalent
 	- Boolean and integer vector types are not yet included (`bvec` and `ivec`). These may come in the future if there's a desire for them
