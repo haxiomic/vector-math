@@ -12,6 +12,7 @@
 
 # JavaScript
 --next
+-D nodejs
 --js dist/main.js
 --cmd node dist/main.js
 
