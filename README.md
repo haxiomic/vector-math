@@ -17,7 +17,7 @@ Haxe vector math library that enables GLSL vector and matrix operations to compi
 	```
 	(Cool right?)
 
-	Furthermore, because vector components are just stack variables on compiled targets like cpp these operations are easily auto-vectorized (SIMD)
+	Furthermore, because vector components are just stack variables these operations are easily auto-vectorized (SIMD) on compiled targets like cpp
 
 
 ### Usage
