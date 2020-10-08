@@ -6,7 +6,7 @@
 	Reference Spec GLSL ES 1.0: https://www.khronos.org/files/opengles_shading_language.pdf
 
 	**Usage**:
-	Add `import VectorMath;` to be able to use GLSL functions and constructors.
+	Add `import VectorMath;` to be able to use GLSL functions and constructors
 
 	Pass `-D vector_math_f32` to use 32-bit floats on platforms that support it (by default haxe's Float type corresponds to a 64-bit float)
 
@@ -455,7 +455,7 @@ macro function dot(v, b) return useCurrentPos(
 @:overload(function(v: Vec4): Vec4 {})
 macro function normalize(v) return useCurrentPos(
 	switch mapVecType(v) {
-		case 1: macro 1.0;
+		case 1: macro $v <= 0.0 ? 0.0 : 1.0;
 		default: macro $v.normalize();
 	}
 );
@@ -804,7 +804,8 @@ abstract Vec2(Vec2Data) to Vec2Data from Vec2Data {
 		return x * b.x + y * b.y;
 	}
 	public inline function normalize(): Vec2 {
-		return (this: Vec2) / length();
+		var lenSq = (this: Vec2).dot(this);
+		return lenSq == 0.0 ? vec2(0.0) : (this: Vec2) / Math.sqrt(lenSq);
 	}
 
 	public inline function faceforward(I: Vec2, Nref: Vec2): Vec2 {
@@ -1228,7 +1229,8 @@ abstract Vec3(Vec3Data) to Vec3Data from Vec3Data {
 		return x * b.x + y * b.y + z * b.z;
 	}
 	public inline function normalize(): Vec3 {
-		return (this: Vec3) / length();
+		var lenSq = (this: Vec3).dot(this);
+		return lenSq == 0.0 ? vec3(0.0) : (this: Vec3) / Math.sqrt(lenSq);
 	}
 
 	public inline function faceforward(I: Vec3, Nref: Vec3): Vec3 {
@@ -1674,7 +1676,8 @@ abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 		return x * b.x + y * b.y + z * b.z + w * b.w;
 	}
 	public inline function normalize(): Vec4 {
-		return (this: Vec4) / length();
+		var lenSq = (this: Vec4).dot(this);
+		return lenSq == 0.0 ? vec4(0.0) : (this: Vec4) / Math.sqrt(lenSq);
 	}
 
 	public inline function faceforward(I: Vec4, Nref: Vec4): Vec4 {
