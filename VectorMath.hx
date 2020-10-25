@@ -559,7 +559,7 @@ macro function vec4(a, ?b, ?c, ?d): ExprOf<Vec4> {
 @:overload(function(column0: Vec2, column1: Vec2): Mat2 {})
 @:overload(function(xyzw: Vec4): Mat2 {})
 macro function mat2(a, ?b, ?c, ?d): ExprOf<Mat2> {
-	return useCurrentPos(matrixConstructor({name: 'Mat2',pack:[]}, 2, 2, [a, b, c, d]));
+	return useCurrentPos(matrixConstructor(2, 2, [a, b, c, d]));
 }
 
 @:overload(function(
@@ -569,7 +569,7 @@ macro function mat2(a, ?b, ?c, ?d): ExprOf<Mat2> {
 ): Mat3 {})
 @:overload(function(column0: Vec3, column1: Vec3, column2: Vec3): Mat3 {})
 macro function mat3(a, ?b, ?c, ?d, ?e, ?f, ?g, ?h, ?i): ExprOf<Mat3> {
-	return useCurrentPos(matrixConstructor({name: 'Mat3',pack:[]}, 3, 3, [a, b, c, d, e, f, g, h, i]));
+	return useCurrentPos(matrixConstructor(3, 3, [a, b, c, d, e, f, g, h, i]));
 }
 
 @:overload(function(
@@ -580,7 +580,7 @@ macro function mat3(a, ?b, ?c, ?d, ?e, ?f, ?g, ?h, ?i): ExprOf<Mat3> {
 ): Mat4 {})
 @:overload(function(column0: Vec4, column1: Vec4, column2: Vec4, column3: Vec4): Mat4 {})
 macro function mat4(a, ?b, ?c, ?d, ?e, ?f, ?g, ?h, ?i, ?j, ?k, ?l, ?m, ?n, ?o, ?p): ExprOf<Mat4> {
-	return useCurrentPos(matrixConstructor({name: 'Mat4',pack:[]}, 4, 4, [a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p]));
+	return useCurrentPos(matrixConstructor(4, 4, [a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p]));
 }
 
 // # Types
@@ -2809,7 +2809,13 @@ function vectorConstructor(length: Int, _argExprs: Array<Expr>): Expr {
 	}
 }
 
-function matrixConstructor(typePath: TypePath, width: Int, height: Int, _argExprs: Array<Expr>): Expr {
+function matrixConstructor(width: Int, height: Int, _argExprs: Array<Expr>): Expr {
+	var typePath: TypePath = {
+		name: 'VectorMath',
+		sub: 'Mat${width == height ? '${width}' : '${width}x${height}'}',
+		pack: [],
+	}
+
 	var argsNotNull = new Array<Expr>();
 	for(arg in _argExprs) {
 		switch arg {
