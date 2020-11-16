@@ -607,6 +607,18 @@ abstract Vec2(Vec2Data) to Vec2Data from Vec2Data {
 		return this;
 	}
 
+	@:overload(function<T>(arrayLike: T, index: Int): T {})
+	public macro function copyIntoArray(self: ExprOf<Vec4>, array: ExprOf<ArrayAccess<Float>>, index: ExprOf<Int>) {
+		return macro {
+			var self = $self;
+			var array = $array;
+			var i: Int = $index;
+			array[0 + i] = self.x;
+			array[1 + i] = self.y;
+			array;
+		}
+	}
+
 	public inline function clone() {
 		return new Vec2(x, y);
 	}
@@ -1000,6 +1012,19 @@ abstract Vec3(Vec3Data) to Vec3Data from Vec3Data {
 		y = v.y;
 		z = v.z;
 		return this;
+	}
+
+	@:overload(function<T>(arrayLike: T, index: Int): T {})
+	public macro function copyIntoArray(self: ExprOf<Vec4>, array: ExprOf<ArrayAccess<Float>>, index: ExprOf<Int>) {
+		return macro {
+			var self = $self;
+			var array = $array;
+			var i: Int = $index;
+			array[0 + i] = self.x;
+			array[1 + i] = self.y;
+			array[2 + i] = self.z;
+			array;
+		}
 	}
 
 	public inline function clone() {
@@ -1433,6 +1458,20 @@ abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 		z = v.z;
 		w = v.w;
 		return this;
+	}
+
+	@:overload(function<T>(arrayLike: T, index: Int): T {})
+	public macro function copyIntoArray(self: ExprOf<Vec4>, array: ExprOf<ArrayAccess<Float>>, index: ExprOf<Int>) {
+		return macro {
+			var self = $self;
+			var array = $array;
+			var i: Int = $index;
+			array[0 + i] = self.x;
+			array[1 + i] = self.y;
+			array[2 + i] = self.z;
+			array[3 + i] = self.w;
+			array;
+		}
 	}
 
 	public inline function clone() {
@@ -1876,6 +1915,18 @@ abstract Mat2(Mat2Data) from Mat2Data to Mat2Data {
 		return this;
 	}
 
+	@:overload(function<T>(arrayLike: T, index: Int): T {})
+	public macro function copyIntoArray(self: ExprOf<Vec4>, array: ExprOf<ArrayAccess<Float>>, index: ExprOf<Int>) {
+		return macro  {
+			var self = $self;
+			var array = $array;
+			var i: Int = $index;
+			self[0].copyIntoArray(array, i);
+			self[1].copyIntoArray(array, i + 2);
+			array;
+		}
+	}
+
 	public inline function clone(): Mat2 {
 		return new Mat2(
 			this.c0.x, this.c0.y,
@@ -2150,6 +2201,19 @@ abstract Mat3(Mat3Data) from Mat3Data to Mat3Data {
 		this.c1.copyFrom(v.c1);
 		this.c2.copyFrom(v.c2);
 		return this;
+	}
+
+	@:overload(function<T>(arrayLike: T, index: Int): T {})
+	public macro function copyIntoArray(self: ExprOf<Vec4>, array: ExprOf<ArrayAccess<Float>>, index: ExprOf<Int>) {
+		return macro  {
+			var self = $self;
+			var array = $array;
+			var i: Int = $index;
+			self[0].copyIntoArray(array, i);
+			self[1].copyIntoArray(array, i + 3);
+			self[2].copyIntoArray(array, i + 6);
+			array;
+		}
 	}
 
 	public inline function clone(): Mat3 {
@@ -2449,6 +2513,20 @@ abstract Mat4(Mat4Data) from Mat4Data to Mat4Data {
 		this.c2.copyFrom(v.c2);
 		this.c3.copyFrom(v.c3);
 		return this;
+	}
+
+	@:overload(function<T>(arrayLike: T, index: Int): T {})
+	public macro function copyIntoArray(self: ExprOf<Vec4>, array: ExprOf<ArrayAccess<Float>>, index: ExprOf<Int>) {
+		return macro  {
+			var self = $self;
+			var array = $array;
+			var i: Int = $index;
+			self[0].copyIntoArray(array, i);
+			self[1].copyIntoArray(array, i + 4);
+			self[2].copyIntoArray(array, i + 8);
+			self[3].copyIntoArray(array, i + 12);
+			array;
+		}
 	}
 
 	public inline function clone(): Mat4 {
