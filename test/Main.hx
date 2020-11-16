@@ -11,6 +11,27 @@ function main() {
 	testsStart();
 
 	// ------------
+	// -- Mat2
+	// ------------
+	test({
+		var expected = [
+			2, 3,
+			11,13
+		];
+		var result = mat2(
+			2, 3,
+			11,13
+		).copyIntoArray([], 0);
+		var matching = true;
+		for (i in 0...expected.length) {
+			if (expected[i] != result[i]) {
+				matching = false; break;
+			}
+		}
+		matching;
+	});
+
+	// ------------
 	// -- Mat3
 	// ------------	
 
@@ -133,6 +154,25 @@ function main() {
 		var _m = m.clone();
 		m -= n;
 		m == _m - n;
+	});
+	test({
+		var expected = [
+			2, 3, 5, 
+			11,13,17,
+			23,29,31
+		];
+		var result = mat3(
+			2, 3, 5,
+			11,13,17,
+			23,29,31
+		).copyIntoArray([], 0);
+		var matching = true;
+		for (i in 0...expected.length) {
+			if (expected[i] != result[i]) {
+				matching = false; break;
+			}
+		}
+		matching;
 	});
 
 	// ------------
@@ -414,6 +454,27 @@ function main() {
 			1/41,1/43,1/47,1/53
 		)
 	);
+	test({
+		var expected = [
+			2, 3, 5, 7,
+			11,13,17,19,
+			23,29,31,37,
+			41,43,47,53
+		];
+		var result = mat4(
+			2, 3, 5, 7,
+			11,13,17,19,
+			23,29,31,37,
+			41,43,47,53
+		).copyIntoArray([], 0);
+		var matching = true;
+		for (i in 0...expected.length) {
+			if (expected[i] != result[i]) {
+				matching = false; break;
+			}
+		}
+		matching;
+	});
 
 	// ------------
 	// # Misc
