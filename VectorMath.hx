@@ -1915,6 +1915,9 @@ abstract Mat2(Mat2Data) from Mat2Data to Mat2Data {
 		return this;
 	}
 
+	/**
+		Copies matrix elements in column-major order into a type that supports array-write access
+	**/
 	@:overload(function<T>(arrayLike: T, index: Int): T {})
 	public macro function copyIntoArray(self: ExprOf<Vec4>, array: ExprOf<ArrayAccess<Float>>, index: ExprOf<Int>) {
 		return macro  {
@@ -2203,6 +2206,9 @@ abstract Mat3(Mat3Data) from Mat3Data to Mat3Data {
 		return this;
 	}
 
+	/**
+		Copies matrix elements in column-major order into a type that supports array-write access
+	**/
 	@:overload(function<T>(arrayLike: T, index: Int): T {})
 	public macro function copyIntoArray(self: ExprOf<Vec4>, array: ExprOf<ArrayAccess<Float>>, index: ExprOf<Int>) {
 		return macro  {
@@ -2515,6 +2521,9 @@ abstract Mat4(Mat4Data) from Mat4Data to Mat4Data {
 		return this;
 	}
 
+	/**
+		Copies matrix elements in column-major order into a type that supports array-write access
+	**/
 	@:overload(function<T>(arrayLike: T, index: Int): T {})
 	public macro function copyIntoArray(self: ExprOf<Vec4>, array: ExprOf<ArrayAccess<Float>>, index: ExprOf<Int>) {
 		return macro  {
