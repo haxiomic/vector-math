@@ -7,6 +7,33 @@ import haxe.macro.Expr;
 import haxe.macro.ComplexTypeTools;
 #end
 
+inline function quatMul(q1: Vec4, q2: Vec4)
+	return vec4(
+		 q1.x * q2.w + q1.y * q2.z - q1.z * q2.y + q1.w * q2.x,
+		-q1.x * q2.z + q1.y * q2.w + q1.z * q2.x + q1.w * q2.y,
+		 q1.x * q2.y - q1.y * q2.x + q1.z * q2.w + q1.w * q2.z,
+		-q1.x * q2.x - q1.y * q2.y - q1.z * q2.z + q1.w * q2.w
+	);
+
+inline function quatConj(q: Vec4)
+	return vec4(-q.xyz, q.w);
+
+inline function quatRotate(point: Vec3, q: Vec4) {
+	var qp = quatMul(q, vec4(point, 0.0));
+	return quatMul(qp, vec4(-q.xyz, q.w));
+}
+
+inline function quatRotationBetween(v1: Vec3, v2: Vec3) {
+	return normalize(vec4(
+		cross(v1, v2),
+		sqrt(
+			dot(v1, v1) * dot(v2, v2)
+		) + dot(v1, v2)
+	));
+}
+
+#if !macro
+
 function main() {
 	testsStart();
 
@@ -495,19 +522,26 @@ function main() {
 	test(normalize(0.0) == 0.0, "technically the spec doesn't define what happens when you normalize a 0-length vector but returning 0.0 seems to be common in implementations");
 	test(normalize(vec4(0.0)) == vec4(0.0), "technically the spec doesn't define what happens when you normalize a 0-length vector but returning 0.0 seems to be common in implementations");
 
+	// find rotation quaternion between v1 and v2, then rotate v1 by this quaternion
+	var v1 = vec3(3,-1,8).normalize();
+	var v2 = vec3(1,2,3).normalize();
+	var q = quatRotationBetween(v1, v2);
+	var r = quatRotate(v1, q).xyz;
+	test(floor(r * 10000) / 10000 == floor(v2 * 10000) / 10000);
+
 	testsComplete();
 }
+
+#end
 
 var _incrementingNumber: Int = 12;
 function incrementingNumber() {
 	return _incrementingNumber++;
 }
 
-/**
-	--------------
-	Test Framework
-	--------------
-**/
+// -------------- //
+// Test Framework //
+// -------------- //
 
 var testsPassed = 0;
 var testsFailed = 0;
