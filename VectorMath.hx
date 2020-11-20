@@ -587,7 +587,6 @@ macro function mat4(a, ?b, ?c, ?d, ?e, ?f, ?g, ?h, ?i, ?j, ?k, ?l, ?m, ?n, ?o, ?
 
 @:notNull
 @:nullSafety
-#if !macro @:build(VectorMath.Swizzle.generateFields(2)) #end
 abstract Vec2(Vec2Data) to Vec2Data from Vec2Data {
 
 	public var x (get, set): Float;
@@ -599,6 +598,14 @@ abstract Vec2(Vec2Data) to Vec2Data from Vec2Data {
 
 	public inline function new(x: Float, y: Float) {
 		this = new Vec2Data(x, y);
+	}
+
+	@:op(a.b) macro function swizzleRead(self, name: String) {
+		return swizzleReadExpr(self, name);
+	}
+
+	@:op(a.b) macro function swizzleWrite(self, name: String, value: Expr) {
+		return swizzleWriteExpr(self, name, value);
 	}
 
 	public inline function copyFrom(v: Vec2) {
@@ -990,7 +997,6 @@ private class Vec2Data {
 
 @:notNull
 @:nullSafety
-#if !macro @:build(VectorMath.Swizzle.generateFields(3)) #end
 abstract Vec3(Vec3Data) to Vec3Data from Vec3Data {
 
 	public var x (get, set): Float;
@@ -1012,6 +1018,14 @@ abstract Vec3(Vec3Data) to Vec3Data from Vec3Data {
 		y = v.y;
 		z = v.z;
 		return this;
+	}
+
+	@:op(a.b) macro function swizzleRead(self, name: String) {
+		return swizzleReadExpr(self, name);
+	}
+
+	@:op(a.b) macro function swizzleWrite(self, name: String, value: Expr) {
+		return swizzleWriteExpr(self, name, value);
 	}
 
 	@:overload(function<T>(arrayLike: T, index: Int): T {})
@@ -1432,7 +1446,6 @@ private class Vec3Data {
 
 @:notNull
 @:nullSafety
-#if !macro @:build(VectorMath.Swizzle.generateFields(4)) #end
 abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 
 	public var x (get, set): Float;
@@ -1450,6 +1463,14 @@ abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 
 	public inline function new(x: Float, y: Float, z: Float, w: Float) {
 		this = new Vec4Data(x, y, z, w);
+	}
+	
+	@:op(a.b) macro function swizzleRead(self, name: String) {
+		return swizzleReadExpr(self, name);
+	}
+
+	@:op(a.b) macro function swizzleWrite(self, name: String, value: Expr) {
+		return swizzleWriteExpr(self, name, value);
 	}
 
 	public inline function copyFrom(v: Vec4) {
@@ -3024,124 +3045,84 @@ function useCurrentPos(e: Expr) {
 	return e;
 }
 
-class Swizzle {
+function deepReplacePos(e: Expr, pos: Position) {
+	haxe.macro.ExprTools.iter(e, e2 -> e2.pos = pos);
+	return e;
+}
 
-	static public function generateFields(vectorLength: Int) {
-		var fields = Context.getBuildFields();
-		// for vector length N, we generate all possible combinations of 4 (or less)
-		// for swizzles that do not repeat, we also add a setter
-
-		generateSwizzles(fields, vectorLength, xyzw, true);
-
-		// uncomment to add .rgba and .stpq swizzles
-		// generateSwizzles(fields, vectorLength, ['r','g','b','a'], false);
-		// generateSwizzles(fields, vectorLength, ['s','t','p','q'], false);
-
-		return fields;
-	}
-
-	static function generateSwizzles(fields: Array<Field>, vectorLength: Int, keys: Array<String>, skipLength1: Bool) {
-		// length 1 fields
-		if (!skipLength1) for (i in 0...vectorLength) {
-			generateProperty(fields, [i], keys);
-		}
-		// length 2 fields
-		for (i in 0...vectorLength) {
-			for (j in 0...vectorLength) {
-				generateProperty(fields, [i,j], keys);
+function swizzleReadExpr(self, name: String) {
+	return deepReplacePos(switch name.length {
+		case 2:
+			var f0 = name.charAt(0); var f1 = name.charAt(1);
+			macro {
+				var self = $self;
+				vec2(self.$f0, self.$f1);
 			}
-		}
-		// length 3 fields
-		for (i in 0...vectorLength) {
-			for (j in 0...vectorLength) {
-				for (k in 0...vectorLength) {
-					generateProperty(fields, [i,j,k], keys);
-				}
+		case 3:
+			var f0 = name.charAt(0); var f1 = name.charAt(1); var f2 = name.charAt(2);
+			macro {
+				var self = $self;
+				vec3(self.$f0, self.$f1, self.$f2);
 			}
-		}
-		// length 4 fields
-		for (i in 0...vectorLength) {
-			for (j in 0...vectorLength) {
-				for (k in 0...vectorLength) {
-					for (l in 0...vectorLength) {
-						generateProperty(fields, [i,j,k,l], keys);
-					}
-				}
+		case 4:
+			var f0 = name.charAt(0); var f1 = name.charAt(1); var f2 = name.charAt(2); var f3 = name.charAt(3);
+			macro {
+				var self = $self;
+				vec4(self.$f0, self.$f1, self.$f2, self.$f3);
 			}
-		}
-	}
+		default:
+			Context.error('Unsupported swizzle read ".$name"', Context.currentPos());
+	}, Context.currentPos());
+}
 
-	static final xyzw = ['x', 'y', 'z', 'w'];
-	// build some useful lookups
-	static final thisReadExpr = xyzw.map(c -> macro this.$c);
-	static final vReadExpr = xyzw.map(c -> macro v.$c);
-	static final vectorTypeMap: Array<TypePath> = [
-		{ pack: [], name: 'Float' },
-		{ pack: [], name: 'Vec2' },
-		{ pack: [], name: 'Vec3' },
-		{ pack: [], name: 'Vec4' }
-	];
-
-	static function generateProperty(fields: Array<Field>, swizzle: Array<Int>, keys: Array<String>) {
-		var ident = swizzle.map(i -> keys[i]).join('');
-		var readonly = hasDuplicate(swizzle);
-		
-		var typePath = vectorTypeMap[swizzle.length - 1];
-
-		var type: ComplexType = TPath(typePath);
-
-		var declaration = if (readonly) {
-			(macro class { public var $ident(get, never): $type; }).fields[0]; 
-		} else {
-			(macro class { public var $ident(get, set): $type; }).fields[0]; 
-		}
-
-		// add @:noCompletion if swizzle is not a single component
-		if (swizzle.length > 1) {
-			declaration.meta = [{
-				name: ':noCompletion',
-				pos: Context.currentPos(),
-			}];
-		}
-
-		var getterName = 'get_$ident';
-		var getter = (macro class {
-			inline function $getterName(): $type
-				return ${
-					if (swizzle.length > 1) {
-						macro new $typePath( $a{swizzle.map(i -> thisReadExpr[i])} );
-					} else {
-						thisReadExpr[swizzle[0]];
-					}
-				}
-		}).fields[0];
-
-		fields.push(declaration);
-		fields.push(getter);
-
-		if (!readonly) {
-			var setterName = 'set_$ident';
-			var setter = (macro class {
-				inline function $setterName(v: $type): $type {
-					$b{[for (i in 0...swizzle.length) 
-						macro ${thisReadExpr[swizzle[i]]} = ${swizzle.length > 1 ? vReadExpr[i] : macro v}
-					]}
-					return ${swizzle.length > 1 ? macro v.clone() : macro v};
-				}
-			}).fields[0];
-			fields.push(setter);
-		}
-	}
-
-	static function hasDuplicate(array: Array<Int>) {
-		for (i in 0...array.length) {
-			for (j in (i + 1)...array.length) {
-				if (array[i] == array[j]) return true;
+function swizzleWriteExpr(self, name: String, value: Expr) {
+	return deepReplacePos(switch name.length {
+		case 2:
+			var f0 = name.charAt(0); var f1 = name.charAt(1);
+			if (f0 == f1) {
+				Context.error('Swizzle ".$name" disallowed because of duplicate field write', self.pos);
 			}
-		}
-		return false;
-	}
-
+			macro {
+				var self = $self;
+				var value: Vec2 = $value;
+				self.$f0 = value.x;
+				self.$f1 = value.y;
+			}
+		case 3:
+			var f0 = name.charAt(0); var f1 = name.charAt(1); var f2 = name.charAt(2);
+			if (
+				f0 == f1 || f0 == f2 ||
+				f1 == f2
+			) {
+				Context.error('Swizzle ".$name" disallowed because of duplicate field write', self.pos);
+			}
+			macro {
+				var self = $self;
+				var value: Vec3 = $value;
+				self.$f0 = value.x;
+				self.$f1 = value.y;
+				self.$f2 = value.z;
+			}
+		case 4:
+			var f0 = name.charAt(0); var f1 = name.charAt(1); var f2 = name.charAt(2); var f3 = name.charAt(3);
+			if (
+				f0 == f1 || f0 == f2 || f0 == f3 ||
+				f1 == f2 || f1 == f3 || 
+				f2 == f3
+			) {
+				Context.error('Swizzle ".$name" disallowed because of duplicate field write', self.pos);
+			}
+			macro {
+				var self = $self;
+				var value: Vec4 = $value;
+				self.$f0 = value.x;
+				self.$f1 = value.y;
+				self.$f2 = value.z;
+				self.$f3 = value.w;
+			}
+		default:
+			Context.error('Unsupported swizzle write ".$name"', self.pos);
+	}, value.pos);
 }
 
 #end
