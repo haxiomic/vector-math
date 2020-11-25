@@ -9,7 +9,7 @@ Haxe vector math library that enables GLSL vector and matrix operations to compi
 - GLSL vector constructors that support vector composition, for example: `vec4(vec3(0), 1.0)` or `vec4(vec2(1), vec2(2))`
 - Fully inlined so that vector objects are rarely constructed, instead vector operations compile to stack variables. For example, the following compiled with `-D analyzer-optimize`
 	```haxe
-	trace(length((mat2(2) * vec2(3, 4) * 0.5 - vec2(0.5))));
+	trace(length(mat2(2) * vec2(3, 4) * 0.5 - vec2(0.5)));
 	```
 	Generates
 	```js
