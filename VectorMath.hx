@@ -12,7 +12,7 @@
 
 	@license MIT
 	@author haxiomic (George Corney)
-	@version 1.4.0
+	@version 1.5.0
 **/
 
 #if macro
@@ -513,12 +513,43 @@ macro function refract(I, N, eta: ExprOf<Float>) return useCurrentPos(
 	}
 );
 
-// special-case functions
 @:overload(function(m: Mat2, n: Mat2): Mat2 {})
+@:overload(function(m: Mat3, n: Mat3): Mat3 {})
+@:overload(function(m: Mat4, n: Mat4): Mat4 {})
 macro function matrixCompMult(a, b) {
 	return macro $a.matrixCompMult($b);
 }
 
+// extended methods beyond GLSL ES 100
+@:overload(function(m: Mat2): Mat2 {})
+@:overload(function(m: Mat3): Mat3 {})
+@:overload(function(m: Mat4): Mat4 {})
+macro function transpose(m) {
+	return macro $m.transpose();
+}
+
+@:overload(function(m: Mat2): Float {})
+@:overload(function(m: Mat3): Float {})
+@:overload(function(m: Mat4): Float {})
+macro function determinant(m): ExprOf<Float> {
+	return macro $m.determinant();
+}
+
+@:overload(function(m: Mat2): Mat2 {})
+@:overload(function(m: Mat3): Mat3 {})
+@:overload(function(m: Mat4): Mat4 {})
+macro function inverse(m) {
+	return macro $m.inverse();
+}
+
+@:overload(function(m: Mat2): Mat2 {})
+@:overload(function(m: Mat3): Mat3 {})
+@:overload(function(m: Mat4): Mat4 {})
+macro function adjoint(m) {
+	return macro $m.adjoint();
+}
+
+// special-case functions
 inline function cross(a: Vec3, b: Vec3) {
 	return a.cross(b);
 }
@@ -1966,6 +1997,37 @@ abstract Mat2(Mat2Data) from Mat2Data to Mat2Data {
 		);
 	}
 
+	// extended methods
+
+	public inline function transpose(): Mat2 {
+		return new Mat2(
+			this.c0.x, this.c1.x,
+			this.c0.y, this.c1.y
+		);
+	}
+
+	public inline function determinant(): Float {
+		var m = this;
+		return m.c0.x * m.c1.y - m.c1.x * m.c0.y;
+	}
+
+	public inline function inverse(): Mat2 {
+		var m = this;
+		var f = 1.0 / determinant();
+		return new Mat2(
+			m.c1.y * f, -m.c0.y * f,
+			-m.c1.x * f, m.c0.x * f
+		);
+	}
+
+	public inline function adjoint(): Mat2 {
+		var m = this;
+		return new Mat2(
+			m.c1.y, -m.c0.y,
+			-m.c1.x, m.c0.x
+		);
+	}
+
 	public inline function toString() {
 		return 'mat2(' +
 			'${this.c0.x}, ${this.c0.y}, ' +
@@ -2251,7 +2313,7 @@ abstract Mat3(Mat3Data) from Mat3Data to Mat3Data {
 		);
 	}
 
-	public inline function matrixCompMult(n: Mat3) {
+	public inline function matrixCompMult(n: Mat3): Mat3 {
 		var n: Mat3Data = n;
 		return new Mat3(
 			this.c0.x * n.c0.x, this.c0.y * n.c0.y, this.c0.z * n.c0.z,
@@ -2260,6 +2322,64 @@ abstract Mat3(Mat3Data) from Mat3Data to Mat3Data {
 		);
 	}
 
+	// extended methods
+
+	public inline function transpose(): Mat3 {
+		return new Mat3(
+			this.c0.x, this.c1.x, this.c2.x,
+			this.c0.y, this.c1.y, this.c2.y,
+			this.c0.z, this.c1.z, this.c2.z
+		);
+	}
+
+	public inline function determinant(): Float {
+		var m = this;
+		return (
+			m.c0.x * (m.c2.z * m.c1.y - m.c1.z * m.c2.y) +
+			m.c0.y * (-m.c2.z * m.c1.x + m.c1.z * m.c2.x) +
+			m.c0.z * (m.c2.y * m.c1.x - m.c1.y * m.c2.x)
+		);
+	}
+
+	public inline function inverse(): Mat3 {
+		var m = this;
+		var b01 = m.c2.z * m.c1.y - m.c1.z * m.c2.y;
+		var b11 = -m.c2.z * m.c1.x + m.c1.z * m.c2.x;
+		var b21 = m.c2.y * m.c1.x - m.c1.y * m.c2.x;
+
+		// determinant
+		var det = m.c0.x * b01 + m.c0.y * b11 + m.c0.z * b21;
+
+		var f = 1.0 / det;
+
+		return new Mat3(
+			b01 * f,
+			(-m.c2.z * m.c0.y + m.c0.z * m.c2.y) * f,
+			(m.c1.z * m.c0.y - m.c0.z * m.c1.y) * f,
+			b11 * f,
+			(m.c2.z * m.c0.x - m.c0.z * m.c2.x) * f,
+			(-m.c1.z * m.c0.x + m.c0.z * m.c1.x) * f,
+			b21 * f,
+			(-m.c2.y * m.c0.x + m.c0.y * m.c2.x) * f,
+			(m.c1.y * m.c0.x - m.c0.y * m.c1.x) * f
+		);
+	}
+
+	public inline function adjoint(): Mat3 {
+		var m = this;
+		return new Mat3(
+			m.c1.y * m.c2.z - m.c1.z * m.c2.y,
+			m.c0.z * m.c2.y - m.c0.y * m.c2.z,
+			m.c0.y * m.c1.z - m.c0.z * m.c1.y,
+			m.c1.z * m.c2.x - m.c1.x * m.c2.z,
+			m.c0.x * m.c2.z - m.c0.z * m.c2.x,
+			m.c0.z * m.c1.x - m.c0.x * m.c1.z,
+			m.c1.x * m.c2.y - m.c1.y * m.c2.x,
+			m.c0.y * m.c2.x - m.c0.x * m.c2.y,
+			m.c0.x * m.c1.y - m.c0.y * m.c1.x
+		);
+	}
+ 
 	public inline function toString() {
 		return 'mat3(' +
 			'${this.c0.x}, ${this.c0.y}, ${this.c0.z}, ' +
@@ -2568,13 +2688,115 @@ abstract Mat4(Mat4Data) from Mat4Data to Mat4Data {
 		);
 	}
 	
-	public inline function matrixCompMult(n: Mat4) {
+	public inline function matrixCompMult(n: Mat4): Mat4 {
+		var m = this;
 		var n: Mat4Data = n;
 		return new Mat4(
-			this.c0.x * n.c0.x, this.c0.y * n.c0.y, this.c0.z * n.c0.z, this.c0.w * n.c0.w,
-			this.c1.x * n.c1.x, this.c1.y * n.c1.y, this.c1.z * n.c1.z, this.c1.w * n.c1.w,
-			this.c2.x * n.c2.x, this.c2.y * n.c2.y, this.c2.z * n.c2.z, this.c2.w * n.c2.w,
-			this.c3.x * n.c3.x, this.c3.y * n.c3.y, this.c3.z * n.c3.z, this.c3.w * n.c3.w
+			m.c0.x * n.c0.x, m.c0.y * n.c0.y, m.c0.z * n.c0.z, m.c0.w * n.c0.w,
+			m.c1.x * n.c1.x, m.c1.y * n.c1.y, m.c1.z * n.c1.z, m.c1.w * n.c1.w,
+			m.c2.x * n.c2.x, m.c2.y * n.c2.y, m.c2.z * n.c2.z, m.c2.w * n.c2.w,
+			m.c3.x * n.c3.x, m.c3.y * n.c3.y, m.c3.z * n.c3.z, m.c3.w * n.c3.w
+		);
+	}
+
+	// extended methods
+
+	public inline function transpose(): Mat4 {
+		var m = this;
+		return new Mat4(
+			m.c0.x, m.c1.x, m.c2.x, m.c3.x,
+			m.c0.y, m.c1.y, m.c2.y, m.c3.y,
+			m.c0.z, m.c1.z, m.c2.z, m.c3.z,
+			m.c0.w, m.c1.w, m.c2.w, m.c3.w
+		);
+	}
+
+	public inline function determinant(): Float {
+		var m = this;
+		var b0 = m.c0.x * m.c1.y - m.c0.y * m.c1.x;
+		var b1 = m.c0.x * m.c1.z - m.c0.z * m.c1.x;
+		var b2 = m.c0.y * m.c1.z - m.c0.z * m.c1.y;
+		var b3 = m.c2.x * m.c3.y - m.c2.y * m.c3.x;
+		var b4 = m.c2.x * m.c3.z - m.c2.z * m.c3.x;
+		var b5 = m.c2.y * m.c3.z - m.c2.z * m.c3.y;
+		var b6 = m.c0.x * b5 - m.c0.y * b4 + m.c0.z * b3;
+		var b7 = m.c1.x * b5 - m.c1.y * b4 + m.c1.z * b3;
+		var b8 = m.c2.x * b2 - m.c2.y * b1 + m.c2.z * b0;
+		var b9 = m.c3.x * b2 - m.c3.y * b1 + m.c3.z * b0;
+		return m.c1.w * b6 - m.c0.w * b7 + m.c3.w * b8 - m.c2.w * b9;
+	}
+
+	public inline function inverse(): Mat4 {
+		var m = this;
+		var b00 = m.c0.x * m.c1.y - m.c0.y * m.c1.x;
+		var b01 = m.c0.x * m.c1.z - m.c0.z * m.c1.x;
+		var b02 = m.c0.x * m.c1.w - m.c0.w * m.c1.x;
+		var b03 = m.c0.y * m.c1.z - m.c0.z * m.c1.y;
+		var b04 = m.c0.y * m.c1.w - m.c0.w * m.c1.y;
+		var b05 = m.c0.z * m.c1.w - m.c0.w * m.c1.z;
+		var b06 = m.c2.x * m.c3.y - m.c2.y * m.c3.x;
+		var b07 = m.c2.x * m.c3.z - m.c2.z * m.c3.x;
+		var b08 = m.c2.x * m.c3.w - m.c2.w * m.c3.x;
+		var b09 = m.c2.y * m.c3.z - m.c2.z * m.c3.y;
+		var b10 = m.c2.y * m.c3.w - m.c2.w * m.c3.y;
+		var b11 = m.c2.z * m.c3.w - m.c2.w * m.c3.z;
+
+		// determinant
+		var det = b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06;
+
+		var f = 1.0 / det;
+
+		return new Mat4(
+			(m.c1.y * b11 - m.c1.z * b10 + m.c1.w * b09) * f,
+			(m.c0.z * b10 - m.c0.y * b11 - m.c0.w * b09) * f,
+			(m.c3.y * b05 - m.c3.z * b04 + m.c3.w * b03) * f,
+			(m.c2.z * b04 - m.c2.y * b05 - m.c2.w * b03) * f,
+			(m.c1.z * b08 - m.c1.x * b11 - m.c1.w * b07) * f,
+			(m.c0.x * b11 - m.c0.z * b08 + m.c0.w * b07) * f,
+			(m.c3.z * b02 - m.c3.x * b05 - m.c3.w * b01) * f,
+			(m.c2.x * b05 - m.c2.z * b02 + m.c2.w * b01) * f,
+			(m.c1.x * b10 - m.c1.y * b08 + m.c1.w * b06) * f,
+			(m.c0.y * b08 - m.c0.x * b10 - m.c0.w * b06) * f,
+			(m.c3.x * b04 - m.c3.y * b02 + m.c3.w * b00) * f,
+			(m.c2.y * b02 - m.c2.x * b04 - m.c2.w * b00) * f,
+			(m.c1.y * b07 - m.c1.x * b09 - m.c1.z * b06) * f,
+			(m.c0.x * b09 - m.c0.y * b07 + m.c0.z * b06) * f,
+			(m.c3.y * b01 - m.c3.x * b03 - m.c3.z * b00) * f,
+			(m.c2.x * b03 - m.c2.y * b01 + m.c2.z * b00) * f
+		);
+	}
+
+	public inline function adjoint(): Mat4 {
+		var m = this;
+		var b00 = m.c0.x * m.c1.y - m.c0.y * m.c1.x;
+		var b01 = m.c0.x * m.c1.z - m.c0.z * m.c1.x;
+		var b02 = m.c0.x * m.c1.w - m.c0.w * m.c1.x;
+		var b03 = m.c0.y * m.c1.z - m.c0.z * m.c1.y;
+		var b04 = m.c0.y * m.c1.w - m.c0.w * m.c1.y;
+		var b05 = m.c0.z * m.c1.w - m.c0.w * m.c1.z;
+		var b06 = m.c2.x * m.c3.y - m.c2.y * m.c3.x;
+		var b07 = m.c2.x * m.c3.z - m.c2.z * m.c3.x;
+		var b08 = m.c2.x * m.c3.w - m.c2.w * m.c3.x;
+		var b09 = m.c2.y * m.c3.z - m.c2.z * m.c3.y;
+		var b10 = m.c2.y * m.c3.w - m.c2.w * m.c3.y;
+		var b11 = m.c2.z * m.c3.w - m.c2.w * m.c3.z;
+		return new Mat4(
+			m.c1.y * b11 - m.c1.z * b10 + m.c1.w * b09,
+			m.c0.z * b10 - m.c0.y * b11 - m.c0.w * b09,
+			m.c3.y * b05 - m.c3.z * b04 + m.c3.w * b03,
+			m.c2.z * b04 - m.c2.y * b05 - m.c2.w * b03,
+			m.c1.z * b08 - m.c1.x * b11 - m.c1.w * b07,
+			m.c0.x * b11 - m.c0.z * b08 + m.c0.w * b07,
+			m.c3.z * b02 - m.c3.x * b05 - m.c3.w * b01,
+			m.c2.x * b05 - m.c2.z * b02 + m.c2.w * b01,
+			m.c1.x * b10 - m.c1.y * b08 + m.c1.w * b06,
+			m.c0.y * b08 - m.c0.x * b10 - m.c0.w * b06,
+			m.c3.x * b04 - m.c3.y * b02 + m.c3.w * b00,
+			m.c2.y * b02 - m.c2.x * b04 - m.c2.w * b00,
+			m.c1.y * b07 - m.c1.x * b09 - m.c1.z * b06,
+			m.c0.x * b09 - m.c0.y * b07 + m.c0.z * b06,
+			m.c3.y * b01 - m.c3.x * b03 - m.c3.z * b00,
+			m.c2.x * b03 - m.c2.y * b01 + m.c2.z * b00
 		);
 	}
 	
