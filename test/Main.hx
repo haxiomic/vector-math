@@ -34,6 +34,8 @@ inline function quatRotationBetween(v1: Vec3, v2: Vec3) {
 
 #if !macro
 
+var precision = 1000000;
+
 function main() {
 	testsStart();
 
@@ -57,6 +59,49 @@ function main() {
 		}
 		matching;
 	});
+	
+	// transpose
+	test(
+		transpose(mat2(
+			1, 2,
+			3, 4
+		)) == mat2(
+			1, 3,
+			2, 4
+		)
+	);
+
+	// determinant
+	test(
+		determinant(mat2(
+			2, 3, 
+			11,13
+		)) == -7
+	);
+
+	// inverse
+	test(
+		mat2Floor(inverse(mat2(
+			2, 3, 
+			11,13
+		)) * precision)/precision
+			==
+		mat2Floor(mat2(
+			-13/7, 3/7,
+			11/7, -2/7
+		) * precision) / precision
+	);
+
+	// adjoint
+	test(
+		adjoint(mat2(
+			2, 3,
+			11,13
+		)) == mat2(
+			13, -3,
+			-11, 2
+		)
+	);
 
 	// ------------
 	// -- Mat3
@@ -202,6 +247,56 @@ function main() {
 		matching;
 	});
 
+	// transpose
+	test(
+		transpose(mat3(
+			 1,  2,  3,
+			 5,  6,  7,
+			 9, 10, 11
+		)) == mat3(
+			1, 5, 9, 
+			2, 6, 10,
+			3, 7, 11
+		)
+	);
+
+	// determinant
+	test(
+		determinant(mat3(
+			2, 3, 5, 
+			11,13,17,
+			23,29,31
+		)) == 70
+	);
+
+	// inverse
+	test(
+		mat3Floor(inverse(mat3(
+			2, 3, 5, 
+			11,13,17,
+			23,29,31
+		)) * precision)/precision
+		== 
+		mat3Floor(mat3(
+			-9/7, 26/35, -1/5,
+			5/7, -53/70, 3/10,
+			2/7, 11/70, -1/10
+		)*precision)/precision
+	);
+
+	// adjoint
+	test(
+		adjoint(mat3(
+			2, 3, 5,
+			11,13,17,
+			23,29,31
+		)) == mat3(
+			-90, 52, -14,
+			50, -53, 21,
+			20, 11, -7
+		)
+	);
+
 	// ------------
 	// -- Mat4
 	// ------------
@@ -296,9 +391,6 @@ function main() {
 		o.copyFrom(mat4(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16));
 		o == mat4(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16);
 	});
-
-	// matrixCompMult
-	test(matrixCompMult(mat4(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16), mat4(2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2)) == mat4(2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32));
 
 	// array read
 	test(mat4(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16)[0] == vec4(1,2,3,4));
@@ -503,6 +595,66 @@ function main() {
 		matching;
 	});
 
+	// matrixCompMult
+	test(matrixCompMult(mat4(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16), mat4(2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2)) == mat4(2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32));
+
+	// transpose
+	test(
+		transpose(mat4(
+			 1,  2,  3,  4,
+			 5,  6,  7,  8,
+			 9, 10, 11, 12,
+			13, 14, 15, 16
+		)) == mat4(
+			1, 5, 9, 13,
+			2, 6, 10, 14,
+			3, 7, 11, 15,
+			4, 8, 12, 16
+		)
+	);
+
+	// determinant
+	test(
+		determinant(mat4(
+			2, 3, 5, 7,
+			11,13,17,19,
+			23,29,31,37,
+			41,43,47,53
+		)) == 880
+	);
+
+	// inverse
+	test(
+		mat4Floor(inverse(mat4(
+			2, 3, 5, 7,
+			11,13,17,19,
+			23,29,31,37,
+			41,43,47,53
+		)) * precision)/precision
+			==
+		mat4Floor(mat4(
+			 3/11, -12/55, -1/5, 2/11,
+			-5/11, -2/55, 3/10, -3/22,
+			-13/22, 307/440, -1/10, -9/88,
+			15/22, -37/88, 0, 7/88
+		) * precision)/precision
+	);
+
+	// adjoint
+	test(
+		adjoint(mat4(
+			2, 3, 5, 7,
+			11,13,17,19,
+			23,29,31,37,
+			41,43,47,53
+		)) == mat4(
+			240, -192, -176, 160,
+			-400, -32, 264, -120,
+			-520, 614, -88, -90,
+			600, -370, 0, 70
+		)
+	);
+
 	// ------------
 	// # Misc
 	// ------------
@@ -530,6 +682,16 @@ function main() {
 	test(floor(r * 10000) / 10000 == floor(v2 * 10000) / 10000);
 
 	testsComplete();
+}
+
+function mat2Floor(m: Mat2) {
+	return mat2(floor(m[0]), floor(m[1]));
+}
+function mat3Floor(m: Mat3) {
+	return mat3(floor(m[0]), floor(m[1]), floor(m[2]));
+}
+function mat4Floor(m: Mat4) {
+	return mat4(floor(m[0]), floor(m[1]), floor(m[2]), floor(m[3]));
 }
 
 #end
