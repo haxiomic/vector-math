@@ -1989,7 +1989,7 @@ abstract Mat2(Mat2Data) from Mat2Data to Mat2Data {
 		);
 	}
 
-	public inline function matrixCompMult(n: Mat2) {
+	public inline function matrixCompMult(n: Mat2): Mat2 {
 		var n: Mat2Data = n;
 		return new Mat2(
 			this.c0.x * n.c0.x, this.c0.y * n.c0.y,
