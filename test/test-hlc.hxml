@@ -1,0 +1,5 @@
+each.hxml
+
+--hl dist/hlc/main.c
+--cmd gcc -O3 -o dist/main-hlc -std=c11 -I dist/hlc dist/hlc/main.c -lhl
+--cmd dist/main-hlc

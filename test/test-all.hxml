@@ -1,0 +1,17 @@
+# Eval
+test-eval.hxml
+
+# JavaScript
+--next
+test-js.hxml
+
+# C++
+--next
+test-cpp.hxml
+
+# HashLink (requires hl jit installed on system to run)
+--next
+test-hl.hxml
+
+--next
+test-hlc.hxml

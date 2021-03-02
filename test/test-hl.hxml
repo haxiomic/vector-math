@@ -1,0 +1,4 @@
+each.hxml
+
+--hl dist/main.hl
+--cmd hl dist/main.hl

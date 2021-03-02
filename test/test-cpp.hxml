@@ -1,0 +1,4 @@
+each.hxml
+
+--cpp dist/cpp
+--cmd dist/cpp/Main

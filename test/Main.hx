@@ -681,6 +681,13 @@ function main() {
 	var r = quatRotate(v1, q).xyz;
 	test(floor(r * 10000) / 10000 == floor(v2 * 10000) / 10000);
 
+	// swizzle modify
+	trace('swizzle modify');
+	var color = vec2(1.0);
+	// color.xy = color.xy * 0.5;
+	color.xy *= 0.5;
+	test(color == vec2(0.5));
+
 	testsComplete();
 }
 
