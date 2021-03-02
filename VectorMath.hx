@@ -616,7 +616,6 @@ macro function mat4(a, ?b, ?c, ?d, ?e, ?f, ?g, ?h, ?i, ?j, ?k, ?l, ?m, ?n, ?o, ?
 
 // # Types
 
-@:notNull
 @:nullSafety
 abstract Vec2(Vec2Data) to Vec2Data from Vec2Data {
 
@@ -1026,7 +1025,6 @@ private class Vec2Data {
 
 }
 
-@:notNull
 @:nullSafety
 abstract Vec3(Vec3Data) to Vec3Data from Vec3Data {
 
@@ -1475,7 +1473,6 @@ private class Vec3Data {
 
 }
 
-@:notNull
 @:nullSafety
 abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 
@@ -1947,7 +1944,6 @@ private class Vec4Data {
 
 }
 
-@:notNull
 abstract Mat2(Mat2Data) from Mat2Data to Mat2Data {
 
 	public inline function new(
@@ -2266,7 +2262,6 @@ private class Mat2Data {
 
 }
 
-@:notNull
 abstract Mat3(Mat3Data) from Mat3Data to Mat3Data {
 
 	public inline function new(
@@ -2636,7 +2631,6 @@ private class Mat3Data {
 
 }
 
-@:notNull
 abstract Mat4(Mat4Data) from Mat4Data to Mat4Data {
 
 	public inline function new(
