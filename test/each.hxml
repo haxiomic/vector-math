@@ -5,4 +5,4 @@
 --dce full
 
 # this is too good – most tests run at compiletime!
--D analyzer-optimize
+# -D analyzer-optimize
