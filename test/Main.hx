@@ -690,13 +690,13 @@ function main() {
 	testsComplete();
 }
 
-function mat2Floor(m: Mat2) {
+inline function mat2Floor(m: Mat2) {
 	return mat2(floor(m[0]), floor(m[1]));
 }
-function mat3Floor(m: Mat3) {
+inline function mat3Floor(m: Mat3) {
 	return mat3(floor(m[0]), floor(m[1]), floor(m[2]));
 }
-function mat4Floor(m: Mat4) {
+inline function mat4Floor(m: Mat4) {
 	return mat4(floor(m[0]), floor(m[1]), floor(m[2]), floor(m[3]));
 }
 
