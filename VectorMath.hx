@@ -927,6 +927,7 @@ abstract Vec2(Vec2Data) to Vec2Data from Vec2Data {
 	}
 
 	// assignment overload should come before other binary ops to ensure they have priority
+	#if assign_op
 	@:op(a *= b)
 	static inline function mulEq(a: Vec2, b: Vec2): Vec2
 		return a.copyFrom(a * b);
@@ -962,6 +963,7 @@ abstract Vec2(Vec2Data) to Vec2Data from Vec2Data {
 	@:op(a -= b)
 	static inline function subEqScalar(a: Vec2, f: Float): Vec2
 		return a.copyFrom(a - f);
+	#end
 
 	@:op(a * b)
 	static inline function mul(a: Vec2, b: Vec2): Vec2
@@ -1374,6 +1376,7 @@ abstract Vec3(Vec3Data) to Vec3Data from Vec3Data {
 	}
 
 	// assignment overload should come before other binary ops to ensure they have priority
+	#if assign_op
 	@:op(a *= b)
 	static inline function mulEq(a: Vec3, b: Vec3): Vec3
 		return a.copyFrom(a * b);
@@ -1409,6 +1412,7 @@ abstract Vec3(Vec3Data) to Vec3Data from Vec3Data {
 	@:op(a -= b)
 	static inline function subEqScalar(a: Vec3, f: Float): Vec3
 		return a.copyFrom(a - f);
+	#end
 
 	@:op(a * b)
 	static inline function mul(a: Vec3, b: Vec3): Vec3
@@ -1844,6 +1848,7 @@ abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 	}
 
 	// assignment overload should come before other binary ops to ensure they have priority
+	#if assign_op
 	@:op(a *= b)
 	static inline function mulEq(a: Vec4, b: Vec4): Vec4
 		return a.copyFrom(a * b);
@@ -1879,6 +1884,7 @@ abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 	@:op(a -= b)
 	static inline function subEqScalar(a: Vec4, f: Float): Vec4
 		return a.copyFrom(a - f);
+	#end
 
 	@:op(a * b)
 	static inline function mul(a: Vec4, b: Vec4): Vec4
@@ -2095,6 +2101,7 @@ abstract Mat2(Mat2Data) from Mat2Data to Mat2Data {
 	}
 
 	// assignment overload should come before other binary ops to ensure they have priority
+	#if assign_op
 	@:op(a *= b)
 	static inline function mulEq(a: Mat2, b: Mat2): Mat2
 		return a.copyFrom(a * b);
@@ -2126,6 +2133,7 @@ abstract Mat2(Mat2Data) from Mat2Data to Mat2Data {
 	@:op(a -= b)
 	static inline function subEqScalar(a: Mat2, f: Float): Mat2
 		return a.copyFrom(a - f);
+	#end
 
 	@:op(a + b)
 	static inline function add(m: Mat2, n: Mat2): Mat2 {
@@ -2447,6 +2455,7 @@ abstract Mat3(Mat3Data) from Mat3Data to Mat3Data {
 	}
 
 	// assignment overload should come before other binary ops to ensure they have priority
+	#if assign_op
 	@:op(a *= b)
 	static inline function mulEq(a: Mat3, b: Mat3): Mat3
 		return a.copyFrom(a * b);
@@ -2478,6 +2487,7 @@ abstract Mat3(Mat3Data) from Mat3Data to Mat3Data {
 	@:op(a -= b)
 	static inline function subEqScalar(a: Mat3, f: Float): Mat3
 		return a.copyFrom(a - f);
+	#end
 
 	@:op(a + b)
 	static inline function add(m: Mat3, n: Mat3): Mat3 {
@@ -2871,6 +2881,7 @@ abstract Mat4(Mat4Data) from Mat4Data to Mat4Data {
 	}
 
 	// assignment overload should come before other binary ops to ensure they have priority
+	#if assign_op
 	@:op(a *= b)
 	static inline function mulEq(a: Mat4, b: Mat4): Mat4
 		return a.copyFrom(a * b);
@@ -2902,6 +2913,7 @@ abstract Mat4(Mat4Data) from Mat4Data to Mat4Data {
 	@:op(a -= b)
 	static inline function subEqScalar(a: Mat4, f: Float): Mat4
 		return a.copyFrom(a - f);
+	#end
 
 	@:op(a + b)
 	static inline function add(m: Mat4, n: Mat4): Mat4 {
@@ -3309,6 +3321,7 @@ function swizzleWriteExpr(self, name: String, value: Expr) {
 				var value: Vec2 = $value;
 				self.$f0 = value.x;
 				self.$f1 = value.y;
+				value;
 			}
 		case 3:
 			var f0 = name.charAt(0); var f1 = name.charAt(1); var f2 = name.charAt(2);
@@ -3324,6 +3337,7 @@ function swizzleWriteExpr(self, name: String, value: Expr) {
 				self.$f0 = value.x;
 				self.$f1 = value.y;
 				self.$f2 = value.z;
+				value;
 			}
 		case 4:
 			var f0 = name.charAt(0); var f1 = name.charAt(1); var f2 = name.charAt(2); var f3 = name.charAt(3);
@@ -3341,6 +3355,7 @@ function swizzleWriteExpr(self, name: String, value: Expr) {
 				self.$f1 = value.y;
 				self.$f2 = value.z;
 				self.$f3 = value.w;
+				value;
 			}
 		default:
 			Context.error('Unsupported swizzle write ".$name"', self.pos);
