@@ -7,6 +7,10 @@ import haxe.macro.Expr;
 import haxe.macro.ComplexTypeTools;
 #end
 
+final precision = 1000000;
+
+#if !macro
+
 inline function quatMul(q1: Vec4, q2: Vec4)
 	return vec4(
 		 q1.x * q2.w + q1.y * q2.z - q1.z * q2.y + q1.w * q2.x,
@@ -24,20 +28,31 @@ inline function quatRotate(point: Vec3, q: Vec4) {
 }
 
 inline function quatRotationBetween(v1: Vec3, v2: Vec3) {
-	return normalize(vec4(
-		cross(v1, v2),
-		sqrt(
-			dot(v1, v1) * dot(v2, v2)
-		) + dot(v1, v2)
-	));
+	return normalize(
+		vec4(
+			cross(v1, v2),
+			sqrt(
+				dot(v1, v1) * dot(v2, v2)
+			) + dot(v1, v2)
+		)
+	);
 }
-
-#if !macro
-
-var precision = 1000000;
 
 function main() {
 	testsStart();
+
+	test(sign(1) == 1);
+	test(sign(-1) == -1);
+	test(sign(0) == 0);
+
+	// mod
+	test(mod(2.9, 3) == 2.9);
+	test(mod(3.5, 3) == 0.5);
+	test(mod(6.5, 3.8) == 2.7);
+	test(mod(vec2(-0.1, 6.5), 3) == vec2(2.9, 0.5));
+	test(mod(vec2(-0.1, 6.5), vec2(2.2, 3.3)) == vec2(2.1, 3.2));
+
+	trace(min(1,2));
 
 	// ------------
 	// -- Mat2
@@ -733,6 +748,9 @@ function testsComplete() {
 	}
 }
 
+function limitPrecision(x: Float) {
+	return Math.floor(x * precision) / precision;
+}
 
 macro function test(expr, ?details) {
 	var pos = Context.currentPos();
