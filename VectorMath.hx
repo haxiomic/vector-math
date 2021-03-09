@@ -29,196 +29,94 @@ import haxe.macro.Expr;
 
 // trigonometric
 
-@:overload(function(degrees: Float): Float {})
-@:overload(function(degrees: Vec2): Vec2 {})
-@:overload(function(degrees: Vec3): Vec3 {})
-@:overload(function(degrees: Vec4): Vec4 {})
-macro function radians(degrees) return useCurrentPos(
-	switch mapVecType(degrees) {
-		case 1: macro ($degrees * Math.PI / 180);
-		default: macro $degrees.radians();
-	}
-);
+overload extern inline function radians(degrees: Vec4) degrees.radians();
+overload extern inline function radians(degrees: Vec3) degrees.radians();
+overload extern inline function radians(degrees: Vec2) degrees.radians();
+overload extern inline function radians(degrees: Float) return degrees * Math.PI / 180;
 
-@:overload(function(radians: Float): Float {})
-@:overload(function(radians: Vec2): Vec2 {})
-@:overload(function(radians: Vec3): Vec3 {})
-@:overload(function(radians: Vec4): Vec4 {})
-macro function degrees(radians) return useCurrentPos(
-	switch mapVecType(radians) {
-		case 1: macro ($radians * 180 / Math.PI);
-		default: macro $radians.degrees();
-	}
-);
+overload extern inline function degrees(radians: Vec4): Vec4 return radians.degrees();
+overload extern inline function degrees(radians: Vec3): Vec3 return radians.degrees();
+overload extern inline function degrees(radians: Vec2): Vec2 return radians.degrees();
+overload extern inline function degrees(radians: Float) return radians * 180 / Math.PI;
 
-@:overload(function(v: Float): Float {})
-@:overload(function(v: Vec2): Vec2 {})
-@:overload(function(v: Vec3): Vec3 {})
-@:overload(function(v: Vec4): Vec4 {})
-macro function sin(v) return useCurrentPos(
-	switch mapVecType(v) {
-		case 1: macro Math.sin($v);
-		default: macro $v.sin();
-	}
-);
+overload extern inline function sin(v: Vec4): Vec4 return v.sin();
+overload extern inline function sin(v: Vec3): Vec3 return v.sin();
+overload extern inline function sin(v: Vec2): Vec2 return v.sin();
+overload extern inline function sin(v: Float) return Math.sin(v);
 
-@:overload(function(v: Float): Float {})
-@:overload(function(v: Vec2): Vec2 {})
-@:overload(function(v: Vec3): Vec3 {})
-@:overload(function(v: Vec4): Vec4 {})
-macro function cos(v) return useCurrentPos(
-	switch mapVecType(v) {
-		case 1: macro Math.cos($v);
-		default: macro $v.cos();
-	}
-);
+overload extern inline function cos(v: Vec4): Vec4 return v.cos();
+overload extern inline function cos(v: Vec3): Vec3 return v.cos();
+overload extern inline function cos(v: Vec2): Vec2 return v.cos();
+overload extern inline function cos(v: Float) return Math.cos(v);
 
-@:overload(function(v: Float): Float {})
-@:overload(function(v: Vec2): Vec2 {})
-@:overload(function(v: Vec3): Vec3 {})
-@:overload(function(v: Vec4): Vec4 {})
-macro function tan(v) return useCurrentPos(
-	switch mapVecType(v) {
-		case 1: macro Math.tan($v);
-		default: macro $v.tan();
-	}
-);
+overload extern inline function tan(v: Vec4): Vec4 return v.tan();
+overload extern inline function tan(v: Vec3): Vec3 return v.tan();
+overload extern inline function tan(v: Vec2): Vec2 return v.tan();
+overload extern inline function tan(v: Float) return Math.tan(v);
 
-@:overload(function(v: Float): Float {})
-@:overload(function(v: Vec2): Vec2 {})
-@:overload(function(v: Vec3): Vec3 {})
-@:overload(function(v: Vec4): Vec4 {})
-macro function asin(v) return useCurrentPos(
-	switch mapVecType(v) {
-		case 1: macro Math.asin($v);
-		default: macro $v.asin();
-	}
-);
+overload extern inline function asin(v: Vec4): Vec4 return v.asin();
+overload extern inline function asin(v: Vec3): Vec3 return v.asin();
+overload extern inline function asin(v: Vec2): Vec2 return v.asin();
+overload extern inline function asin(v: Float) return Math.asin(v);
 
-@:overload(function(v: Float): Float {})
-@:overload(function(v: Vec2): Vec2 {})
-@:overload(function(v: Vec3): Vec3 {})
-@:overload(function(v: Vec4): Vec4 {})
-macro function acos(v) return useCurrentPos(
-	switch mapVecType(v) {
-		case 1: macro Math.acos($v);
-		default: macro $v.acos();
-	}
-);
+overload extern inline function acos(v: Vec4): Vec4 return v.acos();
+overload extern inline function acos(v: Vec3): Vec3 return v.acos();
+overload extern inline function acos(v: Vec2): Vec2 return v.acos();
+overload extern inline function acos(v: Float) return Math.acos(v);
 
-@:overload(function(v: Float): Float {})
-@:overload(function(v: Vec2): Vec2 {})
-@:overload(function(v: Vec3): Vec3 {})
-@:overload(function(v: Vec4): Vec4 {})
-macro function atan(v) return useCurrentPos(
-	switch mapVecType(v) {
-		case 1: macro Math.atan($v);
-		default: macro $v.atan();
-	}
-);
+overload extern inline function atan(v: Vec4): Vec4 return v.atan();
+overload extern inline function atan(v: Vec3): Vec3 return v.atan();
+overload extern inline function atan(v: Vec2): Vec2 return v.atan();
+overload extern inline function atan(v: Float) return Math.atan(v);
 
-@:overload(function(v: Float, b: Float): Float {})
-@:overload(function(v: Vec2, b: Vec2): Vec2 {})
-@:overload(function(v: Vec3, b: Vec3): Vec3 {})
-@:overload(function(v: Vec4, b: Vec4): Vec4 {})
-macro function atan2(v, b) return useCurrentPos(
-	switch mapVecType(v) {
-		case 1: macro Math.atan2($v, $b);
-		default: macro $v.atan2($b);
-	}
-);
+overload extern inline function atan2(v: Vec4, b: Vec4): Vec4 return v.atan2();
+overload extern inline function atan2(v: Vec3, b: Vec3): Vec3 return v.atan2();
+overload extern inline function atan2(v: Vec2, b: Vec2): Vec2 return v.atan2();
+overload extern inline function atan2(v: Float, b: Float) return Math.atan2(v, b);
 
 // exponential
 
-@:overload(function(v: Float, e: Float): Float {})
-@:overload(function(v: Vec2, e: Vec2): Vec2 {})
-@:overload(function(v: Vec3, e: Vec3): Vec3 {})
-@:overload(function(v: Vec4, e: Vec4): Vec4 {})
-macro function pow(v, e) return useCurrentPos(
-	switch mapVecType(v) {
-		case 1: macro Math.pow($v, $e);
-		default: macro $v.pow($e);
-	}
-);
+overload extern inline function pow(v: Vec4, e: Vec4): Vec4 return v.pow();
+overload extern inline function pow(v: Vec3, e: Vec3): Vec3 return v.pow();
+overload extern inline function pow(v: Vec2, e: Vec2): Vec2 return v.pow();
+overload extern inline function pow(v: Float, e: Float) return Math.pow(v, e);
 
-@:overload(function(v: Float): Float {})
-@:overload(function(v: Vec2): Vec2 {})
-@:overload(function(v: Vec3): Vec3 {})
-@:overload(function(v: Vec4): Vec4 {})
-macro function exp(v) return useCurrentPos(
-	switch mapVecType(v) {
-		case 1: macro Math.exp($v);
-		default: macro $v.exp();
-	}
-);
+overload extern inline function exp(v: Vec4): Vec4 return v.exp();
+overload extern inline function exp(v: Vec3): Vec3 return v.exp();
+overload extern inline function exp(v: Vec2): Vec2 return v.exp();
+overload extern inline function exp(v: Float) return Math.exp(v);
 
-@:overload(function(v: Float): Float {})
-@:overload(function(v: Vec2): Vec2 {})
-@:overload(function(v: Vec3): Vec3 {})
-@:overload(function(v: Vec4): Vec4 {})
-macro function log(v) return useCurrentPos(
-	switch mapVecType(v) {
-		case 1: macro Math.log($v);
-		default: macro $v.log();
-	}
-);
+overload extern inline function log(v: Vec4): Vec4 return v.log();
+overload extern inline function log(v: Vec3): Vec3 return v.log();
+overload extern inline function log(v: Vec2): Vec2 return v.log();
+overload extern inline function log(v: Float) return Math.log(v);
 
-@:overload(function(v: Float): Float {})
-@:overload(function(v: Vec2): Vec2 {})
-@:overload(function(v: Vec3): Vec3 {})
-@:overload(function(v: Vec4): Vec4 {})
-macro function exp2(v) return useCurrentPos(
-	switch mapVecType(v) {
-		case 1: macro Math.pow(2, $v);
-		default: macro $v.exp2();
-	}
-);
+overload extern inline function exp2(v: Vec4): Vec4 return v.exp2();
+overload extern inline function exp2(v: Vec3): Vec3 return v.exp2();
+overload extern inline function exp2(v: Vec2): Vec2 return v.exp2();
+overload extern inline function exp2(v: Float) return Math.pow(2, v);
 
-@:overload(function(v: Float): Float {})
-@:overload(function(v: Vec2): Vec2 {})
-@:overload(function(v: Vec3): Vec3 {})
-@:overload(function(v: Vec4): Vec4 {})
-macro function log2(v) return useCurrentPos(
-	switch mapVecType(v) {
-		case 1: macro Math.log($v) * 1.4426950408889634;
-		default: macro $v.log2();
-	}
-);
+overload extern inline function log2(v: Vec4): Vec4 return v.log2();
+overload extern inline function log2(v: Vec3): Vec3 return v.log2();
+overload extern inline function log2(v: Vec2): Vec2 return v.log2();
+overload extern inline function log2(v: Float) return Math.log(v) * 1.4426950408889634;
 
-@:overload(function(v: Float): Float {})
-@:overload(function(v: Vec2): Vec2 {})
-@:overload(function(v: Vec3): Vec3 {})
-@:overload(function(v: Vec4): Vec4 {})
-macro function sqrt(v) return useCurrentPos(
-	switch mapVecType(v) {
-		case 1: macro Math.sqrt($v);
-		default: macro $v.sqrt();
-	}
-);
+overload extern inline function sqrt(v: Vec4): Vec4 return v.sqrt();
+overload extern inline function sqrt(v: Vec3): Vec3 return v.sqrt();
+overload extern inline function sqrt(v: Vec2): Vec2 return v.sqrt();
+overload extern inline function sqrt(v: Float) return Math.sqrt(v);
 
-@:overload(function(v: Float): Float {})
-@:overload(function(v: Vec2): Vec2 {})
-@:overload(function(v: Vec3): Vec3 {})
-@:overload(function(v: Vec4): Vec4 {})
-macro function inverseSqrt(v) return useCurrentPos(
-	switch mapVecType(v) {
-		case 1: macro (1.0 / Math.sqrt($v));
-		default: macro $v.inverseSqrt();
-	}
-);
+overload extern inline function inverseSqrt(v: Vec4): Vec4 return v.inverseSqrt();
+overload extern inline function inverseSqrt(v: Vec3): Vec3 return v.inverseSqrt();
+overload extern inline function inverseSqrt(v: Vec2): Vec2 return v.inverseSqrt();
+overload extern inline function inverseSqrt(v: Float) return 1.0 / Math.sqrt(v);
 
 // common
 
-@:overload(function(v: Float): Float {})
-@:overload(function(v: Vec2): Vec2 {})
-@:overload(function(v: Vec3): Vec3 {})
-@:overload(function(v: Vec4): Vec4 {})
-macro function abs(v) return useCurrentPos(
-	switch mapVecType(v) {
-		case 1: macro Math.abs($v);
-		default: macro $v.abs();
-	}
-);
+overload extern inline function abs(v: Vec4): Vec4 return v.abs();
+overload extern inline function abs(v: Vec3): Vec3 return v.abs();
+overload extern inline function abs(v: Vec2): Vec2 return v.abs();
+overload extern inline function abs(v: Float) return Math.abs(v);
 
 @:overload(function(v: Float): Float {})
 @:overload(function(v: Vec2): Vec2 {})
