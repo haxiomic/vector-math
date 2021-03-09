@@ -69,16 +69,16 @@ overload extern inline function atan(v: Vec3): Vec3 return v.atan();
 overload extern inline function atan(v: Vec2): Vec2 return v.atan();
 overload extern inline function atan(v: Float) return Math.atan(v);
 
-overload extern inline function atan2(v: Vec4, b: Vec4): Vec4 return v.atan2();
-overload extern inline function atan2(v: Vec3, b: Vec3): Vec3 return v.atan2();
-overload extern inline function atan2(v: Vec2, b: Vec2): Vec2 return v.atan2();
+overload extern inline function atan2(v: Vec4, b: Vec4): Vec4 return v.atan2(b);
+overload extern inline function atan2(v: Vec3, b: Vec3): Vec3 return v.atan2(b);
+overload extern inline function atan2(v: Vec2, b: Vec2): Vec2 return v.atan2(b);
 overload extern inline function atan2(v: Float, b: Float) return Math.atan2(v, b);
 
 // exponential
 
-overload extern inline function pow(v: Vec4, e: Vec4): Vec4 return v.pow();
-overload extern inline function pow(v: Vec3, e: Vec3): Vec3 return v.pow();
-overload extern inline function pow(v: Vec2, e: Vec2): Vec2 return v.pow();
+overload extern inline function pow(v: Vec4, e: Vec4): Vec4 return v.pow(e);
+overload extern inline function pow(v: Vec3, e: Vec3): Vec3 return v.pow(e);
+overload extern inline function pow(v: Vec2, e: Vec2): Vec2 return v.pow(e);
 overload extern inline function pow(v: Float, e: Float) return Math.pow(v, e);
 
 overload extern inline function exp(v: Vec4): Vec4 return v.exp();
@@ -118,337 +118,154 @@ overload extern inline function abs(v: Vec3): Vec3 return v.abs();
 overload extern inline function abs(v: Vec2): Vec2 return v.abs();
 overload extern inline function abs(v: Float) return Math.abs(v);
 
-@:overload(function(v: Float): Float {})
-@:overload(function(v: Vec2): Vec2 {})
-@:overload(function(v: Vec3): Vec3 {})
-@:overload(function(v: Vec4): Vec4 {})
-macro function sign(v) return useCurrentPos(
-	switch mapVecType(v) {
-		case 1: macro {
-			var v: Float = $v;
-			v > 0. ? 1. : (v < 0. ? -1. : 0.);
-		}
-		default: macro $v.sign();
-	}
-);
+overload extern inline function sign(v: Vec4): Vec4 return v.sign();
+overload extern inline function sign(v: Vec3): Vec3 return v.sign();
+overload extern inline function sign(v: Vec2): Vec2 return v.sign();
+overload extern inline function sign(v: Float): Float return v > 0. ? 1. : (v < 0. ? -1. : 0.);
 
-@:overload(function(v: Float): Float {})
-@:overload(function(v: Vec2): Vec2 {})
-@:overload(function(v: Vec3): Vec3 {})
-@:overload(function(v: Vec4): Vec4 {})
-macro function floor(v) return useCurrentPos(
-	switch mapVecType(v) {
-		case 1: macro Math.floor($v);
-		default: macro $v.floor();
-	}
-);
+overload extern inline function floor(v: Vec4): Vec4 return v.floor();
+overload extern inline function floor(v: Vec3): Vec3 return v.floor();
+overload extern inline function floor(v: Vec2): Vec2 return v.floor();
+overload extern inline function floor(v: Float): Int return Math.floor(v);
 
-@:overload(function(v: Float): Float {})
-@:overload(function(v: Vec2): Vec2 {})
-@:overload(function(v: Vec3): Vec3 {})
-@:overload(function(v: Vec4): Vec4 {})
-macro function ceil(v) return useCurrentPos(
-	switch mapVecType(v) {
-		case 1: macro Math.ceil($v);
-		default: macro $v.ceil();
-	}
-);
+overload extern inline function ceil(v: Vec4): Vec4 return v.ceil();
+overload extern inline function ceil(v: Vec3): Vec3 return v.ceil();
+overload extern inline function ceil(v: Vec2): Vec2 return v.ceil();
+overload extern inline function ceil(v: Float): Int return Math.ceil(v);
 
-@:overload(function(v: Float): Float {})
-@:overload(function(v: Vec2): Vec2 {})
-@:overload(function(v: Vec3): Vec3 {})
-@:overload(function(v: Vec4): Vec4 {})
-macro function fract(v) return useCurrentPos(
-	switch mapVecType(v) {
-		case 1: macro {
-			var v: Float = $v;
-			v - Math.floor(v);
-		};
-		default: macro $v.fract();
-	}
-);
+overload extern inline function fract(v: Vec4): Vec4 return v.fract();
+overload extern inline function fract(v: Vec3): Vec3 return v.fract();
+overload extern inline function fract(v: Vec2): Vec2 return v.fract();
+overload extern inline function fract(v: Float): Float return v - Math.floor(v);
 
-@:overload(function(v: Float, d: Float): Float {})
-@:overload(function(v: Vec2, d: Vec2): Vec2 {})
-@:overload(function(v: Vec2, d: Float): Vec2 {})
-@:overload(function(v: Vec3, d: Vec3): Vec3 {})
-@:overload(function(v: Vec3, d: Float): Vec3 {})
-@:overload(function(v: Vec4, d: Vec4): Vec4 {})
-@:overload(function(v: Vec4, d: Float): Vec4 {})
-macro function mod(v, d) return useCurrentPos(
-	switch mapVecType(v) {
-		case 1: macro {
-			var v: Float = $v;
-			var d: Float = $d;
-			(v - d * Math.floor(v / d));
-		}
-		default: switch mapVecType(d) {
-			case 1: macro $v.modf($d);
-			default: macro $v.mod($d);
-		}
-	}
-);
+overload extern inline function mod(v: Vec4, d: Float): Vec4 return v.mod(d);
+overload extern inline function mod(v: Vec4, d: Vec4): Vec4 return v.mod(d);
+overload extern inline function mod(v: Vec3, d: Float): Vec3 return v.mod(d);
+overload extern inline function mod(v: Vec3, d: Vec3): Vec3 return v.mod(d);
+overload extern inline function mod(v: Vec2, d: Float): Vec2 return v.mod(d);
+overload extern inline function mod(v: Vec2, d: Vec2): Vec2 return v.mod(d);
+overload extern inline function mod(v: Float, d: Float): Float return v - d * Math.floor(v / d);
 
-@:overload(function(v: Float, b: Float): Float {})
-@:overload(function(v: Vec2, b: Vec2): Vec2 {})
-@:overload(function(v: Vec2, b: Float): Vec2 {})
-@:overload(function(v: Vec3, b: Vec3): Vec3 {})
-@:overload(function(v: Vec3, b: Float): Vec3 {})
-@:overload(function(v: Vec4, b: Vec4): Vec4 {})
-@:overload(function(v: Vec4, b: Float): Vec4 {})
-macro function min(v, b) return useCurrentPos(
-	switch mapVecType(v) {
-		case 1: macro Math.min($v, $b);
-		default: switch mapVecType(b) {
-			case 1: macro $v.minf($b);
-			default: macro $v.min($b);
-		}
-	}
-);
+overload extern inline function min(v: Vec4, b: Float): Vec4 return v.min(b);
+overload extern inline function min(v: Vec4, b: Vec4): Vec4 return v.min(b);
+overload extern inline function min(v: Vec3, b: Float): Vec3 return v.min(b);
+overload extern inline function min(v: Vec3, b: Vec3): Vec3 return v.min(b);
+overload extern inline function min(v: Vec2, b: Float): Vec2 return v.min(b);
+overload extern inline function min(v: Vec2, b: Vec2): Vec2 return v.min(b);
+overload extern inline function min(v: Float, b: Float): Float return Math.min(v, b);
 
-@:overload(function(v: Float, b: Float): Float {})
-@:overload(function(v: Vec2, b: Vec2): Vec2 {})
-@:overload(function(v: Vec2, b: Float): Vec2 {})
-@:overload(function(v: Vec3, b: Vec3): Vec3 {})
-@:overload(function(v: Vec3, b: Float): Vec3 {})
-@:overload(function(v: Vec4, b: Vec4): Vec4 {})
-@:overload(function(v: Vec4, b: Float): Vec4 {})
-macro function max(v, b) return useCurrentPos(
-	switch mapVecType(v) {
-		case 1: macro Math.max($v, $b);
-		default: switch mapVecType(b) {
-			case 1: macro $v.maxf($b);
-			default: macro $v.max($b);
-		}
-	}
-);
+overload extern inline function max(v: Vec4, b: Float): Vec4 return v.max(b);
+overload extern inline function max(v: Vec4, b: Vec4): Vec4 return v.max(b);
+overload extern inline function max(v: Vec3, b: Float): Vec3 return v.max(b);
+overload extern inline function max(v: Vec3, b: Vec3): Vec3 return v.max(b);
+overload extern inline function max(v: Vec2, b: Float): Vec2 return v.max(b);
+overload extern inline function max(v: Vec2, b: Vec2): Vec2 return v.max(b);
+overload extern inline function max(v: Float, b: Float): Float return Math.max(v, b);
 
-@:overload(function(v: Float, min: Float, max: Float): Float {})
-@:overload(function(v: Vec2, min: Vec2, max: Vec2): Vec2 {})
-@:overload(function(v: Vec2, min: Float, max: Float): Vec2 {})
-@:overload(function(v: Vec3, min: Vec3, max: Vec3): Vec3 {})
-@:overload(function(v: Vec3, min: Float, max: Float): Vec3 {})
-@:overload(function(v: Vec4, min: Vec4, max: Vec4): Vec4 {})
-@:overload(function(v: Vec4, min: Float, max: Float): Vec4 {})
-macro function clamp(v, min, max) return useCurrentPos(
-	switch mapVecType(v) {
-		case 1: macro {
-			var v: Float = $v;
-			var min: Float = $min;
-			var max: Float = $max;
-			v < min ? min : (v > max ? max : v);
-		}
-		default: switch [mapVecType(min), mapVecType(max)] {
-			case [1, 1]: macro $v.clampf($min, $max);
-			default: macro $v.clamp($min, $max);
-		} 
-	}
-);
+overload extern inline function clamp(v: Vec4, min: Float, max: Float): Vec4 return v.clamp(min, max);
+overload extern inline function clamp(v: Vec4, min: Vec4, max: Vec4): Vec4 return v.clamp(min, max);
+overload extern inline function clamp(v: Vec3, min: Float, max: Float): Vec3 return v.clamp(min, max);
+overload extern inline function clamp(v: Vec3, min: Vec3, max: Vec3): Vec3 return v.clamp(min, max);
+overload extern inline function clamp(v: Vec2, min: Float, max: Float): Vec2 return v.clamp(min, max);
+overload extern inline function clamp(v: Vec2, min: Vec2, max: Vec2): Vec2 return v.clamp(min, max);
+overload extern inline function clamp(v: Float, min: Float, max: Float): Float return v < min ? min : (v > max ? max : v);
 
-@:overload(function(a: Float, b: Float, t: Float): Float {})
-@:overload(function(a: Vec2, b: Vec2, t: Vec2): Vec2 {})
-@:overload(function(a: Vec2, b: Vec2, t: Float): Vec2 {})
-@:overload(function(a: Vec3, b: Vec3, t: Vec3): Vec3 {})
-@:overload(function(a: Vec3, b: Vec3, t: Float): Vec3 {})
-@:overload(function(a: Vec4, b: Vec4, t: Vec4): Vec4 {})
-@:overload(function(a: Vec4, b: Vec4, t: Float): Vec4 {})
-macro function mix(a, b, t) return useCurrentPos(
-	switch mapVecType(a) {
-		case 1: macro {
-			var a: Float = $a;
-			var b: Float = $b;
-			var t: Float = $t;
-			a * (1.0 - t) + b * t;
-		}
-		default: switch mapVecType(t) {
-			case 1: macro $a.mixf($b, $t);
-			default: macro $a.mix($b, $t);
-		}
-	}
-);
+overload extern inline function mix(a: Vec4, b: Vec4, t: Float): Vec4 return a.mix(b, t);
+overload extern inline function mix(a: Vec4, b: Vec4, t: Vec4): Vec4 return a.mix(b, t);
+overload extern inline function mix(a: Vec3, b: Vec3, t: Float): Vec3 return a.mix(b, t);
+overload extern inline function mix(a: Vec3, b: Vec3, t: Vec3): Vec3 return a.mix(b, t);
+overload extern inline function mix(a: Vec2, b: Vec2, t: Float): Vec2 return a.mix(b, t);
+overload extern inline function mix(a: Vec2, b: Vec2, t: Vec2): Vec2 return a.mix(b, t);
+overload extern inline function mix(a: Float, b: Float, t: Float): Float return a * (1.0 - t) + b * t;
 
-@:overload(function(edge: Float, v: Float): Float {})
-@:overload(function(edge: Vec2, v: Vec2): Vec2 {})
-@:overload(function(edge: Float, v: Vec2): Vec2 {})
-@:overload(function(edge: Vec3, v: Vec3): Vec3 {})
-@:overload(function(edge: Float, v: Vec3): Vec3 {})
-@:overload(function(edge: Vec4, v: Vec4): Vec4 {})
-@:overload(function(edge: Float, v: Vec4): Vec4 {})
-macro function step(edge, v) return useCurrentPos(
-	switch mapVecType(v) {
-		case 1: macro {
-			var v: Float = $v;
-			var edge: Float = $edge;
-			v < edge ? 0.0 : 1.0;
-		}
-		default: switch mapVecType(edge) {
-			case 1: macro $v.stepf($edge);
-			default: macro $v.step($edge);
-		}
-	}
-);
+overload extern inline function step(edge: Float, v: Vec4): Vec4 return v.step(edge);
+overload extern inline function step(edge: Vec4, v: Vec4): Vec4 return v.step(edge);
+overload extern inline function step(edge: Float, v: Vec3): Vec3 return v.step(edge);
+overload extern inline function step(edge: Vec3, v: Vec3): Vec3 return v.step(edge);
+overload extern inline function step(edge: Float, v: Vec2): Vec2 return v.step(edge);
+overload extern inline function step(edge: Vec2, v: Vec2): Vec2 return v.step(edge);
+overload extern inline function step(edge: Float, v: Float): Float return v < edge ? 0.0 : 1.0;
 
-@:overload(function(edge0: Float, edge1: Float, v: Float): Float {})
-@:overload(function(edge0: Vec2, edge1: Vec2, v: Vec2): Vec2 {})
-@:overload(function(edge0: Float, edge1: Float, v: Vec2): Vec2 {})
-@:overload(function(edge0: Vec3, edge1: Vec3, v: Vec3): Vec3 {})
-@:overload(function(edge0: Float, edge1: Float, v: Vec3): Vec3 {})
-@:overload(function(edge0: Vec4, edge1: Vec4, v: Vec4): Vec4 {})
-@:overload(function(edge0: Float, edge1: Float, v: Vec4): Vec4 {})
-macro function smoothstep(edge0, edge1, v) return useCurrentPos(
-	switch mapVecType(v) {
-		case 1: macro {
-			var v: Float = $v;
-			var edge0: Float = $edge0;
-			var edge1: Float = $edge1;
-			var t = (v - edge0) / (edge1 - edge0);
-			t = t < 0. ? 0. : (t > 1. ? 1. : t); // clamp to 0, 1
-			t * t * (3.0 - 2.0 * t);
-		}
-		default: switch [mapVecType(edge0), mapVecType(edge1)] {
-			case [1, 1]: macro $v.smoothstepf($edge0, $edge1);
-			default: macro $v.smoothstep($edge0, $edge1);
-		}
-	}
-);
+overload extern inline function smoothstep(edge0: Float, edge1: Float, v: Vec4): Vec4 return v.smoothstep(edge0, edge1);
+overload extern inline function smoothstep(edge0: Vec4, edge1: Vec4, v: Vec4): Vec4 return v.smoothstep(edge0, edge1);
+overload extern inline function smoothstep(edge0: Float, edge1: Float, v: Vec3): Vec3 return v.smoothstep(edge0, edge1);
+overload extern inline function smoothstep(edge0: Vec3, edge1: Vec3, v: Vec3): Vec3 return v.smoothstep(edge0, edge1);
+overload extern inline function smoothstep(edge0: Float, edge1: Float, v: Vec2): Vec2 return v.smoothstep(edge0, edge1);
+overload extern inline function smoothstep(edge0: Vec2, edge1: Vec2, v: Vec2): Vec2 return v.smoothstep(edge0, edge1);
+overload extern inline function smoothstep(edge0: Float, edge1: Float, v: Float): Float {
+	var t = (v - edge0) / (edge1 - edge0);
+	t = t < 0. ? 0. : (t > 1. ? 1. : t); // clamp to 0, 1
+	return t * t * (3.0 - 2.0 * t);
+}
 
 // geometric
 
-@:overload(function(v: Float): Float {})
-@:overload(function(v: Vec2): Float {})
-@:overload(function(v: Vec3): Float {})
-@:overload(function(v: Vec4): Float {})
-macro function length(v) return useCurrentPos(
-	switch mapVecType(v) {
-		case 1: macro Math.abs($v);
-		default: macro $v.length();
-	}
-);
+overload extern inline function length(v: Vec4): Float return v.length();
+overload extern inline function length(v: Vec3): Float return v.length();
+overload extern inline function length(v: Vec2): Float return v.length();
+overload extern inline function length(v: Float): Float return Math.abs(v);
 
-@:overload(function(v: Float, b: Float): Float {})
-@:overload(function(v: Vec2, b: Vec2): Float {})
-@:overload(function(v: Vec3, b: Vec3): Float {})
-@:overload(function(v: Vec4, b: Vec4): Float {})
-macro function distance(v, b) return useCurrentPos(
-	switch mapVecType(v) {
-		case 1: macro Math.abs(($v) - ($b));
-		default: macro $v.distance($b);
-	}
-);
+overload extern inline function distance(v: Vec4, b: Vec4): Float return v.distance(b);
+overload extern inline function distance(v: Vec3, b: Vec3): Float return v.distance(b);
+overload extern inline function distance(v: Vec2, b: Vec2): Float return v.distance(b);
+overload extern inline function distance(v: Float, b: Float): Float return Math.abs(v - b);
 
-@:overload(function(v: Float, b: Float): Float {})
-@:overload(function(v: Vec2, b: Vec2): Float {})
-@:overload(function(v: Vec3, b: Vec3): Float {})
-@:overload(function(v: Vec4, b: Vec4): Float {})
-macro function dot(v, b) return useCurrentPos(
-	switch mapVecType(v) {
-		case 1: macro (($v) * ($b));
-		default: macro $v.dot($b);
-	}
-);
+overload extern inline function dot(v: Vec4, b: Vec4): Float return v.dot(b);
+overload extern inline function dot(v: Vec3, b: Vec3): Float return v.dot(b);
+overload extern inline function dot(v: Vec2, b: Vec2): Float return v.dot(b);
+overload extern inline function dot(v: Float, b: Float): Float return (v * b);
 
-@:overload(function(v: Float): Float {})
-@:overload(function(v: Vec2): Vec2 {})
-@:overload(function(v: Vec3): Vec3 {})
-@:overload(function(v: Vec4): Vec4 {})
-macro function normalize(v) return useCurrentPos(
-	switch mapVecType(v) {
-		case 1: macro $v <= 0.0 ? 0.0 : 1.0;
-		default: macro $v.normalize();
-	}
-);
+overload extern inline function normalize(v: Vec4): Vec4 return v.normalize();
+overload extern inline function normalize(v: Vec3): Vec3 return v.normalize();
+overload extern inline function normalize(v: Vec2): Vec2 return v.normalize();
+overload extern inline function normalize(v: Float) return v <= 0.0 ? 0.0 : 1.0;
 
-@:overload(function(v: Float, I: Float, Nref: Float): Float {})
-@:overload(function(v: Vec2, I: Vec2, Nref: Vec2): Vec2 {})
-@:overload(function(v: Vec3, I: Vec3, Nref: Vec3): Vec3 {})
-@:overload(function(v: Vec4, I: Vec4, Nref: Vec4): Vec4 {})
-macro function faceforward(v, I, Nref) return useCurrentPos(
-	switch mapVecType(v) {
-		case 1: macro {
-			var v: Float = $v;
-			var I: Float = $I;
-			var Nref: Float = $Nref;
-			(I * Nref < 0 ? v : -v);
-		}
-		default: macro $v.faceforward($I, $Nref);
-	}
-);
+overload extern inline function faceforward(v: Vec4, I: Vec4, Nref: Vec4): Vec4 return v.faceforward(I, Nref);
+overload extern inline function faceforward(v: Vec3, I: Vec3, Nref: Vec3): Vec3 return v.faceforward(I, Nref);
+overload extern inline function faceforward(v: Vec2, I: Vec2, Nref: Vec2): Vec2 return v.faceforward(I, Nref);
+overload extern inline function faceforward(v: Float, I: Float, Nref: Float): Float return (I * Nref < 0 ? v : -v);
 
-@:overload(function(I: Float, N: Float): Float {})
-@:overload(function(I: Vec2, N: Vec2): Vec2 {})
-@:overload(function(I: Vec3, N: Vec3): Vec3 {})
-@:overload(function(I: Vec4, N: Vec4): Vec4 {})
-macro function reflect(I, N) return useCurrentPos(
-	switch mapVecType(I) {
-		case 1: macro {
-			var I: Float = $I;
-			var N: Float = $N;
-			I - 2 * (N * I) * N;
-		};
-		default: macro $I.reflect($N);
-	}
-);
+overload extern inline function reflect(I: Vec4, N: Vec4): Vec4 return I.reflect(N);
+overload extern inline function reflect(I: Vec3, N: Vec3): Vec3 return I.reflect(N);
+overload extern inline function reflect(I: Vec2, N: Vec2): Vec2 return I.reflect(N);
+overload extern inline function reflect(I: Float, N: Float): Float return I - 2 * (N * I) * N;
 
-@:overload(function(I: Float, N: Float, eta: Float): Float {})
-@:overload(function(I: Vec2, N: Vec2, eta: Float): Vec2 {})
-@:overload(function(I: Vec3, N: Vec3, eta: Float): Vec3 {})
-@:overload(function(I: Vec4, N: Vec4, eta: Float): Vec4 {})
-macro function refract(I, N, eta: ExprOf<Float>) return useCurrentPos(
-	switch mapVecType(I) {
-		case 1: macro {
-			var I: Float = $I;
-			var N: Float = $N;
-			var eta: Float = $eta;
-			var nDotI = I * N;
-			var k = 1.0 - eta * eta * (1.0 - nDotI * nDotI);
-			if (k < 0.0) {
-				0.0;
-			} else {
-				eta * I - (eta * nDotI + Math.sqrt(k)) * N;
-			}
-		};
-		default: macro $I.refract($N, $eta);
+overload extern inline function refract(I: Vec4, N: Vec4, eta: Float): Vec4 return I.refract(N, eta);
+overload extern inline function refract(I: Vec3, N: Vec3, eta: Float): Vec3 return I.refract(N, eta);
+overload extern inline function refract(I: Vec2, N: Vec2, eta: Float): Vec2 return I.refract(N, eta);
+overload extern inline function refract(I: Float, N: Float, eta: Float): Float {
+	var nDotI = I * N;
+	var k = 1.0 - eta * eta * (1.0 - nDotI * nDotI);
+	return if (k < 0.0) {
+		0.0;
+	} else {
+		eta * I - (eta * nDotI + Math.sqrt(k)) * N;
 	}
-);
-
-@:overload(function(m: Mat2, n: Mat2): Mat2 {})
-@:overload(function(m: Mat3, n: Mat3): Mat3 {})
-@:overload(function(m: Mat4, n: Mat4): Mat4 {})
-macro function matrixCompMult(a, b) {
-	return macro $a.matrixCompMult($b);
 }
+
+overload extern inline function matrixCompMult(m: Mat4, n: Mat4): Mat4 return m.matrixCompMult(n);
+overload extern inline function matrixCompMult(m: Mat3, n: Mat3): Mat3 return m.matrixCompMult(n);
+overload extern inline function matrixCompMult(m: Mat2, n: Mat2): Mat2 return m.matrixCompMult(n);
 
 // extended methods beyond GLSL ES 100
-@:overload(function(m: Mat2): Mat2 {})
-@:overload(function(m: Mat3): Mat3 {})
-@:overload(function(m: Mat4): Mat4 {})
-macro function transpose(m) {
-	return macro $m.transpose();
-}
+overload extern inline function transpose(m: Mat4): Mat4 return m.transpose();
+overload extern inline function transpose(m: Mat3): Mat3 return m.transpose();
+overload extern inline function transpose(m: Mat2): Mat2 return m.transpose();
 
-@:overload(function(m: Mat2): Float {})
-@:overload(function(m: Mat3): Float {})
-@:overload(function(m: Mat4): Float {})
-macro function determinant(m): ExprOf<Float> {
-	return macro $m.determinant();
-}
+overload extern inline function determinant(m: Mat4): Float return m.determinant();
+overload extern inline function determinant(m: Mat3): Float return m.determinant();
+overload extern inline function determinant(m: Mat2): Float return m.determinant();
 
-@:overload(function(m: Mat2): Mat2 {})
-@:overload(function(m: Mat3): Mat3 {})
-@:overload(function(m: Mat4): Mat4 {})
-macro function inverse(m) {
-	return macro $m.inverse();
-}
+overload extern inline function inverse(m: Mat4): Mat4 return m.inverse();
+overload extern inline function inverse(m: Mat3): Mat3 return m.inverse();
+overload extern inline function inverse(m: Mat2): Mat2 return m.inverse();
 
-@:overload(function(m: Mat2): Mat2 {})
-@:overload(function(m: Mat3): Mat3 {})
-@:overload(function(m: Mat4): Mat4 {})
-macro function adjoint(m) {
-	return macro $m.adjoint();
-}
+overload extern inline function adjoint(m: Mat4): Mat4 return m.adjoint();
+overload extern inline function adjoint(m: Mat3): Mat3 return m.adjoint();
+overload extern inline function adjoint(m: Mat2): Mat2 return m.adjoint();
 
 // special-case functions
-inline function cross(a: Vec3, b: Vec3) {
+inline function cross(a: Vec3, b: Vec3): Vec3 {
 	return a.cross(b);
 }
 
@@ -471,18 +288,18 @@ macro function vec3(a, ?b, ?c): ExprOf<Vec3> {
 	return useCurrentPos(vectorConstructor(3, [a, b, c]));
 }
 
-@:overload(function(x: Float, y: Float, z: Float, w: Float): Vec4 {})
-@:overload(function(x: Float): Vec4 {})
-@:overload(function(xy: Vec2, z: Float, w: Float): Vec4 {})
-@:overload(function(x: Float, yz: Vec2, w: Float): Vec4 {})
-@:overload(function(x: Float, y: Float, zw: Vec2): Vec4 {})
-@:overload(function(xy: Vec2, zw: Vec2): Vec4 {})
-@:overload(function(xyz: Vec3, w: Float): Vec4 {})
-@:overload(function(x: Float, yzw: Vec3): Vec4 {})
-@:overload(function(xyzw: Vec4): Vec4 {})
-macro function vec4(a, ?b, ?c, ?d): ExprOf<Vec4> {
-	return useCurrentPos(vectorConstructor(4, [a, b, c, d]));
-}
+overload extern inline function vec4(m: Mat4): Vec4 return new Vec4(m[0][0], m[0][1], m[0][2], m[0][3]);
+overload extern inline function vec4(m: Mat3): Vec4 return new Vec4(m[0][0], m[0][1], m[0][2], m[1][0]);
+overload extern inline function vec4(m: Mat2): Vec4 return new Vec4(m[0][0], m[0][1], m[1][0], m[1][1]);
+overload extern inline function vec4(xyzw: Vec4): Vec4 return new Vec4(xyzw.x, xyzw.y, xyzw.z, xyzw.w);
+overload extern inline function vec4(x: Float, yzw: Vec3): Vec4 return new Vec4(x, yzw.x, yzw.y, yzw.z);
+overload extern inline function vec4(xyz: Vec3, w: Float): Vec4 return new Vec4(xyz.x, xyz.y, xyz.z, w);
+overload extern inline function vec4(xy: Vec2, zw: Vec2): Vec4 return new Vec4(xy.x, xy.y, zw.x, zw.y);
+overload extern inline function vec4(x: Float, y: Float, zw: Vec2): Vec4 return new Vec4(x, y, zw.x, zw.y);
+overload extern inline function vec4(x: Float, yz: Vec2, w: Float): Vec4 return new Vec4(x, yz.x, yz.y, w);
+overload extern inline function vec4(xy: Vec2, z: Float, w: Float): Vec4 return new Vec4(xy.x, xy.y, z, w);
+overload extern inline function vec4(x: Float): Vec4 return new Vec4(x, x, x, x);
+overload extern inline function vec4(x: Float, y: Float, z: Float, w: Float): Vec4 return new Vec4(x, y, z, w);
 
 @:overload(function(a00: Float, a01: Float, a10: Float, a11: Float): Mat2 {})
 @:overload(function(column0: Vec2, column1: Vec2): Mat2 {})
@@ -674,69 +491,69 @@ abstract Vec2(Vec2Data) to Vec2Data from Vec2Data {
 	public inline function fract(): Vec2 {
 		return (this: Vec2) - floor();
 	}
-	public inline function mod(d): Vec2 {
-		return (this: Vec2) - ((this: Vec2) / d).floor();
+	public extern overload inline function mod(d: Vec2): Vec2 {
+		return (this: Vec2) - d * ((this: Vec2) / d).floor();
 	}
-	public inline function modf(d: Float): Vec2 {
-		return (this: Vec2) - ((this: Vec2) / d).floor();
+	public extern overload inline function mod(d: Float): Vec2 {
+		return (this: Vec2) - d * ((this: Vec2) / d).floor();
 	}
-	public inline function min(b: Vec2): Vec2 {
+	public extern overload inline function min(b: Vec2): Vec2 {
 		return new Vec2(
 			b.x < x ? b.x : x,
 			b.y < y ? b.y : y
 		);
 	}
-	public inline function minf(b: Float): Vec2 {
+	public extern overload inline function min(b: Float): Vec2 {
 		return new Vec2(
 			b < x ? b : x,
 			b < y ? b : y
 		);
 	}
-	public inline function max(b: Vec2): Vec2 {
+	public extern overload inline function max(b: Vec2): Vec2 {
 		return new Vec2(
 			x < b.x ? b.x : x,
 			y < b.y ? b.y : y
 		);
 	}
-	public inline function maxf(b: Float): Vec2 {
+	public extern overload inline function max(b: Float): Vec2 {
 		return new Vec2(
 			x < b ? b : x,
 			y < b ? b : y
 		);
 	}
-	public inline function clamp(minLimit: Vec2, maxLimit: Vec2) {
+	public extern overload inline function clamp(minLimit: Vec2, maxLimit: Vec2) {
 		return max(minLimit).min(maxLimit);
 	}
-	public inline function clampf(minLimit: Float, maxLimit: Float) {
-		return maxf(minLimit).minf(maxLimit);
+	public extern overload inline function clamp(minLimit: Float, maxLimit: Float) {
+		return max(minLimit).min(maxLimit);
 	}
 
-	public inline function mix(b: Vec2, t: Vec2): Vec2 {
+	public extern overload inline function mix(b: Vec2, t: Vec2): Vec2 {
 		return (this: Vec2) * (1.0 - t) + b * t;
 	}
-	public inline function mixf(b: Vec2, t: Float): Vec2 {
+	public extern overload inline function mix(b: Vec2, t: Float): Vec2 {
 		return (this: Vec2) * (1.0 - t) + b * t;
 	}
 
-	public inline function step(edge: Vec2): Vec2 {
+	public extern overload inline function step(edge: Vec2): Vec2 {
 		return new Vec2(
 			x < edge.x ? 0.0 : 1.0,
 			y < edge.y ? 0.0 : 1.0
 		);
 	}
-	public inline function stepf(edge: Float): Vec2 {
+	public extern overload inline function step(edge: Float): Vec2 {
 		return new Vec2(
 			x < edge ? 0.0 : 1.0,
 			y < edge ? 0.0 : 1.0
 		);
 	}
 
-	public inline function smoothstep(edge0: Vec2, edge1: Vec2): Vec2 {
-		var t = (((this: Vec2) - edge0) / (edge1 - edge0)).clampf(0, 1);
+	public extern overload inline function smoothstep(edge0: Vec2, edge1: Vec2): Vec2 {
+		var t = (((this: Vec2) - edge0) / (edge1 - edge0)).clamp(0, 1);
 		return t * t * (3.0 - 2.0 * t);
 	}
-	public inline function smoothstepf(edge0: Float, edge1: Float): Vec2 {
-		var t = (((this: Vec2) - edge0) / (edge1 - edge0)).clampf(0, 1);
+	public extern overload inline function smoothstep(edge0: Float, edge1: Float): Vec2 {
+		var t = (((this: Vec2) - edge0) / (edge1 - edge0)).clamp(0, 1);
 		return t * t * (3.0 - 2.0 * t);
 	}
 
@@ -1112,62 +929,62 @@ abstract Vec3(Vec3Data) to Vec3Data from Vec3Data {
 	public inline function fract(): Vec3 {
 		return (this: Vec3) - floor();
 	}
-	public inline function mod(d): Vec3 {
-		return (this: Vec3) - ((this: Vec3) / d).floor();
+	public extern overload inline function mod(d: Vec3): Vec3 {
+		return (this: Vec3) - d * ((this: Vec3) / d).floor();
 	}
-	public inline function modf(d: Float): Vec3 {
-		return (this: Vec3) - ((this: Vec3) / d).floor();
+	public extern overload inline function mod(d: Float): Vec3 {
+		return (this: Vec3) - d * ((this: Vec3) / d).floor();
 	}
-	public inline function min(b: Vec3): Vec3 {
+	public extern overload inline function min(b: Vec3): Vec3 {
 		return new Vec3(
 			b.x < x ? b.x : x,
 			b.y < y ? b.y : y,
 			b.z < z ? b.z : z
 		);
 	}
-	public inline function minf(b: Float): Vec3 {
+	public extern overload inline function min(b: Float): Vec3 {
 		return new Vec3(
 			b < x ? b : x,
 			b < y ? b : y,
 			b < z ? b : z
 		);
 	}
-	public inline function max(b: Vec3): Vec3 {
+	public extern overload inline function max(b: Vec3): Vec3 {
 		return new Vec3(
 			x < b.x ? b.x : x,
 			y < b.y ? b.y : y,
 			z < b.z ? b.z : z
 		);
 	}
-	public inline function maxf(b: Float): Vec3 {
+	public extern overload inline function max(b: Float): Vec3 {
 		return new Vec3(
 			x < b ? b : x,
 			y < b ? b : y,
 			z < b ? b : z
 		);
 	}
-	public inline function clamp(minLimit: Vec3, maxLimit: Vec3) {
+	public extern overload inline function clamp(minLimit: Vec3, maxLimit: Vec3) {
 		return max(minLimit).min(maxLimit);
 	}
-	public inline function clampf(minLimit: Float, maxLimit: Float) {
-		return maxf(minLimit).minf(maxLimit);
+	public extern overload inline function clamp(minLimit: Float, maxLimit: Float) {
+		return max(minLimit).min(maxLimit);
 	}
 
-	public inline function mix(b: Vec3, t: Vec3): Vec3 {
+	public extern overload inline function mix(b: Vec3, t: Vec3): Vec3 {
 		return (this: Vec3) * (1.0 - t) + b * t;
 	}
-	public inline function mixf(b: Vec3, t: Float): Vec3 {
+	public extern overload inline function mix(b: Vec3, t: Float): Vec3 {
 		return (this: Vec3) * (1.0 - t) + b * t;
 	}
 
-	public inline function step(edge: Vec3): Vec3 {
+	public extern overload inline function step(edge: Vec3): Vec3 {
 		return new Vec3(
 			x < edge.x ? 0.0 : 1.0,
 			y < edge.y ? 0.0 : 1.0,
 			z < edge.z ? 0.0 : 1.0
 		);
 	}
-	public inline function stepf(edge: Float): Vec3 {
+	public extern overload inline function step(edge: Float): Vec3 {
 		return new Vec3(
 			x < edge ? 0.0 : 1.0,
 			y < edge ? 0.0 : 1.0,
@@ -1175,12 +992,12 @@ abstract Vec3(Vec3Data) to Vec3Data from Vec3Data {
 		);
 	}
 
-	public inline function smoothstep(edge0: Vec3, edge1: Vec3): Vec3 {
-		var t = (((this: Vec3) - edge0) / (edge1 - edge0)).clampf(0, 1);
+	public extern overload inline function smoothstep(edge0: Vec3, edge1: Vec3): Vec3 {
+		var t = (((this: Vec3) - edge0) / (edge1 - edge0)).clamp(0, 1);
 		return t * t * (3.0 - 2.0 * t);
 	}
-	public inline function smoothstepf(edge0: Float, edge1: Float): Vec3 {
-		var t = (((this: Vec3) - edge0) / (edge1 - edge0)).clampf(0, 1);
+	public extern overload inline function smoothstep(edge0: Float, edge1: Float): Vec3 {
+		var t = (((this: Vec3) - edge0) / (edge1 - edge0)).clamp(0, 1);
 		return t * t * (3.0 - 2.0 * t);
 	}
 
@@ -1573,13 +1390,13 @@ abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 	public inline function fract(): Vec4 {
 		return (this: Vec4) - floor();
 	}
-	public inline function mod(d): Vec4 {
-		return (this: Vec4) - ((this: Vec4) / d).floor();
+	public extern overload inline function mod(d: Float): Vec4 {
+		return (this: Vec4) - d * ((this: Vec4) / d).floor();
 	}
-	public inline function modf(d: Float): Vec4 {
-		return (this: Vec4) - ((this: Vec4) / d).floor();
+	public extern overload inline function mod(d: Vec4): Vec4 {
+		return (this: Vec4) - d * ((this: Vec4) / d).floor();
 	}
-	public inline function min(b: Vec4): Vec4 {
+	public extern overload inline function min(b: Vec4): Vec4 {
 		return new Vec4(
 			b.x < x ? b.x : x,
 			b.y < y ? b.y : y,
@@ -1587,7 +1404,7 @@ abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 			b.w < w ? b.w : w
 		);
 	}
-	public inline function minf(b: Float): Vec4 {
+	public extern overload inline function min(b: Float): Vec4 {
 		return new Vec4(
 			b < x ? b : x,
 			b < y ? b : y,
@@ -1595,7 +1412,7 @@ abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 			b < w ? b : w
 		);
 	}
-	public inline function max(b: Vec4): Vec4 {
+	public extern overload inline function max(b: Vec4): Vec4 {
 		return new Vec4(
 			x < b.x ? b.x : x,
 			y < b.y ? b.y : y,
@@ -1603,7 +1420,7 @@ abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 			w < b.w ? b.w : w
 		);
 	}
-	public inline function maxf(b: Float): Vec4 {
+	public extern overload inline function max(b: Float): Vec4 {
 		return new Vec4(
 			x < b ? b : x,
 			y < b ? b : y,
@@ -1611,21 +1428,21 @@ abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 			w < b ? b : w
 		);
 	}
-	public inline function clamp(minLimit: Vec4, maxLimit: Vec4) {
+	public extern overload inline function clamp(minLimit: Vec4, maxLimit: Vec4) {
 		return max(minLimit).min(maxLimit);
 	}
-	public inline function clampf(minLimit: Float, maxLimit: Float) {
-		return maxf(minLimit).minf(maxLimit);
+	public extern overload inline function clamp(minLimit: Float, maxLimit: Float) {
+		return max(minLimit).min(maxLimit);
 	}
 
-	public inline function mix(b: Vec4, t: Vec4): Vec4 {
+	public extern overload inline function mix(b: Vec4, t: Vec4): Vec4 {
 		return (this: Vec4) * (1.0 - t) + b * t;
 	}
-	public inline function mixf(b: Vec4, t: Float): Vec4 {
+	public extern overload inline function mix(b: Vec4, t: Float): Vec4 {
 		return (this: Vec4) * (1.0 - t) + b * t;
 	}
 
-	public inline function step(edge: Vec4): Vec4 {
+	public extern overload inline function step(edge: Vec4): Vec4 {
 		return new Vec4(
 			x < edge.x ? 0.0 : 1.0,
 			y < edge.y ? 0.0 : 1.0,
@@ -1633,7 +1450,7 @@ abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 			w < edge.w ? 0.0 : 1.0
 		);
 	}
-	public inline function stepf(edge: Float): Vec4 {
+	public extern overload inline function step(edge: Float): Vec4 {
 		return new Vec4(
 			x < edge ? 0.0 : 1.0,
 			y < edge ? 0.0 : 1.0,
@@ -1642,12 +1459,12 @@ abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 		);
 	}
 
-	public inline function smoothstep(edge0: Vec4, edge1: Vec4): Vec4 {
-		var t = (((this: Vec4) - edge0) / (edge1 - edge0)).clampf(0, 1);
+	public extern overload inline function smoothstep(edge0: Vec4, edge1: Vec4): Vec4 {
+		var t = (((this: Vec4) - edge0) / (edge1 - edge0)).clamp(0, 1);
 		return t * t * (3.0 - 2.0 * t);
 	}
-	public inline function smoothstepf(edge0: Float, edge1: Float): Vec4 {
-		var t = (((this: Vec4) - edge0) / (edge1 - edge0)).clampf(0, 1);
+	public extern overload inline function smoothstep(edge0: Float, edge1: Float): Vec4 {
+		var t = (((this: Vec4) - edge0) / (edge1 - edge0)).clamp(0, 1);
 		return t * t * (3.0 - 2.0 * t);
 	}
 
