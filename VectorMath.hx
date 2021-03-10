@@ -301,6 +301,8 @@ overload extern inline function vec4(xy: Vec2, z: Float, w: Float): Vec4 return 
 overload extern inline function vec4(x: Float): Vec4 return new Vec4(x, x, x, x);
 overload extern inline function vec4(x: Float, y: Float, z: Float, w: Float): Vec4 return new Vec4(x, y, z, w);
 
+// for matrix constructors, macros are used because of the large number of possible overloads required
+
 @:overload(function(a00: Float, a01: Float, a10: Float, a11: Float): Mat2 {})
 @:overload(function(column0: Vec2, column1: Vec2): Mat2 {})
 @:overload(function(xyzw: Vec4): Mat2 {})
