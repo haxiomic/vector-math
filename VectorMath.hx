@@ -2993,6 +2993,7 @@ function swizzleWriteExpr(self, name: String, value: Expr) {
 				var value: Vec2 = $value;
 				self.$f0 = value.x;
 				self.$f1 = value.y;
+				value;
 			}
 		case 3:
 			var f0 = name.charAt(0); var f1 = name.charAt(1); var f2 = name.charAt(2);
@@ -3008,6 +3009,7 @@ function swizzleWriteExpr(self, name: String, value: Expr) {
 				self.$f0 = value.x;
 				self.$f1 = value.y;
 				self.$f2 = value.z;
+				value;
 			}
 		case 4:
 			var f0 = name.charAt(0); var f1 = name.charAt(1); var f2 = name.charAt(2); var f3 = name.charAt(3);
@@ -3025,6 +3027,7 @@ function swizzleWriteExpr(self, name: String, value: Expr) {
 				self.$f1 = value.y;
 				self.$f2 = value.z;
 				self.$f3 = value.w;
+				value;
 			}
 		default:
 			Context.error('Unsupported swizzle write ".$name"', self.pos);
