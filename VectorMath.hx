@@ -29,94 +29,95 @@ import haxe.macro.Expr;
 
 // trigonometric
 
-overload extern inline function radians(degrees: Vec4) degrees.radians();
-overload extern inline function radians(degrees: Vec3) degrees.radians();
-overload extern inline function radians(degrees: Vec2) degrees.radians();
-overload extern inline function radians(degrees: Float) return degrees * Math.PI / 180;
+#if !macro
+overload extern inline function radians(degrees: Vec4): Vec4 return degrees.radians();
+overload extern inline function radians(degrees: Vec3): Vec3 return degrees.radians();
+overload extern inline function radians(degrees: Vec2): Vec2 return degrees.radians();
+overload extern inline function radians(degrees: Float): Float return degrees * Math.PI / 180;
 
 overload extern inline function degrees(radians: Vec4): Vec4 return radians.degrees();
 overload extern inline function degrees(radians: Vec3): Vec3 return radians.degrees();
 overload extern inline function degrees(radians: Vec2): Vec2 return radians.degrees();
-overload extern inline function degrees(radians: Float) return radians * 180 / Math.PI;
+overload extern inline function degrees(radians: Float): Float return radians * 180 / Math.PI;
 
 overload extern inline function sin(v: Vec4): Vec4 return v.sin();
 overload extern inline function sin(v: Vec3): Vec3 return v.sin();
 overload extern inline function sin(v: Vec2): Vec2 return v.sin();
-overload extern inline function sin(v: Float) return Math.sin(v);
+overload extern inline function sin(v: Float): Float return Math.sin(v);
 
 overload extern inline function cos(v: Vec4): Vec4 return v.cos();
 overload extern inline function cos(v: Vec3): Vec3 return v.cos();
 overload extern inline function cos(v: Vec2): Vec2 return v.cos();
-overload extern inline function cos(v: Float) return Math.cos(v);
+overload extern inline function cos(v: Float): Float return Math.cos(v);
 
 overload extern inline function tan(v: Vec4): Vec4 return v.tan();
 overload extern inline function tan(v: Vec3): Vec3 return v.tan();
 overload extern inline function tan(v: Vec2): Vec2 return v.tan();
-overload extern inline function tan(v: Float) return Math.tan(v);
+overload extern inline function tan(v: Float): Float return Math.tan(v);
 
 overload extern inline function asin(v: Vec4): Vec4 return v.asin();
 overload extern inline function asin(v: Vec3): Vec3 return v.asin();
 overload extern inline function asin(v: Vec2): Vec2 return v.asin();
-overload extern inline function asin(v: Float) return Math.asin(v);
+overload extern inline function asin(v: Float): Float return Math.asin(v);
 
 overload extern inline function acos(v: Vec4): Vec4 return v.acos();
 overload extern inline function acos(v: Vec3): Vec3 return v.acos();
 overload extern inline function acos(v: Vec2): Vec2 return v.acos();
-overload extern inline function acos(v: Float) return Math.acos(v);
+overload extern inline function acos(v: Float): Float return Math.acos(v);
 
 overload extern inline function atan(v: Vec4): Vec4 return v.atan();
 overload extern inline function atan(v: Vec3): Vec3 return v.atan();
 overload extern inline function atan(v: Vec2): Vec2 return v.atan();
-overload extern inline function atan(v: Float) return Math.atan(v);
+overload extern inline function atan(v: Float): Float return Math.atan(v);
 
 overload extern inline function atan2(v: Vec4, b: Vec4): Vec4 return v.atan2(b);
 overload extern inline function atan2(v: Vec3, b: Vec3): Vec3 return v.atan2(b);
 overload extern inline function atan2(v: Vec2, b: Vec2): Vec2 return v.atan2(b);
-overload extern inline function atan2(v: Float, b: Float) return Math.atan2(v, b);
+overload extern inline function atan2(v: Float, b: Float): Float return Math.atan2(v, b);
 
 // exponential
 
 overload extern inline function pow(v: Vec4, e: Vec4): Vec4 return v.pow(e);
 overload extern inline function pow(v: Vec3, e: Vec3): Vec3 return v.pow(e);
 overload extern inline function pow(v: Vec2, e: Vec2): Vec2 return v.pow(e);
-overload extern inline function pow(v: Float, e: Float) return Math.pow(v, e);
+overload extern inline function pow(v: Float, e: Float): Float return Math.pow(v, e);
 
 overload extern inline function exp(v: Vec4): Vec4 return v.exp();
 overload extern inline function exp(v: Vec3): Vec3 return v.exp();
 overload extern inline function exp(v: Vec2): Vec2 return v.exp();
-overload extern inline function exp(v: Float) return Math.exp(v);
+overload extern inline function exp(v: Float): Float return Math.exp(v);
 
 overload extern inline function log(v: Vec4): Vec4 return v.log();
 overload extern inline function log(v: Vec3): Vec3 return v.log();
 overload extern inline function log(v: Vec2): Vec2 return v.log();
-overload extern inline function log(v: Float) return Math.log(v);
+overload extern inline function log(v: Float): Float return Math.log(v);
 
 overload extern inline function exp2(v: Vec4): Vec4 return v.exp2();
 overload extern inline function exp2(v: Vec3): Vec3 return v.exp2();
 overload extern inline function exp2(v: Vec2): Vec2 return v.exp2();
-overload extern inline function exp2(v: Float) return Math.pow(2, v);
+overload extern inline function exp2(v: Float): Float return Math.pow(2, v);
 
 overload extern inline function log2(v: Vec4): Vec4 return v.log2();
 overload extern inline function log2(v: Vec3): Vec3 return v.log2();
 overload extern inline function log2(v: Vec2): Vec2 return v.log2();
-overload extern inline function log2(v: Float) return Math.log(v) * 1.4426950408889634;
+overload extern inline function log2(v: Float): Float return Math.log(v) * 1.4426950408889634;
 
 overload extern inline function sqrt(v: Vec4): Vec4 return v.sqrt();
 overload extern inline function sqrt(v: Vec3): Vec3 return v.sqrt();
 overload extern inline function sqrt(v: Vec2): Vec2 return v.sqrt();
-overload extern inline function sqrt(v: Float) return Math.sqrt(v);
+overload extern inline function sqrt(v: Float): Float return Math.sqrt(v);
 
 overload extern inline function inverseSqrt(v: Vec4): Vec4 return v.inverseSqrt();
 overload extern inline function inverseSqrt(v: Vec3): Vec3 return v.inverseSqrt();
 overload extern inline function inverseSqrt(v: Vec2): Vec2 return v.inverseSqrt();
-overload extern inline function inverseSqrt(v: Float) return 1.0 / Math.sqrt(v);
+overload extern inline function inverseSqrt(v: Float): Float return 1.0 / Math.sqrt(v);
 
 // common
 
 overload extern inline function abs(v: Vec4): Vec4 return v.abs();
 overload extern inline function abs(v: Vec3): Vec3 return v.abs();
 overload extern inline function abs(v: Vec2): Vec2 return v.abs();
-overload extern inline function abs(v: Float) return Math.abs(v);
+overload extern inline function abs(v: Float): Float return Math.abs(v);
 
 overload extern inline function sign(v: Vec4): Vec4 return v.sign();
 overload extern inline function sign(v: Vec3): Vec3 return v.sign();
@@ -301,6 +302,8 @@ overload extern inline function vec4(xy: Vec2, z: Float, w: Float): Vec4 return 
 overload extern inline function vec4(x: Float): Vec4 return new Vec4(x, x, x, x);
 overload extern inline function vec4(x: Float, y: Float, z: Float, w: Float): Vec4 return new Vec4(x, y, z, w);
 
+#end // !macro
+
 // for matrix constructors, macros are used because of the large number of possible overloads required
 
 @:overload(function(a00: Float, a01: Float, a10: Float, a11: Float): Mat2 {})
@@ -336,6 +339,8 @@ macro function mat4(a, ?b, ?c, ?d, ?e, ?f, ?g, ?h, ?i, ?j, ?k, ?l, ?m, ?n, ?o, ?
 @:nullSafety
 abstract Vec2(Vec2Data) to Vec2Data from Vec2Data {
 
+	#if !macro
+
 	public var x (get, set): Float;
 	inline function get_x() return this.x;
 	inline function set_x(v: Float) return this.x = v;
@@ -347,30 +352,10 @@ abstract Vec2(Vec2Data) to Vec2Data from Vec2Data {
 		this = new Vec2Data(x, y);
 	}
 
-	@:op(a.b) macro function swizzleRead(self, name: String) {
-		return swizzleReadExpr(self, name);
-	}
-
-	@:op(a.b) macro function swizzleWrite(self, name: String, value: Expr) {
-		return swizzleWriteExpr(self, name, value);
-	}
-
 	public inline function copyFrom(v: Vec2) {
 		x = v.x;
 		y = v.y;
 		return this;
-	}
-
-	@:overload(function<T>(arrayLike: T, index: Int): T {})
-	public macro function copyIntoArray(self: ExprOf<Vec2>, array: ExprOf<ArrayAccess<Float>>, index: ExprOf<Int>) {
-		return macro {
-			var self = $self;
-			var array = $array;
-			var i: Int = $index;
-			array[0 + i] = self.x;
-			array[1 + i] = self.y;
-			array;
-		}
 	}
 
 	public inline function clone() {
@@ -726,11 +711,33 @@ abstract Vec2(Vec2Data) to Vec2Data from Vec2Data {
 	@:op(a != b)
 	static inline function notEqual(a: Vec2, b: Vec2): Bool
 		return !equal(a, b);
+
+	#end // !macro
+
+	@:op(a.b) macro function swizzleRead(self, name: String) {
+		return swizzleReadExpr(self, name);
+	}
+
+	@:op(a.b) macro function swizzleWrite(self, name: String, value: Expr) {
+		return swizzleWriteExpr(self, name, value);
+	}
+
+	@:overload(function<T>(arrayLike: T, index: Int): T {})
+	public macro function copyIntoArray(self: ExprOf<Vec2>, array: ExprOf<ArrayAccess<Float>>, index: ExprOf<Int>) {
+		return macro {
+			var self = $self;
+			var array = $array;
+			var i: Int = $index;
+			array[0 + i] = self.x;
+			array[1 + i] = self.y;
+			array;
+		}
+	}
 	
 }
 
 private class Vec2Data {
-
+	#if !macro
 	public var x: Float;
 	public var y: Float;
 
@@ -739,11 +746,13 @@ private class Vec2Data {
 		this.x = x + 0.0;
 		this.y = y + 0.0;
 	}
-
+	#end
 }
 
 @:nullSafety
 abstract Vec3(Vec3Data) to Vec3Data from Vec3Data {
+
+	#if !macro
 
 	public var x (get, set): Float;
 	inline function get_x() return this.x;
@@ -764,27 +773,6 @@ abstract Vec3(Vec3Data) to Vec3Data from Vec3Data {
 		y = v.y;
 		z = v.z;
 		return this;
-	}
-
-	@:op(a.b) macro function swizzleRead(self, name: String) {
-		return swizzleReadExpr(self, name);
-	}
-
-	@:op(a.b) macro function swizzleWrite(self, name: String, value: Expr) {
-		return swizzleWriteExpr(self, name, value);
-	}
-
-	@:overload(function<T>(arrayLike: T, index: Int): T {})
-	public macro function copyIntoArray(self: ExprOf<Vec3>, array: ExprOf<ArrayAccess<Float>>, index: ExprOf<Int>) {
-		return macro {
-			var self = $self;
-			var array = $array;
-			var i: Int = $index;
-			array[0 + i] = self.x;
-			array[1 + i] = self.y;
-			array[2 + i] = self.z;
-			array;
-		}
 	}
 
 	public inline function clone() {
@@ -1172,11 +1160,34 @@ abstract Vec3(Vec3Data) to Vec3Data from Vec3Data {
 	@:op(a != b)
 	static inline function notEqual(a: Vec3, b: Vec3): Bool
 		return !equal(a, b);
+
+	#end // !macro
+
+	@:op(a.b) macro function swizzleRead(self, name: String) {
+		return swizzleReadExpr(self, name);
+	}
+
+	@:op(a.b) macro function swizzleWrite(self, name: String, value: Expr) {
+		return swizzleWriteExpr(self, name, value);
+	}
+
+	@:overload(function<T>(arrayLike: T, index: Int): T {})
+	public macro function copyIntoArray(self: ExprOf<Vec3>, array: ExprOf<ArrayAccess<Float>>, index: ExprOf<Int>) {
+		return macro {
+			var self = $self;
+			var array = $array;
+			var i: Int = $index;
+			array[0 + i] = self.x;
+			array[1 + i] = self.y;
+			array[2 + i] = self.z;
+			array;
+		}
+	}
 	
 }
 
 private class Vec3Data {
-
+	#if !macro
 	public var x: Float;
 	public var y: Float;
 	public var z: Float;
@@ -1187,11 +1198,13 @@ private class Vec3Data {
 		this.y = y + 0.0;
 		this.z = z + 0.0;
 	}
-
+	#end
 }
 
 @:nullSafety
 abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
+
+	#if !macro
 
 	public var x (get, set): Float;
 	inline function get_x() return this.x;
@@ -1209,14 +1222,6 @@ abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 	public inline function new(x: Float, y: Float, z: Float, w: Float) {
 		this = new Vec4Data(x, y, z, w);
 	}
-	
-	@:op(a.b) macro function swizzleRead(self, name: String) {
-		return swizzleReadExpr(self, name);
-	}
-
-	@:op(a.b) macro function swizzleWrite(self, name: String, value: Expr) {
-		return swizzleWriteExpr(self, name, value);
-	}
 
 	public inline function copyFrom(v: Vec4) {
 		x = v.x;
@@ -1224,20 +1229,6 @@ abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 		z = v.z;
 		w = v.w;
 		return this;
-	}
-
-	@:overload(function<T>(arrayLike: T, index: Int): T {})
-	public macro function copyIntoArray(self: ExprOf<Vec4>, array: ExprOf<ArrayAccess<Float>>, index: ExprOf<Int>) {
-		return macro {
-			var self = $self;
-			var array = $array;
-			var i: Int = $index;
-			array[0 + i] = self.x;
-			array[1 + i] = self.y;
-			array[2 + i] = self.z;
-			array[3 + i] = self.w;
-			array;
-		}
 	}
 
 	public inline function clone() {
@@ -1641,11 +1632,35 @@ abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 	@:op(a != b)
 	static inline function notEqual(a: Vec4, b: Vec4): Bool
 		return !equal(a, b);
+
+	#end // !macro
+
+	@:op(a.b) macro function swizzleRead(self, name: String) {
+		return swizzleReadExpr(self, name);
+	}
+
+	@:op(a.b) macro function swizzleWrite(self, name: String, value: Expr) {
+		return swizzleWriteExpr(self, name, value);
+	}
+
+	@:overload(function<T>(arrayLike: T, index: Int): T {})
+	public macro function copyIntoArray(self: ExprOf<Vec4>, array: ExprOf<ArrayAccess<Float>>, index: ExprOf<Int>) {
+		return macro {
+			var self = $self;
+			var array = $array;
+			var i: Int = $index;
+			array[0 + i] = self.x;
+			array[1 + i] = self.y;
+			array[2 + i] = self.z;
+			array[3 + i] = self.w;
+			array;
+		}
+	}
 	
 }
 
 private class Vec4Data {
-
+	#if !macro
 	public var x: Float;
 	public var y: Float;
 	public var z: Float;
@@ -1658,10 +1673,12 @@ private class Vec4Data {
 		this.z = z + 0.0;
 		this.w = w + 0.0;
 	}
-
+	#end
 }
 
 abstract Mat2(Mat2Data) from Mat2Data to Mat2Data {
+
+	#if !macro
 
 	public inline function new(
 		a00: Float, a01: Float,
@@ -1678,21 +1695,6 @@ abstract Mat2(Mat2Data) from Mat2Data to Mat2Data {
 		this.c0.copyFrom(v.c0);
 		this.c1.copyFrom(v.c1);
 		return this;
-	}
-
-	/**
-		Copies matrix elements in column-major order into a type that supports array-write access
-	**/
-	@:overload(function<T>(arrayLike: T, index: Int): T {})
-	public macro function copyIntoArray(self: ExprOf<Mat2>, array: ExprOf<ArrayAccess<Float>>, index: ExprOf<Int>) {
-		return macro  {
-			var self = $self;
-			var array = $array;
-			var i: Int = $index;
-			self[0].copyIntoArray(array, i);
-			self[1].copyIntoArray(array, i + 2);
-			array;
-		}
 	}
 
 	public inline function clone(): Mat2 {
@@ -1962,10 +1964,27 @@ abstract Mat2(Mat2Data) from Mat2Data to Mat2Data {
 	static inline function notEqual(m: Mat2, n: Mat2): Bool
 		return !equal(m, n);
 
+	#end // !macro
+
+	/**
+		Copies matrix elements in column-major order into a type that supports array-write access
+	**/
+	@:overload(function<T>(arrayLike: T, index: Int): T {})
+	public macro function copyIntoArray(self: ExprOf<Mat2>, array: ExprOf<ArrayAccess<Float>>, index: ExprOf<Int>) {
+		return macro  {
+			var self = $self;
+			var array = $array;
+			var i: Int = $index;
+			self[0].copyIntoArray(array, i);
+			self[1].copyIntoArray(array, i + 2);
+			array;
+		}
+	}
+
 }
 
 private class Mat2Data {
-
+	#if !macro
 	public var c0: Vec2;
 	public var c1: Vec2;
 
@@ -1976,10 +1995,12 @@ private class Mat2Data {
 		c0 = new Vec2(a00, a01);
 		c1 = new Vec2(a10, a11);
 	}
-
+	#end
 }
 
 abstract Mat3(Mat3Data) from Mat3Data to Mat3Data {
+
+	#if !macro
 
 	public inline function new(
 		a00: Float, a01: Float, a02: Float,
@@ -1999,22 +2020,6 @@ abstract Mat3(Mat3Data) from Mat3Data to Mat3Data {
 		this.c1.copyFrom(v.c1);
 		this.c2.copyFrom(v.c2);
 		return this;
-	}
-
-	/**
-		Copies matrix elements in column-major order into a type that supports array-write access
-	**/
-	@:overload(function<T>(arrayLike: T, index: Int): T {})
-	public macro function copyIntoArray(self: ExprOf<Mat3>, array: ExprOf<ArrayAccess<Float>>, index: ExprOf<Int>) {
-		return macro  {
-			var self = $self;
-			var array = $array;
-			var i: Int = $index;
-			self[0].copyIntoArray(array, i);
-			self[1].copyIntoArray(array, i + 3);
-			self[2].copyIntoArray(array, i + 6);
-			array;
-		}
 	}
 
 	public inline function clone(): Mat3 {
@@ -2328,10 +2333,28 @@ abstract Mat3(Mat3Data) from Mat3Data to Mat3Data {
 	static inline function notEqual(m: Mat3, n: Mat3): Bool
 		return !equal(m, n);
 
+	#end // !macro
+
+	/**
+		Copies matrix elements in column-major order into a type that supports array-write access
+	**/
+	@:overload(function<T>(arrayLike: T, index: Int): T {})
+	public macro function copyIntoArray(self: ExprOf<Mat3>, array: ExprOf<ArrayAccess<Float>>, index: ExprOf<Int>) {
+		return macro  {
+			var self = $self;
+			var array = $array;
+			var i: Int = $index;
+			self[0].copyIntoArray(array, i);
+			self[1].copyIntoArray(array, i + 3);
+			self[2].copyIntoArray(array, i + 6);
+			array;
+		}
+	}
+
 }
 
 private class Mat3Data {
-
+	#if !macro
 	public var c0: Vec3;
 	public var c1: Vec3;
 	public var c2: Vec3;
@@ -2345,10 +2368,12 @@ private class Mat3Data {
 		c1 = new Vec3(a10, a11, a12);
 		c2 = new Vec3(a20, a21, a22);
 	}
-
+	#end
 }
 
 abstract Mat4(Mat4Data) from Mat4Data to Mat4Data {
+
+	#if !macro
 
 	public inline function new(
 		a00: Float, a01: Float, a02: Float, a03: Float,
@@ -2371,23 +2396,6 @@ abstract Mat4(Mat4Data) from Mat4Data to Mat4Data {
 		this.c2.copyFrom(v.c2);
 		this.c3.copyFrom(v.c3);
 		return this;
-	}
-
-	/**
-		Copies matrix elements in column-major order into a type that supports array-write access
-	**/
-	@:overload(function<T>(arrayLike: T, index: Int): T {})
-	public macro function copyIntoArray(self: ExprOf<Mat4>, array: ExprOf<ArrayAccess<Float>>, index: ExprOf<Int>) {
-		return macro  {
-			var self = $self;
-			var array = $array;
-			var i: Int = $index;
-			self[0].copyIntoArray(array, i);
-			self[1].copyIntoArray(array, i + 4);
-			self[2].copyIntoArray(array, i + 8);
-			self[3].copyIntoArray(array, i + 12);
-			array;
-		}
 	}
 
 	public inline function clone(): Mat4 {
@@ -2771,11 +2779,30 @@ abstract Mat4(Mat4Data) from Mat4Data to Mat4Data {
 	static inline function notEqual(m: Mat4, n: Mat4): Bool
 		return !equal(m, n);
 
+	#end // !macro
+
+	/**
+		Copies matrix elements in column-major order into a type that supports array-write access
+	**/
+	@:overload(function<T>(arrayLike: T, index: Int): T {})
+	public macro function copyIntoArray(self: ExprOf<Mat4>, array: ExprOf<ArrayAccess<Float>>, index: ExprOf<Int>) {
+		return macro  {
+			var self = $self;
+			var array = $array;
+			var i: Int = $index;
+			self[0].copyIntoArray(array, i);
+			self[1].copyIntoArray(array, i + 4);
+			self[2].copyIntoArray(array, i + 8);
+			self[3].copyIntoArray(array, i + 12);
+			array;
+		}
+	}
+
 
 }
 
 private class Mat4Data {
-
+	#if !macro
 	public var c0: Vec4;
 	public var c1: Vec4;
 	public var c2: Vec4;
@@ -2792,12 +2819,14 @@ private class Mat4Data {
 		c2 = new Vec4(a20, a21, a22, a23);
 		c3 = new Vec4(a30, a31, a32, a33);
 	}
-
+	#end
 }
 
-// # Macros
-
 #if macro
+
+/**
+	macro-only code
+**/
 
 final floatType = Context.getType('Float');
 final vec2Type = Context.getType('VectorMath.Vec2');
