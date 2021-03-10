@@ -272,21 +272,21 @@ inline function cross(a: Vec3, b: Vec3): Vec3 {
 // # Vector Initializers
 // macros are used to enable function overloads which makes vector composition possible, for example: `vec4(vec2(1,2), vec2(3,4))`
 
-@:overload(function(x: Float, y: Float): Vec2 {})
-@:overload(function(x: Float): Vec2 {})
-@:overload(function(xy: Vec2): Vec2 {})
-macro function vec2(a, ?b): ExprOf<Vec2> {
-	return useCurrentPos(vectorConstructor(2, [a, b]));
-}
+overload extern inline function vec2(m: Mat4): Vec2 return new Vec2(m[0][0], m[0][1]);
+overload extern inline function vec2(m: Mat3): Vec2 return new Vec2(m[0][0], m[0][1]);
+overload extern inline function vec2(m: Mat2): Vec2 return new Vec2(m[0][0], m[0][1]);
+overload extern inline function vec2(xy: Vec2): Vec2 return new Vec2(xy.x, xy.y);
+overload extern inline function vec2(x: Float): Vec2 return new Vec2(x, x);
+overload extern inline function vec2(x: Float, y: Float): Vec2 return new Vec2(x, y);
 
-@:overload(function(x: Float, y: Float, z: Float): Vec3 {})
-@:overload(function(x: Float): Vec3 {})
-@:overload(function(x: Float, yz: Vec2): Vec3 {})
-@:overload(function(xy: Vec2, z: Float): Vec3 {})
-@:overload(function(xyz: Vec3): Vec3 {})
-macro function vec3(a, ?b, ?c): ExprOf<Vec3> {
-	return useCurrentPos(vectorConstructor(3, [a, b, c]));
-}
+overload extern inline function vec3(m: Mat4): Vec3 return new Vec3(m[0][0], m[0][1], m[0][2]);
+overload extern inline function vec3(m: Mat3): Vec3 return new Vec3(m[0][0], m[0][1], m[0][2]);
+overload extern inline function vec3(m: Mat2): Vec3 return new Vec3(m[0][0], m[0][1], m[1][0]);
+overload extern inline function vec3(xyz: Vec3): Vec3 return new Vec3(xyz.x, xyz.y, xyz.z);
+overload extern inline function vec3(x: Float, yz: Vec2): Vec3 return new Vec3(x, yz.x, yz.y);
+overload extern inline function vec3(xy: Vec2, z: Float): Vec3 return new Vec3(xy.x, xy.y, z);
+overload extern inline function vec3(x: Float): Vec3 return new Vec3(x, x, x);
+overload extern inline function vec3(x: Float, y: Float, z: Float): Vec3 return new Vec3(x, y, z);
 
 overload extern inline function vec4(m: Mat4): Vec4 return new Vec4(m[0][0], m[0][1], m[0][2], m[0][3]);
 overload extern inline function vec4(m: Mat3): Vec4 return new Vec4(m[0][0], m[0][1], m[0][2], m[1][0]);
@@ -2818,33 +2818,6 @@ function mapVecType(e: Expr): Int {
 			else if (Context.unify(t, vec3Type)) 3;
 			else if (Context.unify(t, vec4Type)) 4;
 			else -1; // non-vector type
-	}
-}
-
-function vectorConstructor(length: Int, _argExprs: Array<Expr>): Expr {
-	var typePath: TypePath = {
-		name: 'Vec$length',
-		pack: [],
-	};
-
-	var argsNotNull = new Array<Expr>();
-	for(arg in _argExprs) {
-		switch arg {
-			case macro null: break;
-			default: argsNotNull.push(arg);
-		}
-	}
-
-	return if (argsNotNull.length == 1 && Context.unify(Context.typeof(argsNotNull[0]), floatType)) {
-		// special case for vec(float)
-		var constructorArgs = [for (i in 0...length) macro x];
-		macro {
-			var x = ${argsNotNull[0]};
-			new $typePath($a{constructorArgs});
-		}
-	} else {
-		var constructorArgs = constructorArguments(length, 1, argsNotNull, false);
-		macro new $typePath($a{constructorArgs});
 	}
 }
 
