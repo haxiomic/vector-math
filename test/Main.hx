@@ -46,11 +46,14 @@ function main() {
 	test(sign(0) == 0);
 
 	// mod
-	test(mod(2.9, 3) == 2.9);
-	test(mod(3.5, 3) == 0.5);
-	test(mod(6.5, 3.8) == 2.7);
-	test(mod(vec2(-0.1, 6.5), 3) == vec2(2.9, 0.5));
-	test(mod(vec2(-0.1, 6.5), vec2(2.2, 3.3)) == vec2(2.1, 3.2));
+	testLimitedPrecision(mod(-7, 4.4) == 1.8);
+	testLimitedPrecision(mod(2.9, 3) == 2.9);
+	testLimitedPrecision(mod(3.5, 3) == 0.5);
+	testLimitedPrecision(mod(6.5, 3.8) == 2.7);
+
+	testLimitedPrecision(mod(vec2(-0.1, 6.5), 3) == vec2(2.9, 0.5));
+	testLimitedPrecision(mod(vec2(-0.1, 6.5), vec2(2.2, 3.3)) == vec2(2.1, 3.2));
+	testLimitedPrecision(mod(vec3(-0.1, 6.5, -7), vec3(2.2, 3.3, 4.4)) == vec3(2.1, 3.2, 1.8));
 
 	// ------------
 	// -- Mat2
@@ -93,16 +96,16 @@ function main() {
 	);
 
 	// inverse
-	test(
-		mat2Floor(inverse(mat2(
+	testLimitedPrecision(
+		inverse(mat2(
 			2, 3, 
 			11,13
-		)) * precision)/precision
+		))
 			==
-		mat2Floor(mat2(
+		mat2(
 			-13/7, 3/7,
 			11/7, -2/7
-		) * precision) / precision
+		)
 	);
 
 	// adjoint
@@ -283,18 +286,18 @@ function main() {
 	);
 
 	// inverse
-	test(
-		mat3Floor(inverse(mat3(
+	testLimitedPrecision(
+		inverse(mat3(
 			2, 3, 5, 
 			11,13,17,
 			23,29,31
-		)) * precision)/precision
+		))
 		== 
-		mat3Floor(mat3(
+		mat3(
 			-9/7, 26/35, -1/5,
 			5/7, -53/70, 3/10,
 			2/7, 11/70, -1/10
-		)*precision)/precision
+		)
 	);
 
 	// adjoint
@@ -637,20 +640,20 @@ function main() {
 	);
 
 	// inverse
-	test(
-		mat4Floor(inverse(mat4(
+	testLimitedPrecision(
+		inverse(mat4(
 			2, 3, 5, 7,
 			11,13,17,19,
 			23,29,31,37,
 			41,43,47,53
-		)) * precision)/precision
+		))
 			==
-		mat4Floor(mat4(
+		mat4(
 			 3/11, -12/55, -1/5, 2/11,
 			-5/11, -2/55, 3/10, -3/22,
 			-13/22, 307/440, -1/10, -9/88,
 			15/22, -37/88, 0, 7/88
-		) * precision)/precision
+		)
 	);
 
 	// adjoint
@@ -697,14 +700,21 @@ function main() {
 	testsComplete();
 }
 
-function mat2Floor(m: Mat2) {
-	return mat2(floor(m[0]), floor(m[1]));
+overload extern inline function limitPrecision(x: Float): Float return floor(x * precision) / precision;
+overload extern inline function limitPrecision(x: Vec2): Vec2 return floor(x * precision) / precision;
+overload extern inline function limitPrecision(x: Vec3): Vec3 return floor(x * precision) / precision;
+overload extern inline function limitPrecision(x: Vec4): Vec4 return floor(x * precision) / precision;
+overload extern inline function limitPrecision(x: Mat2): Mat2 {
+	var m = x * precision;
+	return mat2(floor(m[0]), floor(m[1])) / precision;
 }
-function mat3Floor(m: Mat3) {
-	return mat3(floor(m[0]), floor(m[1]), floor(m[2]));
+overload extern inline function limitPrecision(x: Mat3): Mat3 {
+	var m = x * precision;
+	return mat3(floor(m[0]), floor(m[1]), floor(m[2])) / precision;
 }
-function mat4Floor(m: Mat4) {
-	return mat4(floor(m[0]), floor(m[1]), floor(m[2]), floor(m[3]));
+overload extern inline function limitPrecision(x: Mat4): Mat4 {
+	var m = x * precision;
+	return mat4(floor(m[0]), floor(m[1]), floor(m[2]), floor(m[3])) / precision;
 }
 
 #end
@@ -746,11 +756,25 @@ function testsComplete() {
 	}
 }
 
-function limitPrecision(x: Float) {
-	return Math.floor(x * precision) / precision;
+macro function testLimitedPrecision(expr: Expr, ?details: String) {
+	return testInternal(
+		switch expr {
+			case {expr: EBinop(op, e1, e2), pos: pos}: {
+				expr: EBinop(op, macro limitPrecision($e1), macro limitPrecision($e2)),
+				pos: pos,
+			}
+			default: Context.error('Expected binary op expression', Context.currentPos());
+		},
+		details
+	);
 }
 
-macro function test(expr, ?details) {
+macro function test(expr: Expr, ?details: String) {
+	return testInternal(expr, details);
+}
+
+#if macro
+function testInternal(expr: Expr, ?details: String) {
 	var pos = Context.currentPos();
 	var isBoolExpr = Context.unify(Context.typeof(expr), ComplexTypeTools.toType(macro :Bool));
 	if (!isBoolExpr) {
@@ -772,10 +796,10 @@ macro function test(expr, ?details) {
 	} else {
 		macro null;
 	}
-	
+
 	return macro if (!${expr}) {
 		testFailed();
-		var detail = ${details};
+		var detail = $v{details};
 		println(
 			'Test failed (' + $v{posInfo.file} + ':' + $v{posInfo.range.start.line} + ')\n\n' +
 			(detail != null ? '\t' + detail + '\n' : '') +
@@ -786,6 +810,7 @@ macro function test(expr, ?details) {
 		testPassed();
 	};
 }
+#end
 
 function println(str) {
 	#if sys
