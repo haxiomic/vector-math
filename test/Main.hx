@@ -48,6 +48,11 @@ function main() {
 	testLimitedPrecision(mod(vec2(-0.1, 6.5), vec2(2.2, 3.3)) == vec2(2.1, 3.2));
 	testLimitedPrecision(mod(vec3(-0.1, 6.5, -7), vec3(2.2, 3.3, 4.4)) == vec3(2.1, 3.2, 1.8));
 
+	// swizzles aliases
+	test(vec4(1,2,3,4).wzyx == vec4(4,3,2,1));
+	test(vec4(1,2,3,4).abgr == vec4(4,3,2,1));
+	test(vec4(1,2,3,4).qpts == vec4(4,3,2,1));
+
 	// ------------
 	// -- Mat2
 	// ------------
