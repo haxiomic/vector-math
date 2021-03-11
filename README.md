@@ -1,23 +1,97 @@
 # Haxe Vector Math
-**Requires [haxe 4.2+](https://build.haxe.org/builds/haxe/) (which is currently unreleased!)**
+
+**Requires [haxe 4.2+](https://build.haxe.org/builds/haxe/)**
 
 Haxe vector math library that enables GLSL vector and matrix operations to compile in haxe
 
-- Built-in GLSL vector & float functions: `dot(vec3(1,2,3), vec3(4,5,6))`
-- Operator overloads: `mat2(2) * vec2(3, 4) * 0.5 - vec2(0.5)`
-- Swizzled read and write, for example: `vec3(0).yxz = vec3(1,2,3)`
-- GLSL vector constructors that support vector composition, for example: `vec4(vec3(0), 1.0)` or `vec4(vec2(1), vec2(2))`
-- Fully inlined so that vector objects are rarely constructed, instead vector operations compile to stack variables. For example, the following compiled with `-D analyzer-optimize`
-	```haxe
-	trace(length(mat2(2) * vec2(3, 4) * 0.5 - vec2(0.5)));
-	```
-	Generates
-	```js
-	console.log(Math.sqrt(18.5));
-	```
-	(Cool right?)
+## Features
 
-	Furthermore, because vector components are just stack variables these operations are easily auto-vectorized (SIMD) on compiled targets like cpp
+**GLSL Built-in Functions**
+
+All build-in functions are available after `import VectorMath;`
+```haxe
+import VectorMath;
+
+var direction = normalize(velocity);
+var speed = length(velocity);
+```
+
+**Vector and Matrix Constructors**
+
+Vectors and matrices can be constructed in the same way as GLSL
+```haxe
+// new keyword not required
+vec2(1, 2);
+
+// single argument sets all components
+vec2(0.0);
+
+// vector composition
+var color = vec3(0, 1, 0);
+vec4(color, a);
+
+// matrices can be composed from vectors
+mat2(
+	vec2(1, 0), // column 0
+	vec2(0, 1)  // column 1
+);
+
+// a single argument sets the diagonal components (which creates a scale matrix)
+mat2(scale);
+```
+
+**Operator Overloads**
+
+All vector, matrix and scalar operations available in GLSL are supported
+```haxe
+// vectors can multiply with scalars
+vec2(1, 2) * 0.5;
+
+// vectors can be multiplied with compatible matrices
+mat2(2) * vec2(3, 4);
+var position = projection * view * model * vec4(xyz, 1.0);
+
+// +=, *= etc work
+var dt = 1/60;
+var position = vec2(0.0);
+var velocity = vec2(0.3, 0.4);
+position += velocity * dt;
+
+// component-wise comparison
+vec2(1, 2) == vec2(1, 2) // true
+```
+
+**Swizzles**
+
+Supports all possible _read_ and _write_ swizzle operations, including aliases `rgba` and `stpq`
+```haxe
+vec4(1, 2, 3, 4).wzyx == vec4(4, 3, 2, 1); // true
+
+// set xy components to (1, 2)
+var position = vec4(0.0);
+position.xy = vec2(1, 2);
+
+// set rgb components to green
+var color4 = vec4(1.0); // white
+color4.rgb = vec3(0., 1., 0); // green
+```
+
+**Performance**
+
+All operations are inlined so that vector objects are rarely constructed, instead vector operations compile to stack variables (meaning we can avoid the GC completely for most vector operations!). For example, the following compiled with `-D analyzer-optimize`
+
+```haxe
+trace(length(mat2(2) * vec2(3, 4) * 0.5 - vec2(0.5)));
+```
+
+Generates
+
+```js
+console.log(Math.sqrt(18.5));
+```
+(Cool right?)
+
+Furthermore, because vector components are just stack variables these operations are easily auto-vectorized (SIMD) on compiled targets like cpp
 
 
 ### Usage
@@ -40,20 +114,15 @@ function main() {
 Add `--dce full` and `-D analyzer-optimize` to your hxml for clean output!
 
 ### Q/A
-- **Why does it require haxe 4.2? – this isn't yet released**
-
-	This library uses module-level functions which are introduced in 4.2, it can be written without them and so can be modified to work on haxe 4.0. I don't plan on doing this myself but I'm happy to accept PRs for this
-
 - **What are the differences to GLSL?**
 
 	- Direct vector assignment is **reference** rather than **copy**, that is: in the following statement: `var ref = original`, 'ref' represents the same underlying vector as 'original', whereas in GLSL it would be a copy. To copy a vector you can do any of `var copy = original.clone()`, `var copy = vec3(original)` or `var copy = original.xyz`. When accessing sub vectors, the accessed vector **is** copied. For example `var column0Copy = matrix[0]`
-	- Aliases for rgba and stpq have been [turned off](https://github.com/haxiomic/vector-math/blob/50e6460cb5b05d8f264c393ecb6e6cba416d71b3/VectorMath.hx#L2702) for compile-time performance
 	- You can call methods via dot syntax in addition to regular calls, for example: `vec3(1).length()` and `length(vec(1))` are equivalent
 	- Boolean and integer vector types are not yet included (`bvec` and `ivec`). These may come in the future if there's a desire for them
 
 - **Which haxe targets does this work on?**
 
-	All haxe targets are supported :)
+	All haxe targets are supported with the exception of macros, this is an optimization to improve compile time performance
 
 - **Can this be used to generate shader code?**
 
