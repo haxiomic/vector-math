@@ -1,6 +1,7 @@
 import TestFramework;
 import VectorMath;
 
+// when comparing floats
 final precision = 1000000;
 
 inline function quatMul(q1: Vec4, q2: Vec4)
