@@ -8,7 +8,7 @@ Haxe vector math library that enables GLSL vector and matrix operations to compi
 
 **GLSL Built-in Functions**
 
-All build-in functions are available after `import VectorMath;`
+All GLSL built-in functions are available after `import VectorMath;`
 ```haxe
 import VectorMath;
 
@@ -18,7 +18,7 @@ var speed = length(velocity);
 
 **Vector and Matrix Constructors**
 
-Vectors and matrices can be constructed in the same way as GLSL
+Vectors and matrices can be constructed with the same patterns as GLSL
 ```haxe
 // new keyword not required
 vec2(1, 2);
@@ -46,6 +46,7 @@ All vector, matrix and scalar operations available in GLSL are supported
 ```haxe
 // vectors can multiply with scalars
 vec2(1, 2) * 0.5;
+mat2(1) * 0.5; // return a new mat2 after multiplying each component with the scalar
 
 // vectors can be multiplied with compatible matrices
 mat2(2) * vec2(3, 4);
