@@ -96,7 +96,7 @@ Furthermore, because vector components are just stack variables these operations
 
 
 ### Usage
-Install with `haxelib install vector-math` (or simply copy [VectorMath.hx](VectorMath.hx) into your project as this is a single-file library)
+Install with `haxelib install vector-math`
 
 Add `--library vector-math` to your hxml commands
 
