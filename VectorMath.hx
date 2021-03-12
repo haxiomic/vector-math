@@ -12,7 +12,7 @@
 
 	@license MIT
 	@author haxiomic (George Corney)
-	@version 1.5.0
+	@version 2.0.0
 **/
 
 // # Built-in Functions
