@@ -695,6 +695,12 @@ function main() {
 	var r = quatRotate(v1, q).xyz;
 	test(floor(r * 10000) / 10000 == floor(v2 * 10000) / 10000);
 
+	var pos = vec4(1);
+	var result = pos.xy = vec2(0.0);
+	test(result == vec2(0.0));
+	var result = pos.xy += 0.5;
+	test(result == vec2(0.5));
+
 	testsComplete();
 }
 
