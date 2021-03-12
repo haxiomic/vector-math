@@ -1,6 +1,6 @@
 # Haxe Vector Math
 
-**Requires [haxe 4.2+](https://build.haxe.org/builds/haxe/)**
+**Requires [haxe 4.2+](https://haxe.org/download/)**
 
 Haxe vector math library that enables GLSL vector and matrix operations to compile in haxe
 
