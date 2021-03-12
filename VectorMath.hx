@@ -94,7 +94,7 @@ overload extern inline function exp2(v: Float): Float return Math.pow(2, v);
 overload extern inline function log2(v: Vec4): Vec4 return v.log2();
 overload extern inline function log2(v: Vec3): Vec3 return v.log2();
 overload extern inline function log2(v: Vec2): Vec2 return v.log2();
-overload extern inline function log2(v: Float): Float return Math.log(v) * 1.4426950408889634;
+overload extern inline function log2(v: Float): Float return log2f(v);
 
 overload extern inline function sqrt(v: Vec4): Vec4 return v.sqrt();
 overload extern inline function sqrt(v: Vec3): Vec3 return v.sqrt();
@@ -374,3 +374,17 @@ overload extern inline function mat4(
 	a20, a21, a22, a23,
 	a30, a31, a32, a33
 );
+
+// internal methods
+private inline function log2f(v: Float) {
+	var l2 = Math.log(v) * 1.4426950408889634;
+
+	// we must handle powers of 2 exactly to avoid unexpected behavior floating point values, e.g. log2(8) ~ 2.9999... which may later be used in floor()
+	var isPot = if (v % 1 == 0) {
+		// is integer
+		var i = Std.int(v);
+		(i & (i - 1)) == 0; // is power of 2
+	} else false;
+
+	return isPot ? Math.round(l2) : l2;
+}

@@ -104,8 +104,11 @@ abstract Vec2(Vec2Data) to Vec2Data from Vec2Data {
 			Math.pow(2, y)
 		);
 	}
-	public inline function log2(): Vec2 {
-		return log() * 1.4426950408889634;
+	public inline function log2(): Vec2 @:privateAccess {
+		return new Vec2(
+			VectorMath.log2f(x),
+			VectorMath.log2f(y)
+		);
 	}
 	public inline function sqrt(): Vec2 {
 		return new Vec2(

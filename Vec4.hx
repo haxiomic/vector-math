@@ -134,8 +134,13 @@ abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 			Math.pow(2, w)
 		);
 	}
-	public inline function log2(): Vec4 {
-		return log() * 1.4426950408889634;
+	public inline function log2(): Vec4 @:privateAccess {
+		return new Vec4(
+			VectorMath.log2f(x),
+			VectorMath.log2f(y),
+			VectorMath.log2f(z),
+			VectorMath.log2f(w)
+		);
 	}
 	public inline function sqrt(): Vec4 {
 		return new Vec4(

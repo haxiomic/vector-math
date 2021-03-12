@@ -127,8 +127,12 @@ abstract Vec3(Vec3Data) to Vec3Data from Vec3Data {
 			Math.pow(2, z)
 		);
 	}
-	public inline function log2(): Vec3 {
-		return log() * 1.4426950408889634;
+	public inline function log2(): Vec3 @:privateAccess {
+		return new Vec3(
+			VectorMath.log2f(x),
+			VectorMath.log2f(y),
+			VectorMath.log2f(z)
+		);
 	}
 	public inline function sqrt(): Vec3 {
 		return new Vec3(
