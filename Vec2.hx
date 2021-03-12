@@ -407,7 +407,7 @@ abstract Vec2(Vec2Data) to Vec2Data from Vec2Data {
 	
 }
 
-private class Vec2Data {
+class Vec2Data {
 	#if !macro
 	public var x: Float;
 	public var y: Float;
