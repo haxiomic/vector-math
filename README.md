@@ -123,7 +123,7 @@ Add `--dce full` and `-D analyzer-optimize` to your hxml for clean output!
 
 - **Which haxe targets does this work on?**
 
-	All haxe targets are supported with the exception of macros, this is an optimization to improve compile time performance
+	All haxe targets are supported with the exception of macros, this is an optimization to improve compile-time performance
 
 - **Can this be used to generate shader code?**
 
