@@ -310,7 +310,8 @@ abstract Mat2(Mat2Data) from Mat2Data to Mat2Data {
 
 }
 
-private class Mat2Data {
+@:noCompletion
+class Mat2Data {
 	#if !macro
 	public var c0: Vec2;
 	public var c1: Vec2;

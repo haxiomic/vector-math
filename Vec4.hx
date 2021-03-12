@@ -467,6 +467,7 @@ abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 	
 }
 
+@:noCompletion
 class Vec4Data {
 	#if !macro
 	public var x: Float;

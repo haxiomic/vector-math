@@ -432,7 +432,8 @@ abstract Mat4(Mat4Data) from Mat4Data to Mat4Data {
 
 }
 
-private class Mat4Data {
+@:noCompletion
+class Mat4Data {
 	#if !macro
 	public var c0: Vec4;
 	public var c1: Vec4;

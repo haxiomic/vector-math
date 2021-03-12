@@ -358,7 +358,8 @@ abstract Mat3(Mat3Data) from Mat3Data to Mat3Data {
 
 }
 
-private class Mat3Data {
+@:noCompletion
+class Mat3Data {
 	#if !macro
 	public var c0: Vec3;
 	public var c1: Vec3;
