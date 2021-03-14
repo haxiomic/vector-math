@@ -265,7 +265,6 @@ inline function cross(a: Vec3, b: Vec3): Vec3 {
 }
 
 // # Vector Initializers
-// macros are used to enable function overloads which makes vector composition possible, for example: `vec4(vec2(1,2), vec2(3,4))`
 
 overload extern inline function vec2(m: Mat4): Vec2 return new Vec2(m[0][0], m[0][1]);
 overload extern inline function vec2(m: Mat3): Vec2 return new Vec2(m[0][0], m[0][1]);
