@@ -260,12 +260,14 @@ abstract Vec3(Vec3Data) to Vec3Data from Vec3Data {
 		return x * b.x + y * b.y + z * b.z;
 	}
 	public inline function normalize(): Vec3 {
-		var lenSq = (this: Vec3).dot(this);
-		return lenSq == 0.0 ? new Vec3(0.0, 0.0, 0.0) : (this: Vec3) / Math.sqrt(lenSq);
+		var v: Vec3 = this;
+		var lenSq = v.dot(this);
+		var denominator = lenSq == 0.0 ? 1.0 : Math.sqrt(lenSq); // for 0 length, return zero vector rather than infinity
+		return v / denominator;
 	}
 
 	public inline function faceforward(I: Vec3, Nref: Vec3): Vec3 {
-		return Nref.dot(I) < 0 ? new Vec3(x, y, z) : new Vec3(-x, -y, -z);
+		return new Vec3(x, y, z) * (Nref.dot(I) < 0 ? 1 : -1);
 	}
 	public inline function reflect(N: Vec3): Vec3 {
 		var I = (this: Vec3);
@@ -275,11 +277,9 @@ abstract Vec3(Vec3Data) to Vec3Data from Vec3Data {
 		var I = (this: Vec3);
 		var nDotI = N.dot(I);
 		var k = 1.0 - eta * eta * (1.0 - nDotI * nDotI);
-		return if (k < 0.0) {
-			new Vec3(0., 0., 0.);
-		} else {
-			eta * I - (eta * nDotI + Math.sqrt(k)) * N;
-		}
+		return
+			(eta * I - (eta * nDotI + Math.sqrt(k)) * N)
+			* (k < 0.0 ? 0.0 : 1.0); // if k < 0, result should be 0 vector
 	}
 
 	public inline function toString() {

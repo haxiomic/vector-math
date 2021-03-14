@@ -225,12 +225,14 @@ abstract Vec2(Vec2Data) to Vec2Data from Vec2Data {
 		return x * b.x + y * b.y;
 	}
 	public inline function normalize(): Vec2 {
-		var lenSq = (this: Vec2).dot(this);
-		return lenSq == 0.0 ? new Vec2(0.0, 0.0) : (this: Vec2) / Math.sqrt(lenSq);
+		var v: Vec2 = this;
+		var lenSq = v.dot(this);
+		var denominator = lenSq == 0.0 ? 1.0 : Math.sqrt(lenSq); // for 0 length, return zero vector rather than infinity
+		return v / denominator;
 	}
 
 	public inline function faceforward(I: Vec2, Nref: Vec2): Vec2 {
-		return Nref.dot(I) < 0 ? new Vec2(x, y) : new Vec2(-x, -y);
+		return new Vec2(x, y) * (Nref.dot(I) < 0 ? 1 : -1);
 	}
 	public inline function reflect(N: Vec2): Vec2 {
 		var I = (this: Vec2);
@@ -240,11 +242,9 @@ abstract Vec2(Vec2Data) to Vec2Data from Vec2Data {
 		var I = (this: Vec2);
 		var nDotI = N.dot(I);
 		var k = 1.0 - eta * eta * (1.0 - nDotI * nDotI);
-		return if (k < 0.0) {
-			new Vec2(0., 0.);
-		} else {
-			eta * I - (eta * nDotI + Math.sqrt(k)) * N;
-		}
+		return
+			(eta * I - (eta * nDotI + Math.sqrt(k)) * N)
+			* (k < 0.0 ? 0.0 : 1.0); // if k < 0, result should be 0 vector
 	}
 
 	public inline function toString() {
