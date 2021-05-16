@@ -46,6 +46,11 @@ function swizzleWriteExpr(self, name: String, value) {
 	var f2 = f[2];
 	var f3 = f[3];
 	return switch name.length {
+		case 1:
+			macro {
+				var self = $self;
+				self.$f0 = $value;
+			}
 		case 2:
 			if (f0 == f1) {
 				throw 'Swizzle ".$name" disallowed because of duplicate field write';
