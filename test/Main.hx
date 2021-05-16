@@ -58,6 +58,13 @@ function main() {
 	test(vec4(1,2,3,4).abgr == vec4(4,3,2,1));
 	test(vec4(1,2,3,4).qpts == vec4(4,3,2,1));
 
+	var v4 = vec4(1,2,3,4);
+	test(v4.a == 4.0);
+	test(v4.q == 4.0);
+	v4.a = -1;
+	test(v4.a == -1.0);
+	test(v4.q == -1.0);
+
 	// ------------
 	// -- Mat2
 	// ------------
