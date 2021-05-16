@@ -127,7 +127,12 @@ Add `--dce full` and `-D analyzer-optimize` to your hxml for clean output!
 
 - **Can this be used to generate shader code?**
 
-	Not _yet_, heaps has [hxsl](https://heaps.io/documentation/hxsl.html) which is similar in that it's a GLSL vector math implementation in haxe, but I believe it's only at the syntax-level and so can't be executed as regular haxe code or support autocomplete. I hope to combine these two approaches eventually to allow shader code to be generated from VectorMath operations
+	Yes! @rainyt has developed a VectorMath -> GLSL translator for use with OpenFL: https://github.com/rainyt/openfl-glsl
+	
+	In the future I hope to work on a general VectorMath to shader translator to support multiple ouput shading languages
+	
+- **What makes this different from HXSL?**
+	[HXSL](https://heaps.io/documentation/hxsl.html) is the haxe-based shading language in Heaps, it has similar aims but different implementation – HXSL works at the syntax level and does not support autocomplete or compiling to CPU platform code (like js or C++), whereas VectorMath code is executable as regular haxe code as well as shader code
 
 - **Which specification is this based on?**
 
