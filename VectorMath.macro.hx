@@ -14,6 +14,11 @@ function swizzleReadExpr(self: haxe.macro.Expr, name: String) {
 	var f2 = f[2];
 	var f3 = f[3];
 	return switch name.length {
+		case 1:
+			macro {
+				var self = $self;
+				self.$f0;
+			}
 		case 2:
 			macro {
 				var self = $self;
