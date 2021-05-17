@@ -49,7 +49,7 @@ function swizzleWriteExpr(self, name: String, value) {
 		case 1:
 			macro {
 				var self = $self;
-				self = $value;
+				self.$f0 = $value;
 			}
 		case 2:
 			if (f0 == f1) {
