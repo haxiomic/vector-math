@@ -127,7 +127,7 @@ Add `--dce full` and `-D analyzer-optimize` to your hxml for clean output!
 
 - **Can this be used to generate shader code?**
 
-	Yes! @rainyt has developed a VectorMath -> GLSL translator for use with OpenFL: https://github.com/rainyt/openfl-glsl
+	Yes! @rainyt has developed a VectorMath -> GLSL translator for use with OpenFL: [github.com/rainyt/openfl-glsl](https://github.com/rainyt/openfl-glsl)
 	
 	In the future I hope to work on a general VectorMath to shader translator to support multiple ouput shading languages
 	
