@@ -132,6 +132,7 @@ Add `--dce full` and `-D analyzer-optimize` to your hxml for clean output!
 	In the future I hope to work on a general VectorMath to shader translator to support multiple ouput shading languages
 	
 - **What makes this different from HXSL?**
+
 	[HXSL](https://heaps.io/documentation/hxsl.html) is the haxe-based shading language in Heaps, it has similar aims but different implementation – HXSL works at the syntax level and does not support autocomplete or compiling to CPU platform code (like js or C++), whereas VectorMath code is executable as regular haxe code as well as shader code
 
 - **Which specification is this based on?**
