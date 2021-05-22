@@ -16,23 +16,19 @@ function swizzleReadExpr(self: haxe.macro.Expr, name: String) {
 	return switch name.length {
 		case 1:
 			macro {
-				var self = $self;
-				self.$f0;
+				$self.$f0;
 			}
 		case 2:
 			macro {
-				var self = $self;
-				new Vec2(self.$f0, self.$f1);
+				new Vec2($self.$f0, $self.$f1);
 			}
 		case 3:
 			macro {
-				var self = $self;
-				new Vec3(self.$f0, self.$f1, self.$f2);
+				new Vec3($self.$f0, $self.$f1, $self.$f2);
 			}
 		case 4:
 			macro {
-				var self = $self;
-				new Vec4(self.$f0, self.$f1, self.$f2, self.$f3);
+				new Vec4($self.$f0, $self.$f1, $self.$f2, $self.$f3);
 			}
 		default:
 			throw 'Unsupported swizzle read ".$name"';
