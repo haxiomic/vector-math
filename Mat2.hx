@@ -17,6 +17,14 @@ abstract Mat2(Mat2Data) from Mat2Data to Mat2Data {
 		);
 	}
 
+	public inline function set(
+		a00: Float, a01: Float,
+		a10: Float, a11: Float
+	) {
+		this.c0.set(a00, a01);
+		this.c1.set(a10, a11);
+	}
+
 	public inline function copyFrom(v: Mat2) {
 		var v: Mat2Data = v;
 		this.c0.copyFrom(v.c0);

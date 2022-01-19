@@ -19,6 +19,11 @@ abstract Vec2(Vec2Data) to Vec2Data from Vec2Data {
 		this = new Vec2Data(x, y);
 	}
 
+	public inline function set(x: Float, y: Float) {
+		this.x = x;
+		this.y = y;
+	}
+
 	public inline function copyFrom(v: Vec2) {
 		x = v.x;
 		y = v.y;

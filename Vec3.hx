@@ -22,6 +22,12 @@ abstract Vec3(Vec3Data) to Vec3Data from Vec3Data {
 		this = new Vec3Data(x, y, z);
 	}
 
+	public inline function set(x: Float, y: Float, z: Float) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+	}
+
 	public inline function copyFrom(v: Vec3) {
 		x = v.x;
 		y = v.y;

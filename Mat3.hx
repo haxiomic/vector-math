@@ -18,6 +18,16 @@ abstract Mat3(Mat3Data) from Mat3Data to Mat3Data {
 			a20, a21, a22
 		);
 	}
+
+	public inline function set(
+		a00: Float, a01: Float, a02: Float,
+		a10: Float, a11: Float, a12: Float,
+		a20: Float, a21: Float, a22: Float
+	) {
+		this.c0.set(a00, a01, a02);
+		this.c1.set(a10, a11, a12);
+		this.c2.set(a20, a21, a22);
+	}
 	
 	public inline function copyFrom(v: Mat3) {
 		var v: Mat3Data = v;

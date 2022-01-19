@@ -20,6 +20,18 @@ abstract Mat4(Mat4Data) from Mat4Data to Mat4Data {
 			a30, a31, a32, a33
 		);
 	}
+
+	public inline function set(
+		a00: Float, a01: Float, a02: Float, a03: Float,
+		a10: Float, a11: Float, a12: Float, a13: Float,
+		a20: Float, a21: Float, a22: Float, a23: Float,
+		a30: Float, a31: Float, a32: Float, a33: Float
+	) {
+		this.c0.set(a00, a01, a02, a03);
+		this.c1.set(a10, a11, a12, a13);
+		this.c2.set(a20, a21, a22, a23);
+		this.c3.set(a30, a31, a32, a33);
+	}
 	
 	public inline function copyFrom(v: Mat4) {
 		var v: Mat4Data = v;

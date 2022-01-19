@@ -25,6 +25,13 @@ abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 		this = new Vec4Data(x, y, z, w);
 	}
 
+	public inline function set(x: Float, y: Float, z: Float, w: Float) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.w = w;
+	}
+
 	public inline function copyFrom(v: Vec4) {
 		x = v.x;
 		y = v.y;
