@@ -1,3 +1,7 @@
+#if macro
+import haxe.macro.Expr.ExprOf;
+#end
+
 #if (vector_math_f32 && (cpp || hl || cs || java))
 // override Float (usually f64) type with f32
 @:eager private typedef Float = Single;
@@ -30,14 +34,6 @@ abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 		this.y = y;
 		this.z = z;
 		this.w = w;
-	}
-
-	public inline function copyFrom(v: Vec4) {
-		x = v.x;
-		y = v.y;
-		z = v.z;
-		w = v.w;
-		return this;
 	}
 
 	public inline function clone() {
@@ -458,8 +454,40 @@ abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 		return VectorMath.swizzleWriteExpr(self, name, value);
 	}
 
+	/**
+	 * Copy from any object with .x .y .z .w fields
+	 */
+	@:overload(function(source: {x: Float, y: Float, z: Float, w: Float}): Vec4 {})
+	public macro function copyFrom(self: ExprOf<Vec4>, source: ExprOf<{x: Float, y: Float, z: Float, w: Float}>): ExprOf<Vec4> {
+		return macro {
+			var self = $self;
+			var source = $source;
+			self.x = source.x;
+			self.y = source.y;
+			self.z = source.z;
+			self.w = source.w;
+			self;
+		}
+	}
+	
+	/**
+	 * Copy into any object with .x .y .z .w fields
+	 */
+	@:overload(function(target: {x: Float, y: Float, z: Float, w: Float}): {x: Float, y: Float, z: Float, w: Float} {})
+	public macro function copyInto(self: ExprOf<Vec4>, target: ExprOf<{x: Float, y: Float, z: Float}>): ExprOf<{x: Float, y: Float, z: Float}> {
+		return macro {
+			var self = $self;
+			var target = $target;
+			target.x = self.x;
+			target.y = self.y;
+			target.z = self.z;
+			target.w = self.w;
+			target;
+		}
+	}
+
 	@:overload(function<T>(arrayLike: T, index: Int): T {})
-	public macro function copyIntoArray(self: haxe.macro.Expr.ExprOf<Vec4>, array: haxe.macro.Expr.ExprOf<ArrayAccess<Float>>, index: haxe.macro.Expr.ExprOf<Int>) {
+	public macro function copyIntoArray(self: ExprOf<Vec4>, array: ExprOf<ArrayAccess<Float>>, index: ExprOf<Int>) {
 		return macro {
 			var self = $self;
 			var array = $array;
@@ -469,6 +497,47 @@ abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 			array[2 + i] = self.z;
 			array[3 + i] = self.w;
 			array;
+		}
+	}
+
+	@:overload(function<T>(arrayLike: T, index: Int): T {})
+	public macro function copyFromArray(self: ExprOf<Vec4>, array: ExprOf<ArrayAccess<Float>>, index: ExprOf<Int>) {
+		return macro {
+			var self = $self;
+			var array = $array;
+			var i: Int = $index;
+			self.x = array[0 + i];
+			self.y = array[1 + i];
+			self.z = array[2 + i];
+			self.w = array[3 + i];
+			self;
+		}
+	}
+
+	// static macros
+
+	/**
+	 * Create from any object with .x .y .z .w fields
+	 */
+	@:overload(function(source: {x: Float, y: Float, z: Float, w: Float}): Vec4 {})
+	public static macro function from(xyzw: ExprOf<{x: Float, y: Float, z: Float, w: Float}>): ExprOf<Vec4> {
+		return macro {
+			var source = $xyzw;
+			new Vec4(source.x, source.y, source.z, source.w);
+		}
+	}
+
+	@:overload(function<T>(arrayLike: T, index: Int): T {})
+	public static macro function fromArray(array: ExprOf<ArrayAccess<Float>>, index: ExprOf<Int>): ExprOf<Vec4> {
+		return macro {
+			var array = $array;
+			var i = $index;
+			new Vec4(
+				array[0 + i],
+				array[1 + i],
+				array[2 + i],
+				array[3 + i]
+			);
 		}
 	}
 	
