@@ -1,10 +1,10 @@
 {
 	"name": "vector-math",
-	"description": "GLSL vector math implementation that enables GLSL vector and matrix operations to compile in haxe. Usage: `import VectorMath;`",
+	"description": "vector math implementation that enables GLSL vector and matrix operations to compile in haxe. Usage: `import VectorMath;`",
 	"license": "MIT",
 	"tags": ["vector", "math", "linear-algebra", "linear", "algebra", "matrix", "opengl", "glsl", "shader"],
 	"contributors": ["haxiomic"],
 	"url": "https://github.com/haxiomic/vector-math",
-	"version": "2.2.1",
-	"releasenote": "Add set() method to all types"
+	"version": "2.3.0",
+	"releasenote": "Add macro functions for copying into and out of other vector systems"
 }
