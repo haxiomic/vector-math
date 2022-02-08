@@ -123,9 +123,9 @@ abstract Mat3(Mat3Data) from Mat3Data to Mat3Data {
 	@:op([])
 	inline function arrayRead(i: Int)
 		return switch i {
-			case 0: this.c0.clone();
-			case 1: this.c1.clone();
-			case 2: this.c2.clone();
+			case 0: this.c0;
+			case 1: this.c1;
+			case 2: this.c2;
 			default: null;
 		}
 
@@ -363,6 +363,37 @@ abstract Mat3(Mat3Data) from Mat3Data to Mat3Data {
 			self[1].copyIntoArray(array, i + 3);
 			self[2].copyIntoArray(array, i + 6);
 			array;
+		}
+	}
+
+	/**
+		Copies matrix elements in column-major order from a type that supports array-read access
+	**/
+	@:overload(function<T>(arrayLike: T, index: Int): Mat3 {})
+	public macro function copyFromArray(self: haxe.macro.Expr.ExprOf<Mat3>, array: haxe.macro.Expr.ExprOf<ArrayAccess<Float>>, index: haxe.macro.Expr.ExprOf<Int>) {
+		return macro {
+			var self = $self;
+			var array = $array;
+			var i: Int = $index;
+			self[0].copyFromArray(array, i);
+			self[1].copyFromArray(array, i + 3);
+			self[2].copyFromArray(array, i + 6);
+			self;
+		}
+	}
+
+	// static macros
+
+	@:overload(function<T>(arrayLike: T, index: Int): T {})
+	public static macro function fromArray(array: ExprOf<ArrayAccess<Float>>, index: ExprOf<Int>): ExprOf<Mat3> {
+		return macro {
+			var array = $array;
+			var i = $index;
+			new Mat3(
+				array[0 + i], array[1 + i], array[2 + i],
+				array[3 + i], array[4 + i], array[5 + i],
+				array[6 + i], array[7 + i], array[8 + i]
+			);
 		}
 	}
 
