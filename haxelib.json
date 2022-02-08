@@ -5,6 +5,6 @@
 	"tags": ["vector", "math", "linear-algebra", "linear", "algebra", "matrix", "opengl", "glsl", "shader"],
 	"contributors": ["haxiomic"],
 	"url": "https://github.com/haxiomic/vector-math",
-	"version": "2.3.0",
-	"releasenote": "Add macro functions for copying into and out of other vector systems"
+	"version": "2.4.0",
+	"releasenote": " No longer clone() when accessing array columns and add fromArray functions to matrix types"
 }
