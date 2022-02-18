@@ -506,7 +506,7 @@ abstract Vec3(Vec3Data) to Vec3Data from Vec3Data {
 	public static macro function fromArray(array: ExprOf<ArrayAccess<Float>>, index: ExprOf<Int>): ExprOf<Vec3> {
 		return macro {
 			var array = $array;
-			var i = $index;
+			var i: Int = $index;
 			new Vec3(
 				array[0 + i],
 				array[1 + i],

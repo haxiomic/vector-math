@@ -465,7 +465,7 @@ abstract Vec2(Vec2Data) to Vec2Data from Vec2Data {
 	public static macro function fromArray(array: ExprOf<ArrayAccess<Float>>, index: ExprOf<Int>): ExprOf<Vec2> {
 		return macro {
 			var array = $array;
-			var i = $index;
+			var i: Int = $index;
 			new Vec2(
 				array[0 + i],
 				array[1 + i]

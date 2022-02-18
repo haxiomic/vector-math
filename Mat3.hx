@@ -388,7 +388,7 @@ abstract Mat3(Mat3Data) from Mat3Data to Mat3Data {
 	public static macro function fromArray(array: ExprOf<ArrayAccess<Float>>, index: ExprOf<Int>): ExprOf<Mat3> {
 		return macro {
 			var array = $array;
-			var i = $index;
+			var i: Int = $index;
 			new Mat3(
 				array[0 + i], array[1 + i], array[2 + i],
 				array[3 + i], array[4 + i], array[5 + i],

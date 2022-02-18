@@ -465,7 +465,7 @@ abstract Mat4(Mat4Data) from Mat4Data to Mat4Data {
 	public static macro function fromArray(array: ExprOf<ArrayAccess<Float>>, index: ExprOf<Int>): ExprOf<Mat4> {
 		return macro {
 			var array = $array;
-			var i = $index;
+			var i: Int = $index;
 			new Mat4(
 				array[0 + i], array[1 + i], array[2 + i], array[3 + i],
 				array[4 + i], array[5 + i], array[6 + i], array[7 + i],

@@ -337,7 +337,7 @@ abstract Mat2(Mat2Data) from Mat2Data to Mat2Data {
 	public static macro function fromArray(array: ExprOf<ArrayAccess<Float>>, index: ExprOf<Int>): ExprOf<Mat2> {
 		return macro {
 			var array = $array;
-			var i = $index;
+			var i: Int = $index;
 			new Mat2(
 				array[0 + i], array[1 + i],
 				array[2 + i], array[3 + i]

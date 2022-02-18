@@ -531,7 +531,7 @@ abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 	public static macro function fromArray(array: ExprOf<ArrayAccess<Float>>, index: ExprOf<Int>): ExprOf<Vec4> {
 		return macro {
 			var array = $array;
-			var i = $index;
+			var i: Int = $index;
 			new Vec4(
 				array[0 + i],
 				array[1 + i],
