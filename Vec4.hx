@@ -200,36 +200,72 @@ abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 		return (this: Vec4) - d * ((this: Vec4) / d).floor();
 	}
 	public extern overload inline function min(b: Vec4): Vec4 {
+		#if lua
+		return new Vec4(
+			lua.Math.min(b.x, x),
+			lua.Math.min(b.y, y),
+			lua.Math.min(b.z, z),
+			lua.Math.min(b.w, w)
+		);
+		#else
 		return new Vec4(
 			b.x < x ? b.x : x,
 			b.y < y ? b.y : y,
 			b.z < z ? b.z : z,
 			b.w < w ? b.w : w
 		);
+		#end
 	}
 	public extern overload inline function min(b: Float): Vec4 {
+		#if lua
+		return new Vec4(
+			lua.Math.min(b, x),
+			lua.Math.min(b, y),
+			lua.Math.min(b, z),
+			lua.Math.min(b, w)
+		);
+		#else
 		return new Vec4(
 			b < x ? b : x,
 			b < y ? b : y,
 			b < z ? b : z,
 			b < w ? b : w
 		);
+		#end
 	}
 	public extern overload inline function max(b: Vec4): Vec4 {
+		#if lua
+		return new Vec4(
+			lua.Math.min(b.x, x),
+			lua.Math.min(b.y, y),
+			lua.Math.min(b.z, z),
+			lua.Math.min(b.w, w)
+		);
+		#else
 		return new Vec4(
 			x < b.x ? b.x : x,
 			y < b.y ? b.y : y,
 			z < b.z ? b.z : z,
 			w < b.w ? b.w : w
 		);
+		#end
 	}
 	public extern overload inline function max(b: Float): Vec4 {
+		#if lua
+		return new Vec4(
+			lua.Math.min(b, x),
+			lua.Math.min(b, y),
+			lua.Math.min(b, z),
+			lua.Math.min(b, w)
+		);
+		#else
 		return new Vec4(
 			x < b ? b : x,
 			y < b ? b : y,
 			z < b ? b : z,
 			w < b ? b : w
 		);
+		#end
 	}
 	public extern overload inline function clamp(minLimit: Vec4, maxLimit: Vec4) {
 		return max(minLimit).min(maxLimit);

@@ -187,32 +187,64 @@ abstract Vec3(Vec3Data) to Vec3Data from Vec3Data {
 		return (this: Vec3) - d * ((this: Vec3) / d).floor();
 	}
 	public extern overload inline function min(b: Vec3): Vec3 {
+		#if lua
+		return new Vec3(
+			lua.Math.min(b.x, x),
+			lua.Math.min(b.y, y),
+			lua.Math.min(b.z, z)
+		);
+		#else
 		return new Vec3(
 			b.x < x ? b.x : x,
 			b.y < y ? b.y : y,
 			b.z < z ? b.z : z
 		);
+		#end
 	}
 	public extern overload inline function min(b: Float): Vec3 {
+		#if lua
+		return new Vec3(
+			lua.Math.min(b, x),
+			lua.Math.min(b, y),
+			lua.Math.min(b, z)
+		);
+		#else
 		return new Vec3(
 			b < x ? b : x,
 			b < y ? b : y,
 			b < z ? b : z
 		);
+		#end
 	}
 	public extern overload inline function max(b: Vec3): Vec3 {
+		#if lua
+		return new Vec3(
+			lua.Math.max(b.x, x),
+			lua.Math.max(b.y, y),
+			lua.Math.max(b.z, z)
+		);
+		#else
 		return new Vec3(
 			x < b.x ? b.x : x,
 			y < b.y ? b.y : y,
 			z < b.z ? b.z : z
 		);
+		#end
 	}
 	public extern overload inline function max(b: Float): Vec3 {
+		#if lua
+		return new Vec3(
+			lua.Math.max(b, x),
+			lua.Math.max(b, y),
+			lua.Math.max(b, z)
+		);
+		#else
 		return new Vec3(
 			x < b ? b : x,
 			y < b ? b : y,
 			z < b ? b : z
 		);
+		#end
 	}
 	public extern overload inline function clamp(minLimit: Vec3, maxLimit: Vec3) {
 		return max(minLimit).min(maxLimit);

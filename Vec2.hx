@@ -158,28 +158,56 @@ abstract Vec2(Vec2Data) to Vec2Data from Vec2Data {
 		return (this: Vec2) - d * ((this: Vec2) / d).floor();
 	}
 	public extern overload inline function min(b: Vec2): Vec2 {
+		#if lua
+		return new Vec2(
+			lua.Math.min(b.x, x),
+			lua.Math.min(b.y, y)
+		);
+		#else
 		return new Vec2(
 			b.x < x ? b.x : x,
 			b.y < y ? b.y : y
 		);
+		#end
 	}
 	public extern overload inline function min(b: Float): Vec2 {
+		#if lua
+		return new Vec2(
+			lua.Math.min(b, x),
+			lua.Math.min(b, y)
+		);
+		#else
 		return new Vec2(
 			b < x ? b : x,
 			b < y ? b : y
 		);
+		#end
 	}
 	public extern overload inline function max(b: Vec2): Vec2 {
+		#if lua
+		return new Vec2(
+			lua.Math.max(b.x, x),
+			lua.Math.max(b.y, y)
+		);
+		#else
 		return new Vec2(
 			x < b.x ? b.x : x,
 			y < b.y ? b.y : y
 		);
+		#end
 	}
 	public extern overload inline function max(b: Float): Vec2 {
+		#if lua
+		return new Vec2(
+			lua.Math.max(b, x),
+			lua.Math.max(b, y)
+		);
+		#else
 		return new Vec2(
 			x < b ? b : x,
 			y < b ? b : y
 		);
+		#end
 	}
 	public extern overload inline function clamp(minLimit: Vec2, maxLimit: Vec2) {
 		return max(minLimit).min(maxLimit);
