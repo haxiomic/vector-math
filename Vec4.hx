@@ -236,10 +236,10 @@ abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 	public extern overload inline function max(b: Vec4): Vec4 {
 		#if lua
 		return new Vec4(
-			lua.Math.min(b.x, x),
-			lua.Math.min(b.y, y),
-			lua.Math.min(b.z, z),
-			lua.Math.min(b.w, w)
+			lua.Math.max(b.x, x),
+			lua.Math.max(b.y, y),
+			lua.Math.max(b.z, z),
+			lua.Math.max(b.w, w)
 		);
 		#else
 		return new Vec4(
@@ -253,10 +253,10 @@ abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 	public extern overload inline function max(b: Float): Vec4 {
 		#if lua
 		return new Vec4(
-			lua.Math.min(b, x),
-			lua.Math.min(b, y),
-			lua.Math.min(b, z),
-			lua.Math.min(b, w)
+			lua.Math.max(b, x),
+			lua.Math.max(b, y),
+			lua.Math.max(b, z),
+			lua.Math.max(b, w)
 		);
 		#else
 		return new Vec4(
