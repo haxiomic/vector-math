@@ -1,127 +1,130 @@
 /**
 	Macros required by VectorMath
-	we use exceptions rather than Context.error for compile-time performance; it saves parsing and typing all the types included when using Context
 
 	xyzw
 	rgba
 	stpq
 **/
 
-function swizzleReadExpr(self: haxe.macro.Expr, name: String) {
-	var f = fields(name);
-	var f0 = f[0];
-	var f1 = f[1];
-	var f2 = f[2];
-	var f3 = f[3];
-	return switch name.length {
-		case 1:
-			macro {
-				var self = $self;
-				self.$f0;
-			}
-		case 2:
-			macro {
-				var self = $self;
-				new Vec2(self.$f0, self.$f1);
-			}
-		case 3:
-			macro {
-				var self = $self;
-				new Vec3(self.$f0, self.$f1, self.$f2);
-			}
-		case 4:
-			macro {
-				var self = $self;
-				new Vec4(self.$f0, self.$f1, self.$f2, self.$f3);
-			}
-		default:
-			throw 'Unsupported swizzle read ".$name"';
-	}
-}
+import haxe.macro.Expr;
+import haxe.macro.Context;
 
-function swizzleWriteExpr(self, name: String, value) {
-	var f = fields(name);
-	var f0 = f[0];
-	var f1 = f[1];
-	var f2 = f[2];
-	var f3 = f[3];
-	return switch name.length {
-		case 1:
-			macro {
-				var self = $self;
-				self.$f0 = $value;
-			}
-		case 2:
-			if (f0 == f1) {
-				throw 'Swizzle ".$name" disallowed because of duplicate field write';
-			}
-			macro {
-				var self = $self;
-				var value: Vec2 = $value;
-				self.$f0 = value.x;
-				self.$f1 = value.y;
-				value;
-			}
-		case 3:
-			if (
-				f0 == f1 || f0 == f2 ||
-				f1 == f2
-			) {
-				throw 'Swizzle ".$name" disallowed because of duplicate field write';
-			}
-			macro {
-				var self = $self;
-				var value: Vec3 = $value;
-				self.$f0 = value.x;
-				self.$f1 = value.y;
-				self.$f2 = value.z;
-				value;
-			}
-		case 4:
-			if (
-				f0 == f1 || f0 == f2 || f0 == f3 ||
-				f1 == f2 || f1 == f3 || 
-				f2 == f3
-			) {
-				throw 'Swizzle ".$name" disallowed because of duplicate field write';
-			}
-			macro {
-				var self = $self;
-				var value: Vec4 = $value;
-				self.$f0 = value.x;
-				self.$f1 = value.y;
-				self.$f2 = value.z;
-				self.$f3 = value.w;
-				value;
-			}
-		default:
-			throw 'Unsupported swizzle write ".$name"';
-	}
-}
+class Swizzle {
 
-private function fields(swizzle: String): Array<String> {
-	var c0 = swizzle.charAt(0);
-	return if (c0 >= 'w') { // xyzw
-		[for (i in 0...swizzle.length) swizzle.charAt(i)];
-	} else if (c0 == 'r' || c0 < 'p') { // rgba
-		[for (i in 0...swizzle.length) {
-			switch swizzle.charAt(i) {
-				case 'r': 'x';
-				case 'g': 'y';
-				case 'b': 'z';
-				case 'a': 'w';
-				case c: throw 'Vector component "$c" not in set rgba';
-			}
-		}];
-	} else { // stpq
-		[for (i in 0...swizzle.length) {
-			switch swizzle.charAt(i) {
-				case 's': 'x';
-				case 't': 'y';
-				case 'p': 'z';
-				case 'q': 'w';
-				case c: throw 'Vector component "$c" not in set stpq';
-			}
-		}];
+	static public function generateFields(vectorLength: Int) {
+		var fields = Context.getBuildFields();
+		// for vector length N, we generate all possible combinations of 4 (or less)
+		// for swizzles that do not repeat, we also add a setter
+
+		generateSwizzles(fields, vectorLength, xyzw, true);
+
+		// add .rgba and .stpq swizzles
+		generateSwizzles(fields, vectorLength, ['r','g','b','a'], false);
+		generateSwizzles(fields, vectorLength, ['s','t','p','q'], false);
+
+		return fields;
 	}
+
+	static function generateSwizzles(fields: Array<Field>, vectorLength: Int, keys: Array<String>, skipLength1: Bool) {
+		// length 1 fields
+		if (!skipLength1) for (i in 0...vectorLength) {
+			generateProperty(fields, [i], keys);
+		}
+		// length 2 fields
+		for (i in 0...vectorLength) {
+			for (j in 0...vectorLength) {
+				generateProperty(fields, [i,j], keys);
+			}
+		}
+		// length 3 fields
+		for (i in 0...vectorLength) {
+			for (j in 0...vectorLength) {
+				for (k in 0...vectorLength) {
+					generateProperty(fields, [i,j,k], keys);
+				}
+			}
+		}
+		// length 4 fields
+		for (i in 0...vectorLength) {
+			for (j in 0...vectorLength) {
+				for (k in 0...vectorLength) {
+					for (l in 0...vectorLength) {
+						generateProperty(fields, [i,j,k,l], keys);
+					}
+				}
+			}
+		}
+	}
+
+	static final xyzw = ['x', 'y', 'z', 'w'];
+	// build some useful lookups
+	static final thisReadExpr = xyzw.map(c -> macro this.$c);
+	static final vReadExpr = xyzw.map(c -> macro v.$c);
+	static final vectorTypeMap: Array<TypePath> = [
+		{ pack: [], name: 'Float' },
+		{ pack: [], name: 'Vec2' },
+		{ pack: [], name: 'Vec3' },
+		{ pack: [], name: 'Vec4' }
+	];
+
+	static function generateProperty(fields: Array<Field>, swizzle: Array<Int>, keys: Array<String>) {
+		var ident = swizzle.map(i -> keys[i]).join('');
+		var readonly = hasDuplicate(swizzle);
+		
+		var typePath = vectorTypeMap[swizzle.length - 1];
+
+		var type: ComplexType = TPath(typePath);
+
+		var declaration = if (readonly) {
+			(macro class { public var $ident(get, never): $type; }).fields[0]; 
+		} else {
+			(macro class { public var $ident(get, set): $type; }).fields[0]; 
+		}
+
+		// add @:noCompletion if swizzle is not a single component
+		if (swizzle.length > 1) {
+			declaration.meta = [{
+				name: ':noCompletion',
+				pos: Context.currentPos(),
+			}];
+		}
+
+		var getterName = 'get_$ident';
+		var getter = (macro class {
+			inline function $getterName(): $type
+				return ${
+					if (swizzle.length > 1) {
+						macro new $typePath( $a{swizzle.map(i -> thisReadExpr[i])} );
+					} else {
+						thisReadExpr[swizzle[0]];
+					}
+				}
+		}).fields[0];
+
+		fields.push(declaration);
+		fields.push(getter);
+
+		if (!readonly) {
+			var setterName = 'set_$ident';
+			var setter = (macro class {
+				inline function $setterName(v: $type): $type {
+					$b{[for (i in 0...swizzle.length) 
+						macro ${thisReadExpr[swizzle[i]]} = ${swizzle.length > 1 ? vReadExpr[i] : macro v}
+					]}
+					return ${swizzle.length > 1 ? macro v.clone() : macro v};
+				}
+			}).fields[0];
+			fields.push(setter);
+		}
+	}
+
+	static function hasDuplicate(array: Array<Int>) {
+		for (i in 0...array.length) {
+			for (j in (i + 1)...array.length) {
+				if (array[i] == array[j]) return true;
+			}
+		}
+		return false;
+	}
+
 }

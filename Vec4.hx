@@ -8,6 +8,7 @@ import haxe.macro.Expr.ExprOf;
 #end
 
 @:nullSafety
+#if !macro @:build(VectorMath.Swizzle.generateFields(4)) #end
 abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 
 	#if !macro
@@ -358,42 +359,6 @@ abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 		return ret;
 	}
 
-	// assignment overload should come before other binary ops to ensure they have priority
-	@:op(a *= b)
-	static inline function mulEq(a: Vec4, b: Vec4): Vec4
-		return a.copyFrom(a * b);
-
-	@:op(a *= b)
-	static inline function mulEqMat(a: Vec4, b: Mat4): Vec4
-		return a.copyFrom(a * b);
-
-	@:op(a *= b)
-	static inline function mulEqScalar(a: Vec4, f: Float): Vec4
-		return a.copyFrom(a * f);
-
-	@:op(a /= b)
-	static inline function divEq(a: Vec4, b: Vec4): Vec4
-		return a.copyFrom(a / b);
-
-	@:op(a /= b)
-	static inline function divEqScalar(a: Vec4, f: Float): Vec4
-		return a.copyFrom(a / f);
-
-	@:op(a += b)
-	static inline function addEq(a: Vec4, b: Vec4): Vec4
-		return a.copyFrom(a + b);
-
-	@:op(a += b)
-	static inline function addEqScalar(a: Vec4, f: Float): Vec4
-		return a.copyFrom(a + f);
-
-	@:op(a -= b)
-	static inline function subEq(a: Vec4, b: Vec4): Vec4
-		return a.copyFrom(a - b);
-
-	@:op(a -= b)
-	static inline function subEqScalar(a: Vec4, f: Float): Vec4
-		return a.copyFrom(a - f);
 
 	@:op(a * b)
 	static inline function mul(a: Vec4, b: Vec4): Vec4
@@ -446,13 +411,6 @@ abstract Vec4(Vec4Data) to Vec4Data from Vec4Data {
 	#end // !macro
 
 	// macros
-	@:op(a.b) macro function swizzleRead(self, name: String) {
-		return VectorMath.swizzleReadExpr(self, name);
-	}
-
-	@:op(a.b) macro function swizzleWrite(self, name: String, value) {
-		return VectorMath.swizzleWriteExpr(self, name, value);
-	}
 
 	/**
 	 * Copy from any object with .x .y .z .w fields

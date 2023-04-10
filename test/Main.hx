@@ -809,7 +809,17 @@ function main() {
 			13,14,15,16
 		)
 	);
-	
+
+	// swizzle assignment
+	// see https://github.com/haxiomic/vector-math/issues/7
+	var color = vec3(1,1,1);
+	var result = color.xy *= 0.5;
+	test(result == vec2(0.5, 0.5));
+	test(color == vec3(0.5, 0.5, 1));
+	var color = vec4(1,1,1,1);
+	var result = color.yx /= 2;
+	test(result == vec2(0.5, 0.5));
+	test(color == vec4(0.5, 0.5, 1, 1));
 
 	testsComplete();
 }
