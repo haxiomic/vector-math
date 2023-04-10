@@ -510,11 +510,10 @@ class Vec4Data {
 	public var w: Float;
 
 	public inline function new(x: Float, y: Float, z: Float, w: Float) {
-		// the + 0.0 helps the optimizer realize it can collapse const float operations
-		this.x = x + 0.0;
-		this.y = y + 0.0;
-		this.z = z + 0.0;
-		this.w = w + 0.0;
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.w = w;
 	}
 	#end
 }

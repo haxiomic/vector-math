@@ -439,9 +439,8 @@ class Vec2Data {
 	public var y: Float;
 
 	public inline function new(x: Float, y: Float) {
-		// the + 0.0 helps the optimizer realize it can collapse const float operations
-		this.x = x + 0.0;
-		this.y = y + 0.0;
+		this.x = x;
+		this.y = y;
 	}
 	#end
 }
