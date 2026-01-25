@@ -373,6 +373,78 @@ overload extern inline function mat4(
 	a30, a31, a32, a33
 );
 
+// # Complex Initializers
+
+overload extern inline function complex(re: Float, im: Float): Complex return new Complex(re, im);
+overload extern inline function complex(c: Complex): Complex return c.clone();
+overload extern inline function complex(v: Vec2): Complex return new Complex(v.x, v.y);
+overload extern inline function complex(re: Float): Complex return new Complex(re, 0);
+
+// # Quaternion Initializers
+
+overload extern inline function quat(x: Float, y: Float, z: Float, w: Float): Quat return new Quat(x, y, z, w);
+overload extern inline function quat(q: Quat): Quat return q.clone();
+overload extern inline function quat(v: Vec4): Quat return new Quat(v.x, v.y, v.z, v.w);
+overload extern inline function quat(axis: Vec3, angle: Float): Quat return Quat.fromAxisAngle(axis, angle);
+
+// # Dual Number Initializers
+
+overload extern inline function dual(re: Float, du: Float): Dual return new Dual(re, du);
+overload extern inline function dual(d: Dual): Dual return d.clone();
+overload extern inline function dual(re: Float): Dual return new Dual(re, 0);
+
+// # Dual Quaternion Initializers
+
+overload extern inline function dualquat(real: Quat, dual: Quat): DualQuat return new DualQuat(real, dual);
+overload extern inline function dualquat(dq: DualQuat): DualQuat return dq.clone();
+overload extern inline function dualquat(rotation: Quat, translation: Vec3): DualQuat return DualQuat.fromRotationTranslation(rotation, translation);
+
+// # Extended Functions for New Types
+
+// Conjugate
+overload extern inline function conjugate(c: Complex): Complex return c.conjugate();
+overload extern inline function conjugate(q: Quat): Quat return q.conjugate();
+overload extern inline function conjugate(d: Dual): Dual return d.conjugate();
+overload extern inline function conjugate(dq: DualQuat): DualQuat return dq.conjugate();
+
+// Normalize (extend existing)
+overload extern inline function normalize(c: Complex): Complex return c.normalize();
+overload extern inline function normalize(q: Quat): Quat return q.normalize();
+overload extern inline function normalize(dq: DualQuat): DualQuat return dq.normalize();
+
+// Inverse (extend existing)
+overload extern inline function inverse(c: Complex): Complex return c.inverse();
+overload extern inline function inverse(q: Quat): Quat return q.inverse();
+
+// Length (extend existing)
+overload extern inline function length(c: Complex): Float return c.modulus();
+overload extern inline function length(q: Quat): Float return q.length();
+
+// Dot (extend existing)
+overload extern inline function dot(a: Quat, b: Quat): Float return a.dot(b);
+
+// Complex-specific extensions
+overload extern inline function exp(c: Complex): Complex return c.exp();
+overload extern inline function log(c: Complex): Complex return c.log();
+overload extern inline function sqrt(c: Complex): Complex return c.sqrt();
+overload extern inline function pow(c: Complex, n: Float): Complex return c.pow(n);
+overload extern inline function sin(c: Complex): Complex return c.sin();
+overload extern inline function cos(c: Complex): Complex return c.cos();
+
+// Dual-specific extensions
+overload extern inline function exp(d: Dual): Dual return d.exp();
+overload extern inline function log(d: Dual): Dual return d.log();
+overload extern inline function sqrt(d: Dual): Dual return d.sqrt();
+overload extern inline function pow(d: Dual, n: Float): Dual return d.pow(n);
+overload extern inline function sin(d: Dual): Dual return d.sin();
+overload extern inline function cos(d: Dual): Dual return d.cos();
+
+// Interpolation
+overload extern inline function mix(a: Quat, b: Quat, t: Float): Quat return a.lerp(b, t);
+overload extern inline function mix(a: DualQuat, b: DualQuat, t: Float): DualQuat return a.lerp(b, t);
+inline function slerp(a: Quat, b: Quat, t: Float): Quat return a.slerp(b, t);
+inline function sclerp(a: DualQuat, b: DualQuat, t: Float): DualQuat return a.sclerp(b, t);
+
 // internal methods
 private inline function log2f(v: Float) {
 	var l2 = Math.log(v) * 1.4426950408889634;

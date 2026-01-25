@@ -1,5 +1,6 @@
 import TestFramework;
 import VectorMath;
+import TestAlgebra;
 
 // when comparing floats
 final precision = 1000000;
@@ -712,6 +713,11 @@ function main() {
 	test(result == vec2(0.0));
 	var result = pos.xy += 0.5;
 	test(result == vec2(0.5));
+
+	// ------------
+	// # Algebra (Complex, Quaternion, Dual, DualQuat)
+	// ------------
+	testAlgebra();
 
 	// test conversions to/from different vector objects
 	test(Vec2.from({x: 1, y: 2}) == vec2(1, 2));

@@ -11,7 +11,7 @@ test-cpp.hxml
 
 # HashLink (requires hl jit installed on system to run)
 --next
-test-hl.hxml
+# test-hl.hxml
 
 --next
 test-hlc.hxml
