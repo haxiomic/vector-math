@@ -1,6 +1,8 @@
 import TestFramework;
 import VectorMath;
 import TestAlgebra;
+import TestGA;
+import TestSTA;
 
 // when comparing floats
 final precision = 1000000;
@@ -718,6 +720,16 @@ function main() {
 	// # Algebra (Complex, Quaternion, Dual, DualQuat)
 	// ------------
 	testAlgebra();
+
+	// ------------
+	// # Geometric Algebra (Clifford Algebras)
+	// ------------
+	testGA();
+
+	// ------------
+	// # Spacetime Algebra
+	// ------------
+	testSTA();
 
 	// test conversions to/from different vector objects
 	test(Vec2.from({x: 1, y: 2}) == vec2(1, 2));
